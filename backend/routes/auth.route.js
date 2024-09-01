@@ -3,12 +3,14 @@ const router = express.Router();
 
 import {
   adminLogout,
+  getMe,
   loginAdmin,
   loginUser,
   signup,
   userLogout,
 } from "../controllers/auth.controller.js";
 
+router.get("/me", getMe);
 router.post("/signup", signup);
 router.post("/login", loginUser);
 router.post("/login/admin", loginAdmin);
