@@ -159,3 +159,31 @@ export const loginAdmin = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// PATH     : /api/auth/logout
+// METHOD   : POST
+// ACCESS   : PUBLIC
+// DESC     : Logout a User
+export const userLogout = async (req, res) => {
+  try {
+    res.cookie("user_jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "User Logout successful" });
+  } catch (error) {
+    console.log("Error in user logout controller", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// PATH     : /api/auth/logout/admin
+// METHOD   : POST
+// ACCESS   : PUBLIC
+// DESC     : Logout a admin
+export const adminLogout = async (req, res) => {
+  try {
+    res.cookie("admin_jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Admin Logout successful" });
+  } catch (error) {
+    console.log("Error in admin logout controller", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
