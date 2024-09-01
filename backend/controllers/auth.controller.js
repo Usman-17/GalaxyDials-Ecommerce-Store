@@ -69,3 +69,47 @@ export const signup = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+// PATH     : /api/auth/login
+// METHOD   : POST
+// ACCESS   : PUBLIC
+// DESC     : Login a User
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate email and password
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and Password are required" });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ error: "Invalid email or password" });
+    }
+
+    // Compare provided password with hashed password
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ error: "Incorrect password" });
+    }
+
+    // Generate token and set cookie
+    generateTokenAndSetCookie(user._id, res);
+
+    // Send user info in response
+    res.status(200).json({
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      mobile: user.mobile,
+    });
+  } catch (error) {
+    console.error("Error in login controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
