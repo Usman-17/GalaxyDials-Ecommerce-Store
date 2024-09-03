@@ -4,6 +4,7 @@ import {
   generateUserTokenAndSetCookie,
   generateAdminTokenAndSetCookie,
 } from "../utils/generateToken.js";
+import { v2 as cloudinary } from "cloudinary";
 
 // PATH     : /api/auth/signup
 // METHOD   : POST
@@ -188,8 +189,6 @@ export const adminLogout = async (req, res) => {
   }
 };
 
-
-
 // PATH     : /api/auth/me
 // METHOD   : POST
 // ACCESS   : PRIVATE
@@ -204,5 +203,83 @@ export const getMe = async (req, res) => {
   } catch (error) {
     console.log("Error in getMe controller:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// PATH     : /api/user/update/profile"
+// METHOD   : POST
+// ACCESS   : PUBLIC
+// DESC     : update User
+export const updateProfile = async (req, res) => {
+  try {
+    const { fullName, mobile, currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(req.user.id).select("-role -cart");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (currentPassword && newPassword) {
+      if (user.password) {
+        const isPasswordMatched = await bcrypt.compare(
+          currentPassword,
+          user.password
+        );
+
+        if (!isPasswordMatched) {
+          return res
+            .status(400)
+            .json({ error: "Current password is incorrect" });
+        }
+      }
+
+      if (newPassword.length < 8) {
+        return res.status(400).json({
+          error: "New password must be at least 8 characters long",
+        });
+      }
+
+      // Update password
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+    } else if (currentPassword || newPassword) {
+      return res.status(400).json({
+        error:
+          "Both current password and new password must be provided to change the password",
+      });
+    }
+
+    if (fullName) user.fullName = fullName;
+    if (mobile) user.mobile = mobile;
+
+    // Handle profile image upload
+    if (req.files && req.files.profileImg) {
+      if (user.profileImg && user.profileImg.public_id) {
+        await cloudinary.uploader.destroy(user.profileImg.public_id);
+      }
+
+      // Upload new profile image to Cloudinary
+      const profileImgResponse = await cloudinary.uploader.upload(
+        req.files.profileImg.tempFilePath,
+        { folder: "PROFILE_IMAGES" }
+      );
+
+      user.profileImg = {
+        public_id: profileImgResponse.public_id,
+        url: profileImgResponse.secure_url,
+      };
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user,
+    });
+  } catch (error) {
+    console.error("Error in updateProfile:", error.message);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
