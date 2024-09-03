@@ -5,6 +5,7 @@ import {
   generateAdminTokenAndSetCookie,
 } from "../utils/generateToken.js";
 import { v2 as cloudinary } from "cloudinary";
+import { sendEmail } from "../utils/sendEmail.js";
 
 // PATH     : /api/auth/signup
 // METHOD   : POST
@@ -281,5 +282,64 @@ export const updateProfile = async (req, res) => {
   } catch (error) {
     console.error("Error in updateProfile:", error.message);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// PATH     : /api/auth/forgot-password
+// METHOD   : POST
+// ACCESS   : PUBLIC
+// DESC     : Forgot Password Token
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  // Validate input
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    return res.status(400).json({ error: "Invalid email address" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Generate and save password reset token
+    const token = await user.createPasswordResetToken();
+    await user.save();
+
+    const resetURL = `
+  <html>
+  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+      <h2 style="color: #4CAF50;">Password Reset Request</h2>
+      <p>Hi ${user.fullName},</p>
+      <p>Please click the button below to reset your password. This link will expire in 10 minutes:</p>
+      <p>
+        <a href="${process.env.FRONTEND_URL}/reset-password/${token}" 
+           style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #4CAF50; text-decoration: none; border-radius: 4px;">Reset Password</a>
+      </p>
+      <p>If you did not request this, please ignore this email.</p>
+      <p>Thank you,<br>Your Team</p>
+    </div>
+  </body>
+  </html>
+`;
+
+    const emailData = {
+      to: email,
+      subject: "GalaxyDials Password Reset Request",
+      text: `Hi ${user.fullName}, please follow this link to reset your password.`,
+      html: resetURL,
+    };
+
+    await sendEmail(emailData);
+
+    res.status(200).json({
+      success: true,
+      message: `Password reset email sent to ${user.email}. Check your inbox.`,
+    });
+  } catch (error) {
+    console.error("Error in forgotPassword:", error.message);
+    res.status(500).json({ error: error.message });
   }
 };
