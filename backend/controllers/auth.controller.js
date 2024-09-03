@@ -1,10 +1,12 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import { v2 as cloudinary } from "cloudinary";
+
 import {
   generateUserTokenAndSetCookie,
   generateAdminTokenAndSetCookie,
 } from "../utils/generateToken.js";
-import { v2 as cloudinary } from "cloudinary";
 import { sendEmail } from "../utils/sendEmail.js";
 
 // PATH     : /api/auth/signup
@@ -340,6 +342,55 @@ export const forgotPassword = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in forgotPassword:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// PATH     : /api/auth/reset-password/token
+// METHOD   : POST
+// ACCESS   : PUBLIC
+// DESC     : Reset Password
+export const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        error: "New password must be at least 8 characters long.",
+      });
+    }
+
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "Token expired or invalid, please try again." });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Password reset successful. You can now log in with your new password.",
+      user,
+    });
+  } catch (error) {
+    console.error("Error in resetPassword:", error.message);
     res.status(500).json({ error: error.message });
   }
 };

@@ -7,6 +7,7 @@ import {
   getMe,
   loginAdmin,
   loginUser,
+  resetPassword,
   signup,
   updateProfile,
   userLogout,
@@ -21,5 +22,6 @@ router.post("/logout", userLogout);
 router.post("/logout/admin", adminLogout);
 router.put("/profile/update", protectRoute, updateProfile);
 router.post("/forgot-password", forgotPassword);
+router.put("/reset-password/:token", resetPassword);
 
 export default router;
