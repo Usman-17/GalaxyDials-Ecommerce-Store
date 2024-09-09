@@ -148,7 +148,6 @@ export const updateProduct = async (req, res) => {
     if (tags) product.tags = tags;
     if (countInStock) product.countInStock = countInStock;
 
-    
     // Handle product image upload
     if (req.files && req.files.productImages) {
       // Delete old images from Cloudinary
@@ -186,5 +185,22 @@ export const updateProduct = async (req, res) => {
   } catch (error) {
     console.error("Error in updateProduct", error.message);
     res.status(500).json({ error: error.message });
+  }
+};
+
+// PATH     : /api/product/all
+// METHOD   : GET
+// ACCESS   : PUBLIC
+// DESC     : Get all product
+export const getAllproducts = async (req, res) => {
+  try {
+    const product = await Product.find().sort({ createdAt: -1 });
+
+    if (!product.length === 0) return res.status(200).json([]);
+
+    return res.status(200).json(product);
+  } catch (error) {
+    console.log("Error in getAllProduct Controller:", error.message);
+    return res.status(500).json({ error: error.message });
   }
 };
