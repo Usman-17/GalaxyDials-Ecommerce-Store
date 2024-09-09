@@ -1,4 +1,6 @@
 import Product from "../models/product.model.js";
+import User from "../models/user.model.js";
+
 import { v2 as cloudinary } from "cloudinary";
 import slugify from "slugify";
 
@@ -248,6 +250,84 @@ export const deleteProduct = async (req, res) => {
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     console.error("Error in deleteProduct controller:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// PATH     : /api/product/wishlist/:id"
+// METHOD   : POST
+// ACCESS   : Public
+// DESC     : Add product to wishlist
+export const addToWishlist = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const userId = req.user._id;
+
+    // Find the product to ensure it exists
+    const product = await Product.findById(productId);
+    const user = await User.findById(userId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Check if the product is already in the wishlist
+    if (user.wishlist.includes(productId)) {
+      return res.status(400).json({ message: "Product already in wishlist" });
+    }
+
+    // Add product to wishlist and save
+    user.wishlist.push(productId);
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "Product added to wishlist", wishlist: user.wishlist });
+  } catch (error) {
+    console.error("Error in addToWishlist controller:", error.message);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+// PATH     : /api/product/wishlist/:id"
+// METHOD   : Delete
+// ACCESS   : Public
+// DESC     : Remove product from wishlist
+export const removeFromWishlist = async (req, res) => {
+  const { productId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    // Check if product exists
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Check if the product is in the user's wishlist
+    if (!user.wishlist.includes(productId)) {
+      return res
+        .status(400)
+        .json({ message: "Product is not in your wishlist" });
+    }
+
+    user.wishlist = user.wishlist.filter((id) => id.toString() !== productId);
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: "Product removed from wishlist successfully" });
+  } catch (error) {
+    console.error("Error in removeFromWishlist controller:", error.message);
     res.status(500).json({ error: error.message });
   }
 };
