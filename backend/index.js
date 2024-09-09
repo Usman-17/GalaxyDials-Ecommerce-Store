@@ -9,6 +9,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
+import productRoutes from "./routes/product.route.js";
 // imports End
 
 const app = express();
@@ -34,6 +35,7 @@ app.use(
 // Routes Setup
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/product", productRoutes);
 
 // Running App
 const PORT = process.env.PORT || 9000;
