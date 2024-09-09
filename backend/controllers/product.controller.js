@@ -103,3 +103,88 @@ export const createProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/product/update/id
+// METHOD   : POST
+// ACCESS   : Private Admin
+// DESC     : Update product
+export const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      title,
+      description,
+      price,
+      salePrice,
+      category,
+      brand,
+      color,
+      tags,
+      countInStock,
+    } = req.body;
+
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    if (title) {
+      const newSlug = slugify(title, { lower: true });
+      const existingProduct = await Product.findOne({ slug: newSlug });
+      if (existingProduct && existingProduct._id.toString() !== id) {
+        return res
+          .status(400)
+          .json({ error: "Product with this title already exists" });
+      }
+      product.title = title;
+      product.slug = newSlug;
+    }
+    if (description) product.description = description;
+    if (price) product.price = price;
+    if (salePrice) product.salePrice = salePrice;
+    if (category) product.category = category;
+    if (brand) product.brand = brand;
+    if (color) product.color = color;
+    if (tags) product.tags = tags;
+    if (countInStock) product.countInStock = countInStock;
+
+    
+    // Handle product image upload
+    if (req.files && req.files.productImages) {
+      // Delete old images from Cloudinary
+      if (product.productImages && product.productImages.length > 0) {
+        for (const image of product.productImages) {
+          await cloudinary.uploader.destroy(image.public_id);
+        }
+      }
+
+      // Upload new images to Cloudinary
+      const uploadedImages = [];
+      const images = Array.isArray(req.files.productImages)
+        ? req.files.productImages
+        : [req.files.productImages];
+
+      for (const image of images) {
+        const { secure_url, public_id } = await cloudinary.uploader.upload(
+          image.tempFilePath,
+          {
+            folder: "PRODUCT_IMAGES",
+          }
+        );
+        uploadedImages.push({ url: secure_url, public_id });
+      }
+
+      // Update product with new images
+      product.productImages = uploadedImages;
+    }
+
+    await product.save();
+    res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    console.error("Error in updateProduct", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
