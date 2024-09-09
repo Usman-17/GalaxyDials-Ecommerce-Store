@@ -204,3 +204,18 @@ export const getAllproducts = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/product/id"
+// METHOD   : GET
+// ACCESS   : Public
+// DESC     : Get Single Product
+export const getProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findById(id);
+    res.status(200).json(product);
+  } catch (error) {
+    console.log("Error in getProduct Controller", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
