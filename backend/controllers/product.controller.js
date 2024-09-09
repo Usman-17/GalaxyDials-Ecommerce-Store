@@ -219,3 +219,33 @@ export const getProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/product/:id"
+// METHOD   : DELETE
+// ACCESS   : PRIVATE
+// DESC     : Delete product
+export const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // Delete all product images from Cloudinary if they exist
+    if (product.productImages && product.productImages.length > 0) {
+      for (const image of product.productImages) {
+        await cloudinary.uploader.destroy(image.public_id);
+      }
+    }
+
+    await Product.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Error in deleteProduct controller:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
