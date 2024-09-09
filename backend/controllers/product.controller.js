@@ -237,7 +237,9 @@ export const deleteProduct = async (req, res) => {
     // Delete all product images from Cloudinary if they exist
     if (product.productImages && product.productImages.length > 0) {
       for (const image of product.productImages) {
-        await cloudinary.uploader.destroy(image.public_id);
+        if (image.public_id) {
+          await cloudinary.uploader.destroy(image.public_id);
+        }
       }
     }
 
