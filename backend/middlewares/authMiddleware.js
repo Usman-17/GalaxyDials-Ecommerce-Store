@@ -27,3 +27,22 @@ export const protectRoute = async (req, res, next) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// Middleware for checking if a user is an admin
+export const isAdmin = async (req, res, next) => {
+  try {
+    const { email } = req.user;
+    const adminUser = await User.findOne({ email });
+
+    if (!adminUser || adminUser.role !== "admin") {
+      return res
+        .status(403)
+        .json({ error: "Access denied: You do not have admin" });
+    }
+
+    next();
+  } catch (error) {
+    console.error("Error in isAdmin middleware:", error.message);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};

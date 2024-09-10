@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-import { protectRoute } from "../middlewares/authMiddleware.js";
+import { isAdmin, protectRoute } from "../middlewares/authMiddleware.js";
 import {
   addToWishlist,
   createProduct,
@@ -15,9 +15,9 @@ import {
 
 router.get("/all", getAllproducts);
 router.get("/:id", getProduct);
-router.post("/create", protectRoute, createProduct);
-router.put("/update/:id", protectRoute, updateProduct);
-router.delete("/:id", protectRoute, deleteProduct);
+router.post("/create", isAdmin, protectRoute, createProduct);
+router.put("/update/:id", isAdmin, protectRoute, updateProduct);
+router.delete("/:id", isAdmin, protectRoute, deleteProduct);
 router.post("/wishlist/:productId", protectRoute, addToWishlist);
 router.delete("/wishlist/:productId", protectRoute, removeFromWishlist);
 
