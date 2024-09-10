@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
+import cors from "cors";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
@@ -29,6 +30,14 @@ app.use(
   fileUpload({
     useTempFiles: true,
     tempFileDir: "/tmp/",
+  })
+);
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:4000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
 
