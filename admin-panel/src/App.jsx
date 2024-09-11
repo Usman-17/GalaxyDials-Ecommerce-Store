@@ -1,8 +1,12 @@
+import { Divider } from "antd";
 
 const App = () => {
   return (
-    <div>App</div>
-  )
-}
+    <>
+      <div>App</div>
+      <Divider>Text</Divider>
+    </>
+  );
+};
 
-export default App
+export default App;
