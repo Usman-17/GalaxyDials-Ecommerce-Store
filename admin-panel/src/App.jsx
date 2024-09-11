@@ -1,12 +1,10 @@
-import { Divider } from "antd";
-import { AArrowDown } from "lucide-react";
+import "./App.scss";
+import SideBar from "./components/common/SideBar";
 
 const App = () => {
   return (
     <>
-      <div>App</div>
-      <Divider>Text</Divider>
-      <AArrowDown />
+      <SideBar />
     </>
   );
 };
