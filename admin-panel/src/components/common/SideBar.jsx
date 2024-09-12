@@ -1,4 +1,5 @@
 import { Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 import {
   LucideLayoutDashboard,
   ClipboardList,
@@ -22,9 +23,9 @@ const menuItems = [
     label: "Orders",
   },
   {
-    key: "customers",
+    key: "users",
     icon: <User size={20} />,
-    label: "Customers",
+    label: "Users",
   },
   {
     key: "products",
@@ -52,6 +53,7 @@ const menuItems = [
 ];
 
 const SideBar = () => {
+  const navigate = useNavigate();
   return (
     <div className="side-bar d-flex flex-column h-100">
       <div className="logo d-flex align-items-center justify-content-around">
