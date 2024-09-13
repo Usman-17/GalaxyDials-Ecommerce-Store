@@ -12,3 +12,30 @@ a {
   display: inline-block;
   color: #000;
 }
+
+// Buttons
+.button {
+  background-color: #111c43;
+  color: #fff;
+  font-size: 0.875rem;
+  padding: 10px 26px;
+  border-radius: 1.5625rem;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+
+  &:hover {
+    background: #ffaa3b;
+    color: #131921;
+  }
+}
+
+.secondary-button {
+  background: #ffaa3b;
+  color: #2b2a2a;
+
+  &:hover {
+    color: #fff;
+    background: #232f3f;
+  }
+}
+// Buttons

@@ -136,3 +136,93 @@
   }
 }
 // Header End
+
+// Login Page
+.auth-wrapper {
+  min-height: 110vh !important;
+  margin-top: -50px;
+  background: linear-gradient(135deg, #ffffff, #f0ece2);
+  @include lg {
+    min-height: 100vh !important;
+    margin-top: -10px;
+  }
+
+  .auth-card {
+    max-width: 100%;
+    background: transparent;
+    padding: 0px;
+    box-shadow: none;
+    border: 0;
+    border-radius: 8px;
+    @include md {
+      background: #fff;
+      padding: 20px;
+      max-width: 38rem;
+      border: 1px solid #dadce0;
+      box-shadow: 0 0 10px #0000001a;
+    }
+    @include lg {
+      max-width: 29rem;
+    }
+
+    .auth-title {
+      font-size: 30px;
+      color: var(--secondary-color);
+    }
+    .sub-heading {
+      font-size: 10px;
+      color: var(--secondary-color);
+      @include md {
+        font-size: 12px;
+      }
+    }
+
+    form {
+      input {
+        height: 55px;
+        font-size: 14px;
+        color: #000;
+        @include md {
+          height: 60px;
+          font-size: 20px;
+        }
+        @include lg {
+          font-size: 17px;
+        }
+      }
+
+      .toggle-password {
+        cursor: pointer;
+        top: 20px;
+        right: 20px;
+        font-size: 20px;
+      }
+
+      label {
+        font-size: 14px;
+        @include lg {
+          font-size: 16px;
+        }
+      }
+
+      .error-message {
+        font-size: 13px;
+        margin-bottom: 5px;
+        @include lg {
+          font-size: 15px;
+          margin-bottom: 3px;
+          font-weight: 500;
+        }
+      }
+
+      .btn {
+        border: none;
+        outline: none;
+        .button {
+          padding: 10px 30px;
+        }
+      }
+    }
+  }
+}
+// Login Page End
