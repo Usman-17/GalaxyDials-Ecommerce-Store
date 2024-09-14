@@ -1,12 +1,17 @@
 import "./App.scss";
-import Header from "./components/common/Header";
-import SideBar from "./components/common/SideBar";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import UsersPage from "./pages/UsersPage";
-import LoginPage from "./pages/LoginPage";
+
+import { Spin } from "antd";
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
-import { Spin } from "antd";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
+import Header from "./components/common/Header";
+import SideBar from "./components/common/SideBar";
+
+import UsersPage from "./pages/UsersPage";
+import LoginPage from "./pages/LoginPage";
+import Dashboard from "./pages/Dashboard";
+// imports End
 
 const App = () => {
   // fetch Authentication User Data
@@ -51,7 +56,15 @@ const App = () => {
           path="/login"
           element={!authUser ? <LoginPage /> : <Navigate to="/" />}
         />
-        <Route path="/users" element={<UsersPage />} />
+
+        <Route
+          index
+          element={authUser ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/users"
+          element={authUser ? <UsersPage /> : <Navigate to="/login" />}
+        />
       </Routes>
 
       <Toaster
@@ -60,7 +73,7 @@ const App = () => {
             background: "#363636",
             color: "#fffbfb",
             fontFamily: "poppins",
-            fontSize: "12px",
+            fontSize: "13px",
           },
         }}
       />

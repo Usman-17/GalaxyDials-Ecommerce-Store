@@ -9,6 +9,7 @@ import {
   LogOut,
   ListOrdered,
 } from "lucide-react";
+import useLogout from "../../hooks/useLogout";
 // imports End
 
 const menuItems = [
@@ -53,6 +54,7 @@ const menuItems = [
 ];
 
 const SideBar = () => {
+  const { logoutMutation } = useLogout();
   const navigate = useNavigate();
   return (
     <div className="side-bar d-flex flex-column h-100">
@@ -71,7 +73,10 @@ const SideBar = () => {
       />
 
       <div className="divider" />
-      <div className="logout-button d-flex align-items-center py-2 gap-2 ml-5">
+      <div
+        onClick={() => logoutMutation()}
+        className="logout-button d-flex align-items-center py-2.5 gap-2 ml-5"
+      >
         <LogOut size={20} />
         <span>Logout</span>
       </div>
