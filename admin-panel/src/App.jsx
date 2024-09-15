@@ -11,6 +11,8 @@ import SideBar from "./components/common/SideBar";
 import UsersPage from "./pages/UsersPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
+import ProductListPage from "./pages/ProductListPage";
+import AddProductPage from "./pages/AddProductPage";
 // imports End
 
 const App = () => {
@@ -64,6 +66,15 @@ const App = () => {
         <Route
           path="/users"
           element={authUser ? <UsersPage /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="product/add"
+          element={authUser ? <AddProductPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="products/list"
+          element={authUser ? <ProductListPage /> : <Navigate to="/login" />}
         />
       </Routes>
 

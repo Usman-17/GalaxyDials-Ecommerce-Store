@@ -34,7 +34,7 @@ const menuItems = [
     label: "Products",
     children: [
       {
-        key: "products/add",
+        key: "product/add",
         icon: <PackageSearch size={22} />,
         label: "Add Product",
       },
