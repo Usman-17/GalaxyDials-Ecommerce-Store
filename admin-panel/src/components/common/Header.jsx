@@ -31,8 +31,8 @@ const Header = () => {
         <h4 className="user-name">Muhammad Usman</h4>
       </div>
 
-      <div className="d-flex align-items-center justify-content-end gap-2 gap-lg-4">
-        <div className="header-icons-links d-flex gap-1 gap-lg-2">
+      <div className="d-flex align-items-center justify-content-end ms-auto gap-2 gap-lg-4">
+        <div className="header-icons-links d-flex gap-2">
           {/* Shop */}
           <div className="shop">
             <Link target="_blank" rel="noopener noreferrer">

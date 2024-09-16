@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LucideLayoutDashboard,
   ClipboardList,
@@ -7,7 +7,7 @@ import {
   PackageSearch,
   MailSearch,
   LogOut,
-  ListOrdered,
+  Box,
 } from "lucide-react";
 import useLogout from "../../hooks/useLogout";
 // imports End
@@ -16,40 +16,23 @@ const menuItems = [
   {
     key: "/",
     icon: <LucideLayoutDashboard size={20} />,
-    label: "Dashboard",
   },
   {
     key: "orders",
     icon: <ClipboardList size={20} />,
-    label: "Orders",
   },
   {
     key: "users",
     icon: <User size={20} />,
-    label: "Users",
   },
   {
     key: "products",
     icon: <PackageSearch size={20} />,
-    label: "Products",
-    children: [
-      {
-        key: "product/add",
-        icon: <PackageSearch size={22} />,
-        label: "Add Product",
-      },
-      {
-        key: "products/list",
-        icon: <ListOrdered size={22} />,
-        label: "Product List",
-      },
-    ],
   },
 
   {
     key: "enquiries",
     icon: <MailSearch size={20} />,
-    label: "Enquiries",
   },
 ];
 
@@ -58,9 +41,14 @@ const SideBar = () => {
   const navigate = useNavigate();
   return (
     <div className="side-bar d-flex flex-column h-100">
-      <div className="logo d-flex align-items-center justify-content-around">
-        <h2>SaraShop</h2>
-      </div>
+      <Link
+        to={"/"}
+        className="logo d-flex align-items-center justify-content-between"
+      >
+        <div>
+          <Box className="text-white" size={22} />
+        </div>
+      </Link>
       <Menu
         theme="dark"
         mode="inline"
@@ -72,13 +60,11 @@ const SideBar = () => {
         className="flex-grow-1"
       />
 
-      <div className="divider" />
       <div
         onClick={() => logoutMutation()}
-        className="logout-button d-flex align-items-center py-2.5 gap-2 ml-5"
+        className="logout-button mb-2"
       >
         <LogOut size={20} />
-        <span>Logout</span>
       </div>
     </div>
   );

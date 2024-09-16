@@ -24,18 +24,8 @@ a {
   font-weight: 500;
 
   &:hover {
-    background: #ffaa3b;
-    color: #131921;
-  }
-}
-
-.secondary-button {
-  background: #ffaa3b;
-  color: #2b2a2a;
-
-  &:hover {
+    background: #1a265a;
     color: #fff;
-    background: #232f3f;
   }
 }
 // Buttons
@@ -46,4 +36,33 @@ a {
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
+}
+
+.app-container {
+  padding-left: 70px !important;
+  @include lg {
+    padding-left: 80px !important;
+  }
+}
+
+.page-title {
+  h3 {
+    font-size: 20px;
+    @include lg {
+      font-size: 24px;
+    }
+  }
+  p {
+    font-size: 12px;
+    @include lg {
+      font-size: 14px;
+    }
+  }
+}
+
+.ant-table-cell {
+  font-size: 12px !important;
+  @include lg {
+    font-size: 14px !important;
+  }
 }

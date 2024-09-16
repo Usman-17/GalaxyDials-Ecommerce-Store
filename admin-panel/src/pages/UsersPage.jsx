@@ -30,7 +30,7 @@ const UsersPage = () => {
       title: "User Name",
       dataIndex: "userNmae",
       className: "column-fix",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      sorter: (a, b) => a.userNmae.localeCompare(b.userNmae),
     },
     {
       title: "Email",
@@ -72,11 +72,10 @@ const UsersPage = () => {
     <div>
       <Container fluid>
         <Row>
-          <Col lg={2} className="d-none d-lg-flex"></Col>
-
-          <Col lg={10} className="app-container mb-5 mb-lg-0 pt-3">
-            <div className="d-flex align-items-center justify-content-between my-2 mb-3">
-              <h3 className="page-title">Users List</h3>
+          <Col className="app-container pt-4">
+            <div className="page-title d-flex flex-column">
+              <h3 className="page-title mb-0">Users Details</h3>
+              <p>View and Manage All Users</p>
             </div>
 
             {error ? (

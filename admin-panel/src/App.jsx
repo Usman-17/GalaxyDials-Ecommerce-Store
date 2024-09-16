@@ -84,7 +84,7 @@ const App = () => {
             background: "#363636",
             color: "#fffbfb",
             fontFamily: "poppins",
-            fontSize: "13px",
+            fontSize: "12px",
           },
         }}
       />

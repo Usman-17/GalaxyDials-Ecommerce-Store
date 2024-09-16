@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
 import { Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Spin } from "antd";
 // imports End
 
 const LoginPage = () => {
@@ -59,7 +60,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="auth-wrapper d-flex align-items-center py-5">
+    <div className="auth-wrapper d-flex align-items-center justify-content-center">
       <Container>
         <Row>
           <Col>
@@ -117,10 +118,18 @@ const LoginPage = () => {
                 >
                   {/* login */}
                   <button
-                    className="button border-0 d-flex align-items-center justify-content-center w-50"
+                    className="button border-0 d-flex align-items-center justify-content-center w-75"
                     type="submit"
+                    disabled={isPending}
                   >
-                    {isPending ? "Loading..." : "Login"}
+                    {isPending ? (
+                      <div className="d-flex align-items-center gap-2">
+                        <Spin size="small" />
+                        <span>Logging in...</span>
+                      </div>
+                    ) : (
+                      "Login"
+                    )}
                   </button>
                 </div>
               </form>
