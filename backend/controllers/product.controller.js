@@ -24,15 +24,7 @@ export const createProduct = async (req, res) => {
     const { productImages } = req.files;
 
     // Check for required fields
-    if (
-      !title ||
-      !description ||
-      !price ||
-      !category ||
-      !brand ||
-      !tags ||
-      !countInStock
-    ) {
+    if (!title || !description || !price || !category || !brand || !tags) {
       return res.status(400).json({ error: "All fields are required" });
     }
 

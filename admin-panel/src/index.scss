@@ -7,6 +7,10 @@
   font-family: "Poppins", sans-serif;
 }
 
+body {
+  background-color: #fafafa;
+}
+
 a {
   text-decoration: none;
   display: inline-block;
@@ -17,15 +21,20 @@ a {
 .button {
   background-color: #111c43;
   color: #fff;
-  font-size: 0.875rem;
-  padding: 10px 26px;
-  border-radius: 1.5625rem;
+  font-size: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
   transition: background 0.2s ease, color 0.2s ease;
   font-weight: 500;
 
   &:hover {
     background: #1a265a;
     color: #fff;
+  }
+
+  @include lg {
+    padding: 10px 26px;
+    border-radius: 1.5625rem;
   }
 }
 // Buttons
@@ -65,4 +74,80 @@ a {
   @include lg {
     font-size: 14px !important;
   }
+}
+
+.custom-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  @include lg {
+    padding: 30px;
+  }
+}
+
+.ant-input {
+  font-family: "Poppins", sans-serif;
+}
+
+.ant-input::placeholder {
+  font-size: 13px;
+  @include lg {
+    font-size: 16px;
+  }
+}
+
+.jodit-workplace {
+  height: 200px !important;
+}
+
+.jodit-status-bar {
+  display: none !important;
+}
+
+.jodit-toolbar-button__button {
+  min-width: 16px !important;
+  @include lg {
+    min-width: 34px !important;
+  }
+}
+
+.label {
+  color: #000;
+  font-weight: 500;
+  margin-bottom: 1px;
+}
+
+/* Custom styles for file input */
+.custom-file-input {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 0.575rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.custom-file-input::file-selector-button {
+  border: none;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #fff;
+  background-color: #111c43;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.custom-file-input::file-selector-button:hover {
+  background-color: #0056b3;
 }

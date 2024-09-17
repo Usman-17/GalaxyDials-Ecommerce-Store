@@ -73,7 +73,7 @@ const App = () => {
           element={authUser ? <AddProductPage /> : <Navigate to="/login" />}
         />
         <Route
-          path="products/list"
+          path="product/manage"
           element={authUser ? <ProductListPage /> : <Navigate to="/login" />}
         />
       </Routes>

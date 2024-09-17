@@ -20,6 +20,7 @@
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.26.2",
+    "jodit-react": "^4.1.2",
     "sass": "^1.69.7"
   },
   "devDependencies": {

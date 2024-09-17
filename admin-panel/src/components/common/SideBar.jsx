@@ -4,10 +4,10 @@ import {
   LucideLayoutDashboard,
   ClipboardList,
   User,
-  PackageSearch,
   MailSearch,
   LogOut,
   Box,
+  ShoppingBag,
 } from "lucide-react";
 import useLogout from "../../hooks/useLogout";
 // imports End
@@ -26,8 +26,8 @@ const menuItems = [
     icon: <User size={20} />,
   },
   {
-    key: "products",
-    icon: <PackageSearch size={20} />,
+    key: "product/add",
+    icon: <ShoppingBag size={20} />,
   },
 
   {
@@ -60,10 +60,7 @@ const SideBar = () => {
         className="flex-grow-1"
       />
 
-      <div
-        onClick={() => logoutMutation()}
-        className="logout-button mb-2"
-      >
+      <div onClick={() => logoutMutation()} className="logout-button mb-2">
         <LogOut size={20} />
       </div>
     </div>
