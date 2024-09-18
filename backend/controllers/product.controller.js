@@ -135,12 +135,12 @@ export const updateProduct = async (req, res) => {
     }
     if (description) product.description = description;
     if (price) product.price = price;
-    if (salePrice) product.salePrice = salePrice;
+    if (salePrice !== undefined)
+      product.salePrice = salePrice === "" ? null : salePrice;
     if (category) product.category = category;
     if (brand) product.brand = brand;
     if (color) product.color = color;
     if (tags) product.tags = tags;
-    if (countInStock) product.countInStock = countInStock;
 
     // Handle product image upload
     if (req.files && req.files.productImages) {
