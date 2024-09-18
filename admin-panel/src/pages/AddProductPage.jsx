@@ -1,11 +1,13 @@
-import { Input, Select, Spin } from "antd";
+import { useEffect, useRef, useState } from "react";
+
 import { Undo } from "lucide-react";
-import { Col, Container, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import JoditEditor from "jodit-react";
-import { useRef, useState } from "react";
 import toast from "react-hot-toast";
+import JoditEditor from "jodit-react";
+import { Input, Select, Spin } from "antd";
 import { useMutation } from "@tanstack/react-query";
+import { Col, Container, Row } from "react-bootstrap";
+import { Link, useNavigate, useParams } from "react-router-dom";
+// imports End
 
 const AddProductPage = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +25,34 @@ const AddProductPage = () => {
   const [productImgPreview, setProductImgPreview] = useState([]);
   const editor = useRef(null);
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      const fetchProduct = async () => {
+        const res = await fetch(`/api/product/${id}`);
+        const data = await res.json();
+
+        setFormData({
+          title: data.title || "",
+          description: data.description || "",
+          category: data.category || "",
+          brand: data.brand || "",
+          color: data.color || "",
+          tags: data.tags || "",
+          price: data.price || "",
+          salePrice: data.salePrice || "",
+          productImages: data.productImages || [],
+        });
+
+        if (data.productImages) {
+          setProductImgPreview(data.productImages.map((img) => img.url));
+        }
+      };
+
+      fetchProduct();
+    }
+  }, [id]);
 
   // Mutation to save product
   const {
@@ -32,9 +62,11 @@ const AddProductPage = () => {
     isError,
   } = useMutation({
     mutationFn: async (formData) => {
-      const url = "/api/product/create";
+      const method = id ? "PUT" : "POST";
+      const url = id ? `/api/product/update/${id}` : "/api/product/create";
+
       const res = await fetch(url, {
-        method: "POST",
+        method,
         body: formData,
       });
 
@@ -45,12 +77,16 @@ const AddProductPage = () => {
 
       return res.json();
     },
+
     onSuccess: () => {
-      toast.success(`Product "${formData.title}" created`);
+      toast.success(
+        `Product "${formData.title}" ${id ? "updated" : "created"} successfully`
+      );
       navigate("/product/manage");
     },
+
     onError: () => {
-      toast.error("Failed to create Product");
+      toast.error(`Failed to ${id ? "update" : "create"} Product`);
     },
   });
 
@@ -112,7 +148,10 @@ const AddProductPage = () => {
             {/* Page Title */}
             <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between mb-4">
               <div className="page-title">
-                <h3 className="page-title mb-0">Add New Product</h3>
+                <h3 className="page-title mb-0">
+                  {id ? "Edit Product" : "Add New Product"}
+                </h3>
+
                 <p className="mb-2 mb-lg-0">
                   Fill out the details below to add a product
                 </p>
@@ -151,10 +190,6 @@ const AddProductPage = () => {
                   value={formData.description}
                   onChange={handleDescriptionChange}
                 />
-
-                {formData.description === "" && (
-                  <div className="text-danger mt-1">Description is required!</div>
-                )}
               </div>
 
               {/* Category & Brand */}
@@ -270,6 +305,7 @@ const AddProductPage = () => {
                   type="file"
                   multiple
                   accept="image/*"
+                  required={id ? false : true}
                   onChange={handleProductImgChange}
                   className="custom-file-input"
                 />
@@ -302,7 +338,7 @@ const AddProductPage = () => {
                       <span>Saving...</span>
                     </div>
                   ) : (
-                    "Add Product"
+                    <>{id ? "Update Product" : "Add Prodcut"}</>
                   )}
                 </button>
               </div>

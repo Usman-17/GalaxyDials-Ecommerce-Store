@@ -126,7 +126,7 @@ const ProductListPage = () => {
 
     action: (
       <div className="d-flex align-items-center">
-        <EditButton />
+        <EditButton to={`/product/edit/${product._id}`} />
 
         {deletingProductId === product._id ? (
           <Spin className="ms-4" />

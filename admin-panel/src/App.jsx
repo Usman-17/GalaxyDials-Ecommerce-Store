@@ -73,6 +73,10 @@ const App = () => {
           element={authUser ? <AddProductPage /> : <Navigate to="/login" />}
         />
         <Route
+          path="product/edit/:id"
+          element={authUser ? <AddProductPage /> : <Navigate to="/login" />}
+        />
+        <Route
           path="product/manage"
           element={authUser ? <ProductListPage /> : <Navigate to="/login" />}
         />
