@@ -73,28 +73,30 @@ const UsersPage = () => {
       <Container fluid>
         <Row>
           <Col className="app-container pt-4">
-            <div className="page-title d-flex flex-column">
-              <h3 className="page-title mb-0">Users Details</h3>
-              <p>View and Manage All Users</p>
-            </div>
+            <div className="custom-card">
+              <div className="page-title d-flex flex-column">
+                <h3 className="page-title mb-0">Users Details</h3>
+                <p>View and Manage All Users</p>
+              </div>
 
-            {error ? (
-              <p>{error.message}</p>
-            ) : (
-              <>
-                {isLoading ? (
-                  <Skeleton active className="mt-5" />
-                ) : users?.length > 0 ? (
-                  <Table
-                    columns={columns}
-                    dataSource={data}
-                    scroll={{ x: true }}
-                  />
-                ) : (
-                  <Empty description="No data available" />
-                )}
-              </>
-            )}
+              {error ? (
+                <p>{error.message}</p>
+              ) : (
+                <>
+                  {isLoading ? (
+                    <Skeleton active className="mt-5" />
+                  ) : users?.length > 0 ? (
+                    <Table
+                      columns={columns}
+                      dataSource={data}
+                      scroll={{ x: true }}
+                    />
+                  ) : (
+                    <Empty description="No data available" />
+                  )}
+                </>
+              )}
+            </div>
           </Col>
         </Row>
       </Container>

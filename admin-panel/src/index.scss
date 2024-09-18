@@ -17,7 +17,7 @@ a {
   color: #000;
 }
 
-// Buttons
+// Button
 .button {
   background-color: #111c43;
   color: #fff;
@@ -37,7 +37,7 @@ a {
     border-radius: 1.5625rem;
   }
 }
-// Buttons
+// Button
 
 .column-fix {
   text-transform: capitalize;
@@ -45,6 +45,13 @@ a {
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .app-container {
@@ -69,31 +76,13 @@ a {
   }
 }
 
-.ant-table-cell {
-  font-size: 12px !important;
-  @include lg {
-    font-size: 14px !important;
-  }
-}
-
 .custom-card {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 8px;
+  padding: 16px 10px;
   @include lg {
     padding: 30px;
-  }
-}
-
-.ant-input {
-  font-family: "Poppins", sans-serif;
-}
-
-.ant-input::placeholder {
-  font-size: 13px;
-  @include lg {
-    font-size: 16px;
   }
 }
 
@@ -150,4 +139,48 @@ a {
 
 .custom-file-input::file-selector-button:hover {
   background-color: #0056b3;
+}
+
+// Ant Design
+
+.ant-table-cell {
+  font-size: 13px !important;
+  @include lg {
+    font-size: 14px !important;
+  }
+}
+
+.ant-tag {
+  font-size: 12px !important;
+  @include lg {
+    font-size: 16px !important;
+  }
+}
+
+.ant-input {
+  font-family: "Poppins", sans-serif;
+}
+
+.ant-input::placeholder {
+  font-size: 13px;
+  @include lg {
+    font-size: 16px;
+  }
+}
+
+.ant-modal-content {
+  margin-left: 60px;
+  padding: 15px 10px !important;
+  border-radius: 6px !important;
+  @include lg {
+    margin-left: 0px;
+    padding: 15px !important;
+  }
+}
+
+.ant-modal-confirm-title {
+  font-size: 14px !important;
+  @include lg {
+    font-size: 16px !important;
+  }
 }

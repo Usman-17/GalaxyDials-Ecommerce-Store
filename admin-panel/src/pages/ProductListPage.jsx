@@ -2,8 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Redo } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Col, Container } from "react-bootstrap";
-import { Empty, Row, Skeleton, Table, Tag, Modal, Spin } from "antd";
+import { Col, Container, Row } from "react-bootstrap";
+import { Empty, Skeleton, Table, Tag, Modal, Spin } from "antd";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import EditButton from "../components/EditButton";
@@ -35,6 +35,7 @@ const columns = [
     title: "Title",
     dataIndex: "title",
     sorter: (a, b) => a.title.localeCompare(b.title),
+    className: "column-fix truncate",
   },
   {
     title: "Category",
@@ -143,40 +144,40 @@ const ProductListPage = () => {
   return (
     <Container fluid>
       <Row>
-        <Col lg={2} className="d-none d-lg-flex"></Col>
+        <Col className="app-container mb-5 mb-lg-0 pt-4">
+          <div className="custom-card">
+            <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between mb-4">
+              <div className="page-title">
+                <h3 className="mb-0">View All Products</h3>
+                <p className="mb-2 mb-lg-0"> View and Manage All Products</p>
+              </div>
 
-        <Col lg={10} className="app-container mb-5 mb-lg-0 pt-4">
-          <div className="d-flex align-nav-item justify-content-between">
-            <div className="d-flex flex-column mb-2">
-              <h3 className="page-title mb-0">View All Products</h3>
-              <p>View and Manage All Products</p>
+              <Link to="/product/add" className="w-fit">
+                <button className="button border-0 d-flex align-items-center gap-2">
+                  <Redo size={18} />
+                  Add New Product
+                </button>
+              </Link>
             </div>
 
-            <Link to="/product/add" className="w-fit">
-              <button className="button border-0 d-flex align-items-center gap-2">
-                <Redo size={18} />
-                Add New Product
-              </button>
-            </Link>
+            {error ? (
+              <p>{error.message}</p>
+            ) : (
+              <>
+                {isLoading ? (
+                  <Skeleton active className="mt-5" />
+                ) : products?.length > 0 ? (
+                  <Table
+                    columns={columns}
+                    dataSource={data}
+                    scroll={{ x: "auto" }}
+                  />
+                ) : (
+                  <Empty description="No data available" />
+                )}
+              </>
+            )}
           </div>
-
-          {error ? (
-            <p>{error.message}</p>
-          ) : (
-            <>
-              {isLoading ? (
-                <Skeleton active className="mt-5" />
-              ) : products?.length > 0 ? (
-                <Table
-                  columns={columns}
-                  dataSource={data}
-                  scroll={{ x: true }}
-                />
-              ) : (
-                <Empty description="No data available" />
-              )}
-            </>
-          )}
         </Col>
       </Row>
     </Container>
