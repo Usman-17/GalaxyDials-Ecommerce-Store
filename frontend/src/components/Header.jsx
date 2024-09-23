@@ -16,7 +16,7 @@ import inbox from "../assets/inbox.png";
 
 const Header = () => {
   return (
-    <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+    <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[2vw]">
       <div className="flex items-center justify-between py-2.5 sm:py-3 font-medium">
         <img
           src={logo}
