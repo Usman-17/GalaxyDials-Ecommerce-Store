@@ -44,3 +44,96 @@ nav a img {
 nav a.active img {
   transform: scale(1.02);
 }
+
+/* Product Slider Arrows */
+.slick-prev {
+  top: -30px !important;
+  left: 255px !important;
+}
+
+.slick-next {
+  top: -30px !important;
+  right: 5px !important;
+}
+
+/* Media Queries for Different Screen Sizes */
+@media (min-width: 380px) {
+  .slick-prev {
+    left: 280px !important;
+  }
+}
+
+@media (min-width: 414px) {
+  .slick-prev {
+    left: 300px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .slick-prev {
+    left: 580px !important;
+  }
+
+  .slick-next {
+    right: 0px !important;
+  }
+}
+
+@media (min-width: 834px) {
+  .slick-prev {
+    left: 640px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .slick-prev {
+    top: -30px !important;
+    left: 1030px !important;
+  }
+
+  .slick-next {
+    top: -30px !important;
+    right: 10px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .slick-prev {
+    left: 1110px !important;
+  }
+}
+
+@media (min-width: 1350px) {
+  .slick-prev {
+    left: 1180px !important;
+  }
+}
+
+/* Arrow Customization */
+.custom-arrow {
+  color: #000 !important;
+  background-color: inherit !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease !important;
+}
+
+.custom-arrow:hover {
+  background-color: #ff5252 !important;
+  color: #fff !important;
+}
+
+.custom-arrow svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.custom-arrow:before {
+  content: none !important;
+}
+/* Product Slider Arrows End*/
