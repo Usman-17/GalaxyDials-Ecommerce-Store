@@ -2,7 +2,7 @@ import Hero from "../components/Hero";
 import ProductCard from "../components/ProductCard";
 import ProductSlider from "../components/ProductSlider";
 import SectionHeading from "../components/SectionHeading";
-import OurPolicy from "./OurPolicy";
+import OurPolicy from "../components/OurPolicy";
 
 const HomePage = () => {
   return (
