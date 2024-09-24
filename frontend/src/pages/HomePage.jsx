@@ -2,6 +2,7 @@ import Hero from "../components/Hero";
 import ProductCard from "../components/ProductCard";
 import ProductSlider from "../components/ProductSlider";
 import SectionHeading from "../components/SectionHeading";
+import OurPolicy from "./OurPolicy";
 
 const HomePage = () => {
   return (
@@ -12,7 +13,7 @@ const HomePage = () => {
           <SectionHeading text1={"Our"} text2={"Popular Products"} />
         </div>
       </div>
-      <div className="mb-10">
+      <div className="">
         <ProductSlider>
           <ProductCard />
           <ProductCard />
@@ -24,6 +25,8 @@ const HomePage = () => {
           <ProductCard />
         </ProductSlider>
       </div>
+
+      <OurPolicy />
     </>
   );
 };
