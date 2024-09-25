@@ -1,11 +1,9 @@
 import { Helmet } from "react-helmet";
 
 import Hero from "../components/Hero";
-import ProductCard from "../components/ProductCard";
-import ProductSlider from "../components/ProductSlider";
-import SectionHeading from "../components/SectionHeading";
-import OurPolicy from "../components/OurPolicy";
 import SpecialProduct from "../components/SpecialProduct";
+import PopularProduct from "../components/PopularProduct";
+import OurPolicy from "../components/OurPolicy";
 
 const HomePage = () => {
   return (
@@ -24,25 +22,7 @@ const HomePage = () => {
       </Helmet>
 
       <Hero />
-
-      <div className="mt-10">
-        <div className="py-1 text-3xl">
-          <SectionHeading text1={"Our"} text2={"Popular Products"} />
-        </div>
-      </div>
-      <div className="">
-        <ProductSlider slidesToShow={6}>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </ProductSlider>
-      </div>
-
+      <PopularProduct />
       <SpecialProduct />
       <OurPolicy />
     </>
