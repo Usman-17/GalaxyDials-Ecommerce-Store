@@ -5,6 +5,7 @@ import ProductCard from "../components/ProductCard";
 import ProductSlider from "../components/ProductSlider";
 import SectionHeading from "../components/SectionHeading";
 import OurPolicy from "../components/OurPolicy";
+import SpecialProduct from "../components/SpecialProduct";
 
 const HomePage = () => {
   return (
@@ -23,13 +24,14 @@ const HomePage = () => {
       </Helmet>
 
       <Hero />
+
       <div className="mt-10">
         <div className="py-1 text-3xl">
           <SectionHeading text1={"Our"} text2={"Popular Products"} />
         </div>
       </div>
       <div className="">
-        <ProductSlider>
+        <ProductSlider slidesToShow={6}>
           <ProductCard />
           <ProductCard />
           <ProductCard />
@@ -41,6 +43,7 @@ const HomePage = () => {
         </ProductSlider>
       </div>
 
+      <SpecialProduct />
       <OurPolicy />
     </>
   );
