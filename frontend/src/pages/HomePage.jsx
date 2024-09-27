@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 
 import Hero from "../components/Hero";
+import SaleProduct from "../components/SaleProduct";
 import SpecialProduct from "../components/SpecialProduct";
 import PopularProduct from "../components/PopularProduct";
 import OurPolicy from "../components/OurPolicy";
@@ -23,8 +24,9 @@ const HomePage = () => {
       </Helmet>
 
       <Hero />
-      <PopularProduct />
+      <SaleProduct />
       <SpecialProduct />
+      <PopularProduct />
       <AdBanner />
       <OurPolicy />
     </>
