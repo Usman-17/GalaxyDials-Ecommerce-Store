@@ -6,6 +6,7 @@ import SpecialProduct from "../components/SpecialProduct";
 import PopularProduct from "../components/PopularProduct";
 import OurPolicy from "../components/OurPolicy";
 import AdBanner from "../components/AdBanner";
+import ProductCard from "../components/ProductCard";
 
 const HomePage = () => {
   return (
@@ -28,6 +29,20 @@ const HomePage = () => {
       <SpecialProduct />
       <PopularProduct />
       <AdBanner />
+
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+        </div>
+      </div>
+
       <OurPolicy />
     </>
   );
