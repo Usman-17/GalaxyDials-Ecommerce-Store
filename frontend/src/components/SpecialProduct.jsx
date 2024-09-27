@@ -1,31 +1,43 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import SectionHeading from "./SectionHeading";
+import SpecialProductCard from "./SpecialProductCard";
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import SpecialProductCard from "./SpecialProductCard";
-import SectionHeading from "./SectionHeading";
+// imports End
 
 const SpecialProduct = () => {
   const settings = {
-    dots: false,
+    className: "center",
     infinite: true,
+    centerPadding: "60px",
     slidesToShow: 2,
-    initialSlide: 0,
-    slidesToScroll: 1,
+    rows: 1,
+    slidesPerRow: 2,
+    speed: 1200,
     autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 8000,
+    autoplaySpeed: 5000,
 
     responsive: [
+      {
+        breakpoint: 1180,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerPadding: "40px",
+        },
+      },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          centerPadding: "20px",
         },
       },
     ],
+
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
   };
@@ -54,6 +66,10 @@ const SpecialProduct = () => {
         <SectionHeading text1={"Our"} text2={"Special Products"} />
       </div>
       <Slider {...settings}>
+        <SpecialProductCard />
+        <SpecialProductCard />
+        <SpecialProductCard />
+        <SpecialProductCard />
         <SpecialProductCard />
         <SpecialProductCard />
         <SpecialProductCard />
