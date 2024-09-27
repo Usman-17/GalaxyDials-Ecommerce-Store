@@ -4,6 +4,7 @@ import Hero from "../components/Hero";
 import SpecialProduct from "../components/SpecialProduct";
 import PopularProduct from "../components/PopularProduct";
 import OurPolicy from "../components/OurPolicy";
+import AdBanner from "../components/AdBanner";
 
 const HomePage = () => {
   return (
@@ -24,6 +25,7 @@ const HomePage = () => {
       <Hero />
       <PopularProduct />
       <SpecialProduct />
+      <AdBanner />
       <OurPolicy />
     </>
   );
