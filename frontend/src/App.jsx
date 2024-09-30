@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import CollectionPage from "./pages/CollectionPage";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
+import PlaceOrderPage from "./pages/PlaceOrderPage";
 // imports End
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/collection" element={<CollectionPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/place-order" element={<PlaceOrderPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>
