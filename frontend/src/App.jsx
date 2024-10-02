@@ -10,6 +10,7 @@ import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 import PlaceOrderPage from "./pages/PlaceOrderPage";
 import OrdersPage from "./pages/OrdersPage";
+import AboutPage from "./pages/AboutPage";
 // imports End
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/place-order" element={<PlaceOrderPage />} />
           <Route path="/my-orders" element={<OrdersPage />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>
