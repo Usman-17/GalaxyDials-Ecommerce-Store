@@ -1,9 +1,23 @@
 import SectionHeading from "../components/SectionHeading";
 import img from "../assets/contact.png";
+import { Helmet } from "react-helmet";
 
 const ContactPage = () => {
   return (
     <>
+      <Helmet>
+        <title>Contact Us - Galaxy Dials</title>
+        <meta
+          name="description"
+          content="Get in touch with Galaxy Dials. Reach out via email, phone, or visit us at our physical store. We're here to help with all your inquiries."
+        />
+        <meta
+          name="keywords"
+          content="Galaxy Dials, Contact, Customer Support, Email, Phone, Address"
+        />
+        <link rel="canonical" href="https://www.galaxydials.com/contact" />
+      </Helmet>
+
       {/* Section Heading */}
       <div className="text-xl text-center pt-6 sm:pt-8 border-t">
         <SectionHeading text1="CONTACT" text2="US" />
