@@ -1,9 +1,23 @@
 import SectionHeading from "../components/SectionHeading";
 import img from "../assets/add.jpg";
+import { Helmet } from "react-helmet";
 
 const AboutPage = () => {
   return (
     <>
+      <Helmet>
+        <title>About Us - Galaxy Dials</title>
+        <meta
+          name="description"
+          content="Discover Galaxy Dials, where passion meets quality. Learn more about our mission to provide premium wristwatches that combine timeless design and innovation."
+        />
+        <meta
+          name="keywords"
+          content="Galaxy Dials, wristwatches, luxury watches, quality watches, timepieces, innovation"
+        />
+        <link rel="canonical" href="" />
+      </Helmet>
+
       <div className="text-xl text-center pt-6 sm:pt-8 border-t">
         <SectionHeading text1={"ABOUT"} text2={"US"} />
       </div>
