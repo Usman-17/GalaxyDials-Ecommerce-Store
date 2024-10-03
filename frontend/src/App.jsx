@@ -11,6 +11,7 @@ import CartPage from "./pages/CartPage";
 import PlaceOrderPage from "./pages/PlaceOrderPage";
 import OrdersPage from "./pages/OrdersPage";
 import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 // imports End
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/place-order" element={<PlaceOrderPage />} />
           <Route path="/my-orders" element={<OrdersPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>
