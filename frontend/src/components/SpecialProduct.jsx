@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // imports End
 
-const SpecialProduct = () => {
+const SpecialProduct = ({ products }) => {
   const settings = {
     className: "center",
     infinite: true,
@@ -61,19 +61,29 @@ const SpecialProduct = () => {
   }
 
   return (
-    <div className="slider-container mt-10">
+    <div className="slider-container sm:mt-5">
       <div className="py-1 text-3xl">
-        <SectionHeading text1={"Our"} text2={"Special Products"} />
+        {products && (
+          <SectionHeading text1={"Our"} text2={"Special Products"} />
+        )}
       </div>
+
       <Slider {...settings}>
-        <SpecialProductCard />
-        <SpecialProductCard />
-        <SpecialProductCard />
-        <SpecialProductCard />
-        <SpecialProductCard />
-        <SpecialProductCard />
-        <SpecialProductCard />
-        <SpecialProductCard />
+        {products?.map((product) => {
+          if (product.tags.includes("special")) {
+            return (
+              <SpecialProductCard
+                key={product._id}
+                to={`/product/${product._id}`}
+                image={product.productImages[0]?.url}
+                title={product.title}
+                brand={product.brand}
+                price={product.price}
+                salePrice={product.salePrice}
+              />
+            );
+          }
+        })}
       </Slider>
     </div>
   );

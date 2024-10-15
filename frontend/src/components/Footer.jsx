@@ -4,7 +4,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
     <>
-      <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-8 sm:gap-14 my-5 sm:my-10 mt-40 text-sm">
+      <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-8 sm:gap-14 my-5 sm:my-10  text-sm">
         <div>
           <h1 className="uppercase text-3xl font-semibold mb-6">
             Galaxy Dials
@@ -76,7 +76,7 @@ const Footer = () => {
       </div>
 
       <div>
-        <hr/>
+        <hr />
         <p className="py-3 sm:py-5 text-[11px] sm:text-sm text-center mb-14 sm:mb-0">
           Copyright {currentYear}@ muhammad.usman.dev - All Right Reserved.
         </p>

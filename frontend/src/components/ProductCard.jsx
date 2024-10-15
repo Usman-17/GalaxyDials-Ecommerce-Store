@@ -1,27 +1,31 @@
-import watch from "../assets/watch.webp";
 import { Link } from "react-router-dom";
 
-const ProductCard = () => {
+const ProductCard = ({ to, image, title, brand, price, salePrice }) => {
   return (
-    <Link>
-      <div className="rounded-lg hover:shadow-lg transition-shadow duration-300 ease-in-out max-w-sm mx-auto sm:max-w-none group">
-        <div className="relative">
-          <img
-            src={watch}
-            alt="Apple Watch"
-            className="w-full h-auto rounded-t-md"
-            loading="lazy"
-            decoding="async"
-          />
-
-          <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-3 py-0.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-            Sale
+    <Link to={to}>
+      <div className="rounded-lg transition-shadow duration-300 ease-in-out max-w-sm mx-auto sm:max-w-none group py-2">
+        <div className="relative overflow-hidden">
+          <div className="relative w-full h-0 pb-[100%] rounded-t-md overflow-hidden">
+            <img
+              src={image}
+              alt={title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105 shadow-lg hover:shadow-xl"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
+
+          {/* Sale Badge */}
+          {salePrice && (
+            <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-3 sm:py-0.5 rounded-xl opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+              Sale
+            </div>
+          )}
         </div>
 
         {/* Product Info */}
         <div className="py-2 px-2">
-          <p className="text-xs sm:text-sm text-gray-500">POEDAGAR</p>
+          <p className="text-xs sm:text-sm text-gray-500">{brand}</p>
           <h3
             className="font-semibold text-xs sm:text-xl md:text-base tracking-tight"
             style={{
@@ -32,18 +36,28 @@ const ProductCard = () => {
               lineHeight: "1.3",
             }}
           >
-            Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
+            {title}
           </h3>
 
           {/* Price */}
-          <div className="flex gap-1 sm:gap-2 items-center mt-2">
-            <p className="text-lg sm:text-xl font-bold text-gray-900">
-              Rs. 4000
-            </p>
-            <p className="text-xs sm:text-sm text-gray-500 line-through">
-              Rs. 5000
-            </p>
-          </div>
+          {(price || salePrice) && (
+            <div className="flex gap-1 sm:gap-2 items-center">
+              {salePrice ? (
+                <>
+                  <p className="text-lg sm:text-xl font-bold text-red-500">
+                    Rs. {salePrice}
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-500 line-through">
+                    Rs. {price}
+                  </p>
+                </>
+              ) : (
+                <p className="text-lg sm:text-xl font-bold text-gray-900">
+                  Rs. {price}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </Link>

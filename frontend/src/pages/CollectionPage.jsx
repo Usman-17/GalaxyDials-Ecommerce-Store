@@ -3,8 +3,9 @@ import { Helmet } from "react-helmet";
 import { ChevronDown } from "lucide-react";
 import SectionHeading from "../components/SectionHeading";
 import ProductCard from "../components/ProductCard";
+import ProductCardSkeleton from "../components/ProductCardSkeleton";
 
-const CollectionPage = () => {
+const CollectionPage = ({ products, isLoading }) => {
   const [showFilter, setShowFilter] = useState(false);
 
   return (
@@ -140,11 +141,21 @@ const CollectionPage = () => {
 
           {/* All Products */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {isLoading
+              ? Array.from({ length: 10 }).map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))
+              : products.map((product) => (
+                  <ProductCard
+                    key={product._id}
+                    to={`/product/${product._id}`}
+                    image={product.productImages[0]?.url}
+                    title={product.title}
+                    brand={product.brand}
+                    price={product.price}
+                    salePrice={product.salePrice}
+                  />
+                ))}
           </div>
         </div>
       </div>

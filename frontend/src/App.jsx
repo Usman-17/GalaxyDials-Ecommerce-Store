@@ -12,9 +12,12 @@ import PlaceOrderPage from "./pages/PlaceOrderPage";
 import OrdersPage from "./pages/OrdersPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import { useGetAllProducts } from "./hooks/useGetAllProducts";
 // imports End
 
 const App = () => {
+  const { products, isLoading } = useGetAllProducts();
+
   // Scroll to Top Component
   const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -31,8 +34,16 @@ const App = () => {
         <ScrollToTop />
         <Header />
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/collection" element={<CollectionPage />} />
+          <Route
+            path="/"
+            element={<HomePage products={products} isLoading={isLoading} />}
+          />
+          <Route
+            path="/collection"
+            element={
+              <CollectionPage products={products} isLoading={isLoading} />
+            }
+          />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/place-order" element={<PlaceOrderPage />} />
