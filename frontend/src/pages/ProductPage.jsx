@@ -3,110 +3,155 @@ import { Redo } from "lucide-react";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 
-import img from "../assets/watch.webp";
-import img2 from "../assets/watch2.webp";
 import ProductSlider from "../components/ProductSlider";
 import ProductCard from "../components/ProductCard";
 import SectionHeading from "../components/SectionHeading";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import ProductSkeleton from "../components/ProductSkeleton";
 
-const ProductPage = () => {
+const ProductPage = ({ products }) => {
+  const [activeImage, setActiveImage] = useState(""); // State for active image
+
   const [activeTab, setActiveTab] = useState("description");
 
   const { id } = useParams();
-  console.log(id);
+
+  const { data: product, isLoading } = useQuery({
+    queryKey: ["product", id],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`/api/product/${id}`);
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch product: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        return data;
+      } catch (error) {
+        throw new Error(`Failed to fetch product: ${error.message}`);
+      }
+    },
+
+    retry: false,
+  });
+
+  const mainImageUrl = product?.productImages?.[0]?.url || "";
+
+  const handleImageClick = (url) => {
+    setActiveImage(url);
+  };
 
   return (
     <div className="border-t-2 pt-5 sm:pt-10 transition-opacity ease-in duration-500 opacity-100">
       {/* Product Detail */}
-      <div className="flex flex-col sm:flex-row gap-6 sm:gap-12">
-        {/* ---Product Images--- */}
-        <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
-          <div className="flex sm:flex-col overflow-x-auto sm:w-[18.5%] w-full gap-1 sm:gap-0">
-            <img
-              src={img}
-              alt="title"
-              className="w-[24%] sm:w-full sm:mb-3 cursor-pointer rounded-md"
-            />
-            <img
-              src={img2}
-              alt="title"
-              className="w-[24%] sm:w-full sm:mb-3 cursor-pointer rounded-md"
-            />
-            <img
-              src={img}
-              alt="title"
-              className="w-[24%] sm:w-full sm:mb-3 cursor-pointer rounded-md"
-            />
-            <img
-              src={img2}
-              alt="title"
-              className="w-[24%] sm:w-full sm:mb-3 cursor-pointer rounded-md"
-            />
-          </div>
 
-          {/* Main Image */}
-          <div className="w-full sm:w-[80%]">
-            <InnerImageZoom
-              src={img2}
-              zoomType="hover"
-              zoomScale={1}
-              className="w-full h-auto rounded-md"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        </div>
+      {isLoading ? (
+        <ProductSkeleton />
+      ) : (
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-12">
+          {/* ---Product Images--- */}
+          <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
+            <div className="flex sm:flex-col  sm:w-[18.5%] w-full gap-1 sm:gap-0">
+              {product?.productImages?.slice(0).map((image, index) => (
+                <img
+                  key={index}
+                  src={image.url}
+                  alt={`Thumbnail ${index + 1}`}
+                  onClick={() => handleImageClick(image.url)}
+                  className="w-[24%] sm:w-full sm:mb-3 cursor-pointer rounded-md transition-transform duration-300 transform hover:scale-105 object-contain"
+                />
+              ))}
+            </div>
 
-        {/* ---Product Info---- */}
-        <div className="flex-1">
-          <h4 className="text-gray-600 text-sm sm:text-base">POEDAGAR</h4>
-          <h1 className="font-semibold text-xl sm:text-3xl mt-2 tracking-wide leading-6 sm:leading-9">
-            POEDAGAR Luxury Men ograph P996 POEDAGAR Luxury
-          </h1>
-
-          <div className="flex gap-1 sm:gap-2 items-center mt-2">
-            <p className="text-lg sm:text-xl font-bold text-red-500">
-              Rs. 4000
-            </p>
-            <p className="text-xs sm:text-sm text-gray-500 line-through">
-              Rs. 5000
-            </p>
-          </div>
-
-          {/* Category */}
-          <p className="text-sm sm:text-base text-gray-500 mt-4">
-            Category: <span className="font-medium text-gray-700">Mens</span>
-          </p>
-
-          <div className="flex flex-col gap-4 my-4">
-            <p>Select Color</p>
-            <div className="flex gap-2">
-              <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
-                Red
-              </button>
-              <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
-                Gold
-              </button>
-              <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
-                Black
-              </button>
+            {/* Main Image */}
+            <div className="w-full sm:w-[80%] flex items-center justify-center">
+              <InnerImageZoom
+                src={activeImage || mainImageUrl}
+                zoomType="hover"
+                zoomScale={1}
+                className="rounded-md object-contain"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
 
-          <button className="uppercase bg-black text-white px-5 sm:px-7 py-3 text-sm sm:text-base rounded mt-7 sm:mt-8 hover:bg-gray-800 transition duration-300 flex items-center gap-2">
-            Add to cart <Redo size={18} />
-          </button>
+          {/* ---Product Info---- */}
+          <div className="flex-1">
+            <h4 className="text-gray-600 text-sm sm:text-base">
+              {product?.brand}
+            </h4>
+            <h1
+              className="font-semibold text-lg sm:text-2xl sm:mt-2 tracking-wide"
+              style={{
+                lineHeight: "1.2",
+              }}
+            >
+              {product?.title}
+            </h1>
 
-          <hr className="mt-8 sm:w-4/5" />
+            {/* Price */}
+            <div className="flex items-center">
+              {(product?.price || product?.salePrice) && (
+                <div className="flex items-center gap-1 sm:gap-2 mt-2">
+                  {product?.salePrice ? (
+                    <>
+                      <p className="text-lg sm:text-2xl font-bold text-red-600">
+                        Rs. {product?.salePrice}
+                      </p>
+                      <p className="text-xs sm:text-lg text-gray-500 line-through">
+                        Rs. {product?.price}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-lg sm:text-xl font-bold text-gray-900">
+                      Rs. {product?.price}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
 
-          <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
-            <p>100% Original product.</p>
-            <p>Cash on delivery is available on this product.</p>
-            <p>Easy return and exchange policy within 7 days.</p>
+            {/* Category */}
+            <p className="text-sm sm:text-base text-gray-500 mt-4">
+              Category:{" "}
+              <span className="font-medium text-gray-700">
+                {product?.category}
+              </span>
+            </p>
+
+            <div className="flex flex-col gap-4 my-4">
+              <p>Select Color</p>
+              <div className="flex gap-2">
+                <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
+                  Red
+                </button>
+                <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
+                  Gold
+                </button>
+                <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
+                  Black
+                </button>
+              </div>
+            </div>
+
+            <button className="uppercase bg-black text-white px-4 sm:px-5 py-2 text-sm sm:text-base rounded mt-7 sm:mt-8 hover:bg-gray-800 transition duration-300 flex items-center gap-2">
+              Add to cart <Redo size={18} />
+            </button>
+
+            <hr className="mt-8 sm:w-4/5" />
+
+            <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
+              <p>100% Original product.</p>
+              <p>Cash on delivery is available on this product.</p>
+              <p>Easy return and exchange policy within 7 days.</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* ----Description & Reviews Tabs---- */}
       <div className="mt-10 sm:mt-20">
@@ -132,13 +177,9 @@ const ProductPage = () => {
         {/* Tab Content */}
         <div className="flex flex-col gap-4 border px-3 sm:px-6 py-3 sm:py-6 text-sm text-gray-500">
           {activeTab === "description" ? (
-            <p>
-              An e-commerce website is an online platform that facilitates the
-              buying and selling of products or services over the internet. It
-              serves as a virtual marketplace where businesses and individuals
-              can showcase their products, interact with customers, and conduct
-              transactions without the need for a physical presence...
-            </p>
+            <div
+              dangerouslySetInnerHTML={{ __html: product?.description || "" }}
+            />
           ) : (
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-4">
@@ -221,15 +262,19 @@ const ProductPage = () => {
           <SectionHeading text1={"Related"} text2={"Products"} />
         </div>
       </div>
+
       <ProductSlider>
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        {products?.map((product) => (
+          <ProductCard
+            key={product._id}
+            to={`/product/${product._id}`}
+            image={product.productImages[0]?.url}
+            title={product.title}
+            brand={product.brand}
+            price={product.price}
+            salePrice={product.salePrice}
+          />
+        ))}
       </ProductSlider>
     </div>
   );

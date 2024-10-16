@@ -44,7 +44,10 @@ const App = () => {
               <CollectionPage products={products} isLoading={isLoading} />
             }
           />
-          <Route path="/product/:id" element={<ProductPage />} />
+          <Route
+            path="/product/:id"
+            element={<ProductPage products={products} isLoading={isLoading} />}
+          />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/place-order" element={<PlaceOrderPage />} />
           <Route path="/my-orders" element={<OrdersPage />} />
