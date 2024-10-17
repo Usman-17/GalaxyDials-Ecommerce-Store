@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { ChevronDown } from "lucide-react";
-import SectionHeading from "../components/SectionHeading";
-import ProductCard from "../components/ProductCard";
-import ProductCardSkeleton from "../components/ProductCardSkeleton";
-import FilterSkeleton from "../components/FilterSkeleton";
 
-const CollectionPage = ({ products, isLoading }) => {
+import ProductCard from "../components/ProductCard";
+import FilterSkeleton from "../components/FilterSkeleton";
+import SectionHeading from "../components/SectionHeading";
+import ProductCardSkeleton from "../components/ProductCardSkeleton";
+// Imports End
+
+const CollectionPage = ({ products = [], isLoading }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const [sortOption, setSortOption] = useState("relevant");
 
   // Handle category filter toggle
   const handleCategoryChange = (category) => {
@@ -29,6 +32,7 @@ const CollectionPage = ({ products, isLoading }) => {
     );
   };
 
+  // Filter products based on selected categories and brands
   const filteredProducts = products?.filter((product) => {
     const matchesCategory =
       selectedCategories.length === 0 ||
@@ -38,6 +42,16 @@ const CollectionPage = ({ products, isLoading }) => {
       selectedBrands.length === 0 || selectedBrands.includes(product.brand);
 
     return matchesCategory && matchesBrand;
+  });
+
+  // Sort products based on the selected option
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortOption === "low-high") {
+      return a.price - b.price;
+    } else if (sortOption === "high-low") {
+      return b.price - a.price;
+    }
+    return 0;
   });
 
   return (
@@ -149,7 +163,11 @@ const CollectionPage = ({ products, isLoading }) => {
             />
 
             {/* Product Sorting */}
-            <select className="border border-gray-300 bg-white text-xs sm:text-sm px-0 py-2 sm:px-3 sm:py-2 rounded-md focus:outline-none transition duration-100 ease-in-out hover:bg-gray-50 mb-3">
+            <select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              className="border border-gray-300 bg-white text-xs sm:text-sm px-0 py-2 sm:px-3 sm:py-2 rounded-md focus:outline-none transition duration-100 ease-in-out hover:bg-gray-50 mb-3"
+            >
               <option value="relevant">Sort By: Relevant</option>
               <option value="low-high">Sort By: Low to High</option>
               <option value="high-low">Sort By: High to Low</option>
@@ -162,7 +180,7 @@ const CollectionPage = ({ products, isLoading }) => {
               ? Array.from({ length: 10 }).map((_, index) => (
                   <ProductCardSkeleton key={index} />
                 ))
-              : filteredProducts.map((product) => (
+              : sortedProducts.map((product) => (
                   <ProductCard
                     key={product._id}
                     to={`/product/${product._id}`}
