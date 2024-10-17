@@ -187,7 +187,7 @@ const CollectionPage = ({ products = [], isLoading }) => {
           </div>
 
           {/* All Products */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 gap-y-6">
             {isLoading
               ? Array.from({ length: 10 }).map((_, index) => (
                   <ProductCardSkeleton key={index} />
