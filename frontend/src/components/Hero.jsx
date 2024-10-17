@@ -1,28 +1,59 @@
-import banner from "../assets/banner.webp";
+import Slider from "react-slick";
 import { Link } from "react-router-dom";
-import { Redo } from "lucide-react";
+
+import banner_1 from "../assets/hero_banner_1.jpg";
+import banner_2 from "../assets/hero_banner_2.jpg";
+import banner_3 from "../assets/hero_banner_3.jpg";
 
 const Hero = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    autoplay: true,
+    speed: 600,
+    autoplaySpeed: 8000,
+  };
+
   return (
-    <div className="relative">
-      <img src={banner} alt="banner" className="w-full h-auto sm:h-[540px] rounded-lg" />
-
-      <div className="absolute bottom-10 md:bottom-5 lg:bottom-10 left-5 md:left-2 lg:left-10 text-black p-4 rounded-md max-w-xs sm:max-w-md hidden sm:block">
-        <h1 className="text-3xl sm:text-5xl font-extrabold mb-1 uppercase">
-          Galaxy Dials
-        </h1>
-        <h5 className="text-md sm:text-md font-light mb-4">
-          Discover exclusive collections and shop the latest trends.
-        </h5>
-
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 bg-white text-black py-2 px-6 rounded-full text-sm sm:text-base font-semibold hover:bg-gray-200 transition-colors duration-300 ease-in-out"
-        >
-          Shop Now
-          <Redo size={18} />
+    <div className="slider-container mb-7 sm:mb-5">
+      <Slider {...settings}>
+        <Link to="/collection" aria-label="Go to collection">
+          <div>
+            <img
+              src={banner_1}
+              alt="Banner 1"
+              className="h-40 sm:h-96 w-full object-contain"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </Link>
-      </div>
+        <Link to="/collection" aria-label="Go to collection">
+          <div>
+            <img
+              src={banner_2}
+              alt="Banner 2"
+              className="h-40 sm:h-96 w-full object-contain"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </Link>
+        <Link to="/collection" aria-label="Go to collection">
+          <div>
+            <img
+              src={banner_3}
+              alt="Banner 3"
+              className="h-40 sm:h-96 w-full object-contain"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </Link>
+      </Slider>
     </div>
   );
 };
