@@ -4,9 +4,41 @@ import { ChevronDown } from "lucide-react";
 import SectionHeading from "../components/SectionHeading";
 import ProductCard from "../components/ProductCard";
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
+import FilterSkeleton from "../components/FilterSkeleton";
 
 const CollectionPage = ({ products, isLoading }) => {
   const [showFilter, setShowFilter] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+
+  // Handle category filter toggle
+  const handleCategoryChange = (category) => {
+    setSelectedCategories((prevSelected) =>
+      prevSelected.includes(category)
+        ? prevSelected.filter((cat) => cat !== category)
+        : [...prevSelected, category]
+    );
+  };
+
+  // Handle brand filter toggle
+  const handleBrandChange = (brand) => {
+    setSelectedBrands((prevSelected) =>
+      prevSelected.includes(brand)
+        ? prevSelected.filter((br) => br !== brand)
+        : [...prevSelected, brand]
+    );
+  };
+
+  const filteredProducts = products?.filter((product) => {
+    const matchesCategory =
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(product.category);
+
+    const matchesBrand =
+      selectedBrands.length === 0 || selectedBrands.includes(product.brand);
+
+    return matchesCategory && matchesBrand;
+  });
 
   return (
     <>
@@ -42,42 +74,33 @@ const CollectionPage = ({ products, isLoading }) => {
           {/* Category Filter */}
           <div
             className={`border border-gray-300 pl-5 py-3 mt-6 ${
-              showFilter ? " " : "hidden"
+              showFilter ? "" : "hidden"
             } sm:block`}
           >
-            <p className="uppercase mb-3 text*sm font-medium ">Categories</p>
-
-            <div className="flex flex-col gap-3 text-sm text-gray-700">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 accent-gray-700"
-                  value="Men"
-                  aria-label="Men"
-                />
-                <span className="font-medium">Men</span>
-              </label>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 accent-gray-700"
-                  value="Women"
-                  aria-label="Women"
-                />
-                <span className="font-medium">Women</span>
-              </label>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 accent-gray-700"
-                  value="Kids"
-                  aria-label="Kids"
-                />
-                <span className="font-medium">Kids</span>
-              </label>
-            </div>
+            <p className="uppercase mb-3 text-sm font-medium">Categories</p>
+            {isLoading ? (
+              <FilterSkeleton />
+            ) : (
+              <div className="flex flex-col gap-3 text-sm text-gray-700">
+                {[...new Set(products?.map((product) => product.category))].map(
+                  (category, index) => (
+                    <label
+                      key={index}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 accent-gray-700"
+                        value={category}
+                        onChange={() => handleCategoryChange(category)}
+                        checked={selectedCategories.includes(category)}
+                      />
+                      <span className="font-medium">{category}</span>
+                    </label>
+                  )
+                )}
+              </div>
+            )}
           </div>
 
           {/* Brand Filter */}
@@ -87,37 +110,31 @@ const CollectionPage = ({ products, isLoading }) => {
             } sm:block`}
           >
             <p className="uppercase mb-3 text*sm font-medium ">Brands </p>
-            <div className="flex flex-col gap-3 text-sm text-gray-700">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 accent-gray-700"
-                  value="Men"
-                  aria-label="Men"
-                />
-                <span className="font-medium">Men</span>
-              </label>
 
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 accent-gray-700"
-                  value="Women"
-                  aria-label="Women"
-                />
-                <span className="font-medium">Women</span>
-              </label>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 accent-gray-700"
-                  value="Kids"
-                  aria-label="Kids"
-                />
-                <span className="font-medium">Kids</span>
-              </label>
-            </div>
+            {isLoading ? (
+              <FilterSkeleton />
+            ) : (
+              <div className="flex flex-col gap-3 text-sm text-gray-700">
+                {[...new Set(products?.map((product) => product.brand))].map(
+                  (brand, index) => (
+                    <label
+                      key={index}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 accent-gray-700"
+                        value={brand}
+                        aria-label={brand}
+                        onChange={() => handleBrandChange(brand)}
+                        checked={selectedBrands.includes(brand)}
+                      />
+                      <span className="font-medium">{brand}</span>
+                    </label>
+                  )
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -128,7 +145,7 @@ const CollectionPage = ({ products, isLoading }) => {
             <SectionHeading
               text1={"ALL"}
               text2={"COLLECTIONS"}
-              className="text-[14px]"
+              className="text-[13px]"
             />
 
             {/* Product Sorting */}
@@ -145,7 +162,7 @@ const CollectionPage = ({ products, isLoading }) => {
               ? Array.from({ length: 10 }).map((_, index) => (
                   <ProductCardSkeleton key={index} />
                 ))
-              : products.map((product) => (
+              : filteredProducts.map((product) => (
                   <ProductCard
                     key={product._id}
                     to={`/product/${product._id}`}
