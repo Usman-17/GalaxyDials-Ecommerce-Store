@@ -15,9 +15,9 @@ const SpecialProduct = ({ products }) => {
     slidesToShow: 2,
     rows: 1,
     slidesPerRow: 2,
-    speed: 1200,
     autoplay: true,
-    autoplaySpeed: 5000,
+    speed: 600,
+    autoplaySpeed: 8000,
 
     responsive: [
       {
@@ -61,31 +61,35 @@ const SpecialProduct = ({ products }) => {
   }
 
   return (
-    <div className="slider-container sm:mt-5">
-      <div className="py-1 text-3xl">
-        {products && (
-          <SectionHeading text1={"Our"} text2={"Special Products"} />
-        )}
-      </div>
+    <>
+      {products && (
+        <div className="slider-container sm:mt-5">
+          <div className="py-1 text-3xl">
+            {products && (
+              <SectionHeading text1={"Our"} text2={"Special Products"} />
+            )}
+          </div>
 
-      <Slider {...settings}>
-        {products?.map((product) => {
-          if (product.tags.includes("special")) {
-            return (
-              <SpecialProductCard
-                key={product._id}
-                to={`/product/${product._id}`}
-                image={product.productImages[0]?.url}
-                title={product.title}
-                brand={product.brand}
-                price={product.price}
-                salePrice={product.salePrice}
-              />
-            );
-          }
-        })}
-      </Slider>
-    </div>
+          <Slider {...settings}>
+            {products?.map((product) => {
+              if (product.tags.includes("special")) {
+                return (
+                  <SpecialProductCard
+                    key={product._id}
+                    to={`/product/${product._id}`}
+                    image={product.productImages[0]?.url}
+                    title={product.title}
+                    brand={product.brand}
+                    price={product.price}
+                    salePrice={product.salePrice}
+                  />
+                );
+              }
+            })}
+          </Slider>
+        </div>
+      )}
+    </>
   );
 };
 

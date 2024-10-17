@@ -7,7 +7,7 @@ import PopularProduct from "../components/PopularProduct";
 import OurPolicy from "../components/OurPolicy";
 import AdBanner from "../components/AdBanner";
 import ProductCard from "../components/ProductCard";
-import ProductCardSkeleton from "../components/ProductCardSkeleton";
+import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 
 const HomePage = ({ products, isLoading }) => {
   return (

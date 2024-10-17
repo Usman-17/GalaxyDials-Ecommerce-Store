@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import ProductCardSkeleton from "./ProductCardSkeleton";
+import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import ProductSlider from "./ProductSlider";
 import SectionHeading from "./SectionHeading";
 

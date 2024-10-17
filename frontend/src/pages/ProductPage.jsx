@@ -8,7 +8,7 @@ import ProductCard from "../components/ProductCard";
 import SectionHeading from "../components/SectionHeading";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import ProductSkeleton from "../components/ProductSkeleton";
+import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 
 const ProductPage = ({ products }) => {
   const [activeImage, setActiveImage] = useState(""); // State for active image
@@ -175,7 +175,7 @@ const ProductPage = ({ products }) => {
         </div>
 
         {/* Tab Content */}
-        <div className="flex flex-col gap-4 border px-3 sm:px-6 py-3 sm:py-6 text-sm text-gray-500">
+        <div className="flex flex-col gap-4 border px-3 sm:px-6 py-3 sm:py-6 text-sm">
           {activeTab === "description" ? (
             <div
               dangerouslySetInnerHTML={{ __html: product?.description || "" }}

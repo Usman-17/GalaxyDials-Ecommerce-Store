@@ -7,7 +7,7 @@ const ProductSkeleton = () => {
       {/* Product Images */}
       <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-1">
         {/*  small images */}
-        <div className="flex sm:flex-col sm:w-[18.5%] w-full gap-1 sm:gap-2">
+        <div className="flex sm:flex-col items-center justify-center sm:w-[18.5%] w-full gap-1 sm:gap-2">
           {Array(4)
             .fill()
             .map((_, index) => (

@@ -3,9 +3,9 @@ import { Helmet } from "react-helmet";
 import { ChevronDown } from "lucide-react";
 
 import ProductCard from "../components/ProductCard";
-import FilterSkeleton from "../components/FilterSkeleton";
+import FilterSkeleton from "../components/Skeleton/FilterSkeleton";
 import SectionHeading from "../components/SectionHeading";
-import ProductCardSkeleton from "../components/ProductCardSkeleton";
+import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 
 import banner from "../assets/collection-banner.jpg";
 // Imports End

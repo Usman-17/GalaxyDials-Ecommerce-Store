@@ -18,12 +18,18 @@ const SpecialProductCard = ({ to, image, title, brand, price, salePrice }) => {
         </div>
 
         {/* Content Section */}
-        <div className="w-2/3 px-1.5 sm:px-2 flex flex-col rounded-r-md mt-1 sm:mt-2">
+        <div className="w-2/3 px-2 flex flex-col rounded-r-md mt-1.5 sm:mt-2">
           <p className="text-xs sm:text-sm text-gray-500">{brand}</p>
 
           <h3
-            className="text-sm sm:text-lg font-semibold text-gray-900 mb-1"
-            style={{ lineHeight: "1.2" }}
+            className="text-sm sm:text-md font-semibold text-gray-900 mb-1"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              lineHeight: "1.3",
+            }}
           >
             {title}
           </h3>
