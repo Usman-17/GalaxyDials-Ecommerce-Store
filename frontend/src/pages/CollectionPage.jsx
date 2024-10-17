@@ -6,6 +6,8 @@ import ProductCard from "../components/ProductCard";
 import FilterSkeleton from "../components/FilterSkeleton";
 import SectionHeading from "../components/SectionHeading";
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
+
+import banner from "../assets/collection-banner.jpg";
 // Imports End
 
 const CollectionPage = ({ products = [], isLoading }) => {
@@ -68,6 +70,16 @@ const CollectionPage = ({ products = [], isLoading }) => {
         />
         <link rel="canonical" href="https://www.galaxydials.com/collections" />
       </Helmet>
+
+      {/* banner  */}
+      <img
+        src={banner}
+        alt="Promotional banner showcasing our latest collection of wristwatches"
+        width="100%"
+        loading="lazy"
+        decoding="async"
+        className="object-contain"
+      />
 
       <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-3 sm:pt-10 border-t">
         {/* Left Side Filter  */}
