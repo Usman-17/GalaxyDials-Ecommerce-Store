@@ -55,13 +55,13 @@ const SearchBar = ({ products, onClose }) => {
   }, [searchData]);
 
   return (
-    <div className="search-container absolute top-[60px] sm:top-4 sm:left-80 right-0 z-50 w-[100%] sm:w-[50%] px-3 rounded">
+    <div className="search-container absolute top-[60px] sm:top-4 sm:left-80 right-0 z-50 w-[100%] sm:w-[50%] px-3">
       <div className="relative">
         <input
           ref={inputRef}
           type="text"
           placeholder="Search..."
-          className="border border-gray-300 rounded w-full p-2 font-normal focus:outline-none focus:border-gray-800 px-3"
+          className="border border-gray-300 rounded-full w-full p-2 font-normal focus:outline-none focus:border-gray-800 px-4"
           aria-label="Search"
           value={search}
           onChange={handleChange}
