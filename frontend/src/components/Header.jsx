@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import SearchBar from "./SearchBar";
+
 import { NavLink, Link } from "react-router-dom";
 import {
   Search,
@@ -9,23 +12,48 @@ import {
 
 import logo from "../assets/logo.png";
 import home from "../assets/home.png";
-import products from "../assets/products.png";
+import collection from "../assets/products.png";
 import tracking from "../assets/tracking.png";
 import inbox from "../assets/inbox.png";
-// imports End
+// Imports End
 
-const Header = () => {
+const Header = ({ products }) => {
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+
+  const toggleSearchBar = () => {
+    setIsSearchVisible((prev) => !prev);
+  };
+
+  const handleClickOutside = (e) => {
+    if (
+      !e.target.closest(".search-container") &&
+      !e.target.closest(".search-icon")
+    ) {
+      setIsSearchVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[2vw]">
       <div className="flex items-center justify-between py-2.5 sm:py-3 font-medium">
-        <img
-          src={logo}
-          alt="Logo"
-          className="w-20 sm:w-24"
-          loading="lazy"
-          decoding="async"
-        />
+        <Link to={"/"}>
+          <img
+            src={logo}
+            alt="Logo"
+            className="w-20 sm:w-24"
+            loading="lazy"
+            decoding="async"
+          />
+        </Link>
 
+        {/* NavLinks */}
         <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
           <NavLink to="/" className="flex flex-col items-center gap-1">
             <p>HOME</p>
@@ -51,10 +79,19 @@ const Header = () => {
           </NavLink>
         </ul>
 
-        <div className="flex items-center gap-6">
-          <Search className="cursor-pointer" />
+        <div className="flex items-center gap-6 justify-center">
+          <Search
+            className="cursor-pointer search-icon"
+            onClick={toggleSearchBar}
+            aria-expanded={isSearchVisible}
+            aria-label="Toggle Search Bar"
+          />
 
-          <div className="relative group">
+          {isSearchVisible && (
+            <SearchBar products={products} onClose={toggleSearchBar} />
+          )}
+
+          <div className="relative group z-10">
             <UserRound className="cursor-pointer" />
             <div className="hidden group-hover:block absolute right-0 pt-4">
               <div className="flex flex-col gap-3 w-40 px-5 py-4 bg-white border border-gray-200 shadow-lg rounded-lg text-gray-600">
@@ -76,7 +113,7 @@ const Header = () => {
 
           <Link to="/cart" className="relative">
             <ShoppingBag />
-            <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full  text-[8px]">
+            <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
               10
             </p>
           </Link>
@@ -96,7 +133,7 @@ const Header = () => {
               to="/collection"
               className="flex items-center gap-1 text-gray-700 hover:text-black"
             >
-              <img src={products} alt="products" className="w-7" />
+              <img src={collection} alt="collection" className="w-7" />
               <p className="hidden mt-1.5 text-md">Collection</p>
             </NavLink>
 

@@ -32,7 +32,7 @@ const App = () => {
     <div className="px-4 sm:px-[5vw] md:px-[3vw] lg:px-[3vw]">
       <BrowserRouter>
         <ScrollToTop />
-        <Header />
+        <Header products={products} />
         <Routes>
           <Route
             path="/"
