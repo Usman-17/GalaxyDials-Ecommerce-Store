@@ -1,4 +1,6 @@
 import { useState } from "react";
+import CustomInput from "../../components/CustomInput";
+import CustomLabel from "../../components/CustomLabel";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
 import toast from "react-hot-toast";
@@ -60,44 +62,37 @@ const LoginPage = () => {
         {/* Form */}
         <form onSubmit={handleSubmit}>
           <div className="mb-5">
-            <label className="block text-base font-semibold text-gray-700">
-              Email
-            </label>
+            <CustomLabel label={"Email"} />
 
-            <input
+            <CustomInput
               type="email"
-              id="email"
-              required
+              name="email"
               placeholder="m@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-800"
             />
           </div>
 
           {/* Password */}
           <div className="mb-6">
             <div className="flex items-center justify-between">
-              <label className="block text-base font-semibold text-gray-700">
-                Password
-              </label>
+              <CustomLabel label={"Password"} />
 
               <Link
                 to={"/forgot-password"}
-                className="ml-auto inline-block text-sm font-semibold hover:text-blue-600 hover:underline transition duration-75 ease-in-out"
+                className="ml-auto inline-block text-sm font-semibold hover:text-blue-700 hover:underline transition duration-75 ease-in-out"
               >
                 Forgot your password?
               </Link>
             </div>
 
             <div className="relative">
-              <input
+              <CustomInput
                 type={isShow ? "text" : "password"}
-                required
-                id="password"
+                name="password"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-800 mb-3"
               />
 
               <div
