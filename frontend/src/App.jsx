@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
+import { useGetAllProducts } from "./hooks/useGetAllProducts";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -12,10 +15,9 @@ import PlaceOrderPage from "./pages/PlaceOrderPage";
 import OrdersPage from "./pages/OrdersPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
-import { useGetAllProducts } from "./hooks/useGetAllProducts";
-import LoginPage from "./pages/Auth/LoginPage";
-import { Toaster } from "react-hot-toast";
 
+import LoginPage from "./pages/Auth/LoginPage";
+import SignupPage from "./pages/Auth/SignupPage";
 // imports End
 
 const App = () => {
@@ -59,6 +61,7 @@ const App = () => {
 
           {/* Auth */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
         <Footer />
 
@@ -68,7 +71,7 @@ const App = () => {
               background: "#363636",
               color: "#fffbfb",
               fontFamily: "outfit",
-              fontSize: "12px",
+              fontSize: "14px",
             },
           }}
         />
