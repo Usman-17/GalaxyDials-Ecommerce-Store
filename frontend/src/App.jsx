@@ -13,6 +13,9 @@ import OrdersPage from "./pages/OrdersPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import { useGetAllProducts } from "./hooks/useGetAllProducts";
+import LoginPage from "./pages/Auth/LoginPage";
+import { Toaster } from "react-hot-toast";
+
 // imports End
 
 const App = () => {
@@ -53,8 +56,22 @@ const App = () => {
           <Route path="/my-orders" element={<OrdersPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+
+          {/* Auth */}
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
         <Footer />
+
+        <Toaster
+          toastOptions={{
+            style: {
+              background: "#363636",
+              color: "#fffbfb",
+              fontFamily: "outfit",
+              fontSize: "12px",
+            },
+          }}
+        />
       </BrowserRouter>
     </div>
   );
