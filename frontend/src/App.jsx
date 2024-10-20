@@ -27,6 +27,7 @@ import LoginPage from "./pages/Auth/LoginPage";
 import SignupPage from "./pages/Auth/SignupPage";
 import { useQuery } from "@tanstack/react-query";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/Auth/ResetPasswordPage";
 // imports End
 
 const App = () => {
@@ -111,6 +112,13 @@ const App = () => {
             path="/forgot-password"
             element={
               !authUser ? <ForgotPasswordPage /> : <Navigate to="/login" />
+            }
+          />
+
+          <Route
+            path="/reset-password/:token"
+            element={
+              !authUser ? <ResetPasswordPage /> : <Navigate to="/login" />
             }
           />
         </Routes>
