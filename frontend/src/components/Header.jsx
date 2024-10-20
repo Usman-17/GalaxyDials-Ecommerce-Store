@@ -2,19 +2,14 @@ import { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
 
 import { NavLink, Link } from "react-router-dom";
-import {
-  Search,
-  UserRound,
-  ShoppingCart,
-  LogOut,
-  ShoppingBag,
-} from "lucide-react";
+import { Search, ShoppingBag } from "lucide-react";
 
 import logo from "../assets/logo.png";
 import home from "../assets/home.png";
 import collection from "../assets/products.png";
 import tracking from "../assets/tracking.png";
 import inbox from "../assets/inbox.png";
+import ProfileDropdown from "./ProfileDropdown";
 // Imports End
 
 const Header = ({ products }) => {
@@ -79,7 +74,7 @@ const Header = ({ products }) => {
           </NavLink>
         </ul>
 
-        <div className="flex items-center gap-6 justify-center">
+        <div className="flex items-center gap-4 sm:gap-5 justify-center">
           <Search
             className="cursor-pointer search-icon"
             onClick={toggleSearchBar}
@@ -91,25 +86,7 @@ const Header = ({ products }) => {
             <SearchBar products={products} onClose={toggleSearchBar} />
           )}
 
-          <div className="relative group z-10">
-            <UserRound className="cursor-pointer" />
-            <div className="hidden group-hover:block absolute right-0 pt-4">
-              <div className="flex flex-col gap-3 w-40 px-5 py-4 bg-white border border-gray-200 shadow-lg rounded-lg text-gray-600">
-                <div className="flex items-center gap-2 cursor-pointer hover:text-black transition-colors duration-200">
-                  <UserRound size={16} />
-                  <p>My Profile</p>
-                </div>
-                <div className="flex items-center gap-2 cursor-pointer hover:text-black transition-colors duration-200">
-                  <ShoppingCart size={16} />
-                  <p>Orders</p>
-                </div>
-                <div className="flex items-center gap-2 cursor-pointer hover:text-black transition-colors duration-200">
-                  <LogOut size={16} />
-                  <p>Logout</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ProfileDropdown />
 
           <Link to="/cart" className="relative">
             <ShoppingBag />

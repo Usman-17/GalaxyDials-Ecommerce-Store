@@ -1,11 +1,18 @@
 import { useEffect } from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import { useGetAllProducts } from "./hooks/useGetAllProducts";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import PreLoader from "./components/PreLoader";
 
 import HomePage from "./pages/HomePage";
 import CollectionPage from "./pages/CollectionPage";
@@ -18,10 +25,40 @@ import ContactPage from "./pages/ContactPage";
 
 import LoginPage from "./pages/Auth/LoginPage";
 import SignupPage from "./pages/Auth/SignupPage";
+import { useQuery } from "@tanstack/react-query";
 // imports End
 
 const App = () => {
   const { products, isLoading } = useGetAllProducts();
+
+  // fetch Authentication User Data
+  const { data: authUser } = useQuery({
+    queryKey: ["authUser"],
+    queryFn: async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        const data = await res.json();
+        if (data.error) return null;
+
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
+
+        return data;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    retry: false,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[100vh] flex items-center justify-center">
+        <PreLoader />
+      </div>
+    );
+  }
 
   // Scroll to Top Component
   const ScrollToTop = () => {
@@ -60,8 +97,14 @@ const App = () => {
           <Route path="/contact" element={<ContactPage />} />
 
           {/* Auth */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/login"
+            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/signup"
+            element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+          />
         </Routes>
         <Footer />
 
