@@ -7,6 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 
 import { useGetAllProducts } from "./hooks/useGetAllProducts";
 
@@ -22,12 +23,11 @@ import PlaceOrderPage from "./pages/PlaceOrderPage";
 import OrdersPage from "./pages/OrdersPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
-
 import LoginPage from "./pages/Auth/LoginPage";
 import SignupPage from "./pages/Auth/SignupPage";
-import { useQuery } from "@tanstack/react-query";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/Auth/ResetPasswordPage";
+import ProfilePage from "./pages/ProfilePage";
 // imports End
 
 const App = () => {
@@ -77,6 +77,7 @@ const App = () => {
       <BrowserRouter>
         <ScrollToTop />
         <Header products={products} />
+
         <Routes>
           <Route
             path="/"
@@ -97,6 +98,7 @@ const App = () => {
           <Route path="/my-orders" element={<OrdersPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
 
           {/* Auth */}
           <Route
