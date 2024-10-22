@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -16,18 +16,20 @@ import Footer from "./components/Footer";
 import PreLoader from "./components/PreLoader";
 
 import HomePage from "./pages/HomePage";
-import CollectionPage from "./pages/CollectionPage";
-import ProductPage from "./pages/ProductPage";
-import CartPage from "./pages/CartPage";
-import PlaceOrderPage from "./pages/PlaceOrderPage";
-import OrdersPage from "./pages/OrdersPage";
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import LoginPage from "./pages/Auth/LoginPage";
-import SignupPage from "./pages/Auth/SignupPage";
-import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
-import ResetPasswordPage from "./pages/Auth/ResetPasswordPage";
-import ProfilePage from "./pages/ProfilePage";
+const CollectionPage = lazy(() => import("./pages/CollectionPage"));
+const ProductPage = lazy(() => import("./pages/ProductPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const PlaceOrderPage = lazy(() => import("./pages/PlaceOrderPage"));
+const OrdersPage = lazy(() => import("./pages/OrdersPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const LoginPage = lazy(() => import("./pages/Auth/LoginPage"));
+const SignupPage = lazy(() => import("./pages/Auth/SignupPage"));
+const ForgotPasswordPage = lazy(() =>
+  import("./pages/Auth/ForgotPasswordPage")
+);
+const ResetPasswordPage = lazy(() => import("./pages/Auth/ResetPasswordPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 // imports End
 
 const App = () => {
@@ -78,53 +80,62 @@ const App = () => {
         <ScrollToTop />
         <Header products={products} />
 
-        <Routes>
-          <Route
-            path="/"
-            element={<HomePage products={products} isLoading={isLoading} />}
-          />
-          <Route
-            path="/collection"
-            element={
-              <CollectionPage products={products} isLoading={isLoading} />
-            }
-          />
-          <Route
-            path="/product/:id"
-            element={<ProductPage products={products} isLoading={isLoading} />}
-          />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/place-order" element={<PlaceOrderPage />} />
-          <Route path="/my-orders" element={<OrdersPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+        <Suspense
+          fallback={
+            <div className="min-h-[100vh] flex items-center justify-center">
+              <PreLoader />
+            </div>
+          }
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={<HomePage products={products} isLoading={isLoading} />}
+            />
+            <Route
+              path="/collection"
+              element={
+                <CollectionPage products={products} isLoading={isLoading} />
+              }
+            />
+            <Route
+              path="/product/:id"
+              element={
+                <ProductPage products={products} isLoading={isLoading} />
+              }
+            />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/place-order" element={<PlaceOrderPage />} />
+            <Route path="/my-orders" element={<OrdersPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
 
-          {/* Auth */}
-          <Route
-            path="/login"
-            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/signup"
-            element={!authUser ? <SignupPage /> : <Navigate to="/" />}
-          />
+            {/* Auth */}
+            <Route
+              path="/login"
+              element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/signup"
+              element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+            />
 
-          <Route
-            path="/forgot-password"
-            element={
-              !authUser ? <ForgotPasswordPage /> : <Navigate to="/login" />
-            }
-          />
+            <Route
+              path="/forgot-password"
+              element={
+                !authUser ? <ForgotPasswordPage /> : <Navigate to="/login" />
+              }
+            />
 
-          <Route
-            path="/reset-password/:token"
-            element={
-              !authUser ? <ResetPasswordPage /> : <Navigate to="/login" />
-            }
-          />
-        </Routes>
-        <Footer />
+            <Route
+              path="/reset-password/:token"
+              element={
+                !authUser ? <ResetPasswordPage /> : <Navigate to="/login" />
+              }
+            />
+          </Routes>
+        </Suspense>
 
         <Toaster
           toastOptions={{
@@ -136,6 +147,7 @@ const App = () => {
             },
           }}
         />
+        <Footer />
       </BrowserRouter>
     </div>
   );
