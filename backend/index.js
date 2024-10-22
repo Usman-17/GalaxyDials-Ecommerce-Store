@@ -11,6 +11,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
 import productRoutes from "./routes/product.route.js";
+import enquiryRoutes from "./routes/enquiry.route.js";
 // imports End
 
 const app = express();
@@ -45,6 +46,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/enquiry", enquiryRoutes);
 
 // Running App
 const PORT = process.env.PORT || 9000;
