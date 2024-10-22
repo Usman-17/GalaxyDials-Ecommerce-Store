@@ -13,6 +13,7 @@ const UsersPage = lazy(() => import("./pages/UsersPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const ProductListPage = lazy(() => import("./pages/ProductListPage"));
 const AddProductPage = lazy(() => import("./pages/AddProductPage"));
+const EnquiryPage = lazy(() => import("./pages/EnquiryPage"));
 // imports End
 
 const App = () => {
@@ -86,6 +87,10 @@ const App = () => {
           <Route
             path="product/manage"
             element={authUser ? <ProductListPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/enquiries"
+            element={authUser ? <EnquiryPage /> : <Navigate to="/login" />}
           />
         </Routes>
       </Suspense>
