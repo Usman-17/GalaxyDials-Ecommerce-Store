@@ -1,8 +1,70 @@
-import SectionHeading from "../components/SectionHeading";
 import img from "../assets/contact.png";
+
+import { useState } from "react";
 import { Helmet } from "react-helmet";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+
+import CustomLabel from "../components/CustomLabel";
+import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/CustomButton";
+import SectionHeading from "../components/SectionHeading";
 
 const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    subject: "",
+    comment: "",
+  });
+
+  const {
+    mutate: addEnquiry,
+    isLoading,
+    isError,
+    error,
+    isPending,
+  } = useMutation({
+    mutationFn: async (formData) => {
+      const res = await fetch("/api/enquiry/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const result = await res.json();
+        throw new Error(result.error || "Failed to send message");
+      }
+
+      return res.json();
+    },
+
+    onSuccess: () => {
+      toast.success("Message sent successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        mobile: "",
+        subject: "",
+        comment: "",
+      });
+    },
+
+    onError: () => {
+      toast.error("Failed to send message!");
+    },
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addEnquiry(formData);
+  };
   return (
     <>
       <Helmet>
@@ -103,6 +165,102 @@ const ContactPage = () => {
           </ul>
         </div>
       </div>
+
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 md:space-y-3 sm:px-6 py-8 sm:py-16 max-w-6xl mx-auto"
+      >
+        <h2 className="text-gray-800 text-xl font-semibold">
+          Get in Touch with Us
+        </h2>
+        {/* Name */}
+        <div>
+          <CustomLabel label="Your Name" />
+          <CustomInput
+            type="text"
+            name="name"
+            id="name"
+            required
+            placeholder="Muhammad Usman"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        {/* Email and Mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <CustomLabel label="Your Email" />
+            <CustomInput
+              type="email"
+              name="email"
+              id="email"
+              placeholder="name@gmail.com"
+              required
+              value={formData.email}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div>
+            <CustomLabel label="Mobile" />
+            <CustomInput
+              type="tel"
+              name="mobile"
+              id="mobile"
+              placeholder="0000 000000"
+              required
+              aria-required="true"
+              minLength={11}
+              maxLength={11}
+              value={formData.mobile}
+              onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        {/* Subject */}
+        <div className="mb-5">
+          <CustomLabel label="Subject" />
+          <CustomInput
+            type="text"
+            name="subject"
+            id="subject"
+            required
+            placeholder="Enter the subject"
+            value={formData.subject}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        {/* Comment */}
+        <div>
+          <CustomLabel label="Your Message" />
+          <textarea
+            name="comment"
+            rows="4"
+            id="comment"
+            required
+            placeholder="Leave a comment..."
+            value={formData.comment}
+            onChange={handleInputChange}
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          />
+        </div>
+
+        {isError && <div className="text-red-500 text-sm">{error.message}</div>}
+
+        {/* Submit Button */}
+        <div className="flex justify-end">
+          <CustomButton
+            disabled={isLoading}
+            content={isPending ? "Submitting..." : "Submit"}
+            className="w-52"
+            type="submit"
+          />
+        </div>
+      </form>
     </>
   );
 };
