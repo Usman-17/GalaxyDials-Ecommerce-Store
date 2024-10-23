@@ -21,7 +21,6 @@ const ContactPage = () => {
 
   const {
     mutate: addEnquiry,
-    isLoading,
     isError,
     error,
     isPending,
@@ -254,7 +253,7 @@ const ContactPage = () => {
         {/* Submit Button */}
         <div className="flex justify-end">
           <CustomButton
-            disabled={isLoading}
+            disabled={isPending}
             content={isPending ? "Submitting..." : "Submit"}
             className="w-52"
             type="submit"
