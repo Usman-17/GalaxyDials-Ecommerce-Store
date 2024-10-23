@@ -9,6 +9,7 @@ import Header from "./components/common/Header";
 import SideBar from "./components/common/SideBar";
 
 import Dashboard from "./pages/Dashboard";
+import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
 const UsersPage = lazy(() => import("./pages/UsersPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const ProductListPage = lazy(() => import("./pages/ProductListPage"));
@@ -91,6 +92,12 @@ const App = () => {
           <Route
             path="/enquiries"
             element={authUser ? <EnquiryPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/enquiries/:id"
+            element={
+              authUser ? <EnquiryDetailsPage /> : <Navigate to="/login" />
+            }
           />
         </Routes>
       </Suspense>
