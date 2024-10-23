@@ -1,21 +1,27 @@
+import { useState } from "react";
 import moment from "moment";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { ScanSearch } from "lucide-react";
-import { Empty, Skeleton, Table } from "antd";
-import { useQuery } from "@tanstack/react-query";
+import { Empty, Modal, Skeleton, Table } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 
 import DeleteButton from "../components/DeleteButton";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // Imports End
 
 const EnquiryPage = () => {
-  // Fetch all Enquiry
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEnquiryId, setSelectedEnquiryId] = useState(null);
+  const queryClient = useQueryClient();
+
+  // Fetch all Enquiries
   const {
-    data: enquiry,
+    data: enquiries,
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["enquiry"],
+    queryKey: ["enquiries"],
     queryFn: async () => {
       const res = await fetch("/api/enquiry/all");
       if (!res.ok) throw new Error("Failed to fetch Enquires");
@@ -23,6 +29,43 @@ const EnquiryPage = () => {
     },
     retry: false,
   });
+
+  //   Delete Enquiry Mutation
+  const { mutate: deleteEnquiry } = useMutation({
+    mutationFn: async (id) => {
+      const res = await fetch(`/api/enquiry/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete enquiry");
+      return res.json();
+    },
+
+    onSuccess: () => {
+      toast.success("Enquiry deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["enquiries"] });
+      setIsModalOpen(false);
+    },
+
+    onError: () => {
+      toast.error("Failed to delete enquiry");
+    },
+  });
+
+  const showDeleteModal = (id) => {
+    setSelectedEnquiryId(id);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedEnquiryId) {
+      deleteEnquiry(selectedEnquiryId);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsModalOpen(false);
+  };
 
   const columns = [
     {
@@ -73,7 +116,7 @@ const EnquiryPage = () => {
     },
   ];
 
-  const data = enquiry?.map((enquiry, i) => ({
+  const data = enquiries?.map((enquiry, i) => ({
     key: i + 1,
     name: `${enquiry.name}`,
     email: enquiry.email,
@@ -86,7 +129,7 @@ const EnquiryPage = () => {
         <Link to={`/enquiries/${enquiry._id}`}>
           <ScanSearch size={28} color="blue" />
         </Link>
-        <DeleteButton />
+        <DeleteButton onClick={() => showDeleteModal(enquiry._id)} />
       </>
     ),
   }));
@@ -107,14 +150,14 @@ const EnquiryPage = () => {
                 <>
                   {isLoading ? (
                     <Skeleton active className="mt-5" />
-                  ) : enquiry?.length > 0 ? (
+                  ) : enquiries?.length > 0 ? (
                     <Table
                       columns={columns}
                       dataSource={data}
                       scroll={{ x: true }}
                     />
                   ) : (
-                    <Empty description="No data available" />
+                    <Empty description="No data available" className="py-5" />
                   )}
                 </>
               )}
@@ -122,6 +165,20 @@ const EnquiryPage = () => {
           </Col>
         </Row>
       </Container>
+
+      <Modal
+        title="Confirm Deletion"
+        visible={isModalOpen}
+        onOk={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        okText="Yes, Delete"
+        cancelText="Cancel"
+      >
+        <p>
+          Are you sure you want to delete this enquiry? This action cannot be
+          undone.
+        </p>
+      </Modal>
     </div>
   );
 };

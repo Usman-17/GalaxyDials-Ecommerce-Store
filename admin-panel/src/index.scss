@@ -17,7 +17,7 @@ a {
   color: #000;
 }
 
-// Button
+// Buttons
 .button {
   background-color: #111c43;
   color: #fff;
@@ -37,7 +37,19 @@ a {
     border-radius: 1.5625rem;
   }
 }
-// Button
+
+.delete-btn {
+  color: #cc0000;
+  padding: 5px 7px;
+  background: transparent;
+  border: none;
+  transition: background 0.3s, color 0.3s;
+  &:hover {
+    background: #cc0000;
+    color: white;
+  }
+}
+// Buttons
 
 .column-fix {
   overflow: hidden;
