@@ -8,6 +8,7 @@ import {
   LogOut,
   Box,
   ShoppingBag,
+  ImagePlus,
 } from "lucide-react";
 import useLogout from "../../hooks/useLogout";
 // imports End
@@ -33,6 +34,10 @@ const menuItems = [
   {
     key: "enquiries",
     icon: <MailSearch size={20} />,
+  },
+  {
+    key: "banners/add",
+    icon: <ImagePlus size={20} />,
   },
 ];
 

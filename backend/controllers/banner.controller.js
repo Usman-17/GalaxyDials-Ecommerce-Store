@@ -126,13 +126,14 @@ export const getAllBanners = async (req, res) => {
 // DESC     : Get a Banner
 export const getBanner = async (req, res) => {
   const { id } = req.params;
+
   try {
     const banner = await Banner.findById(id);
     if (!banner) return res.status(404).json({ error: "Banner not found" });
 
     res.status(200).json(banner);
   } catch (error) {
-    console.log("Error in getBanner", error.message);
-    res.status(500).json({ error: error.message });
+    console.error("Error in getBanner:", error.message);
+    res.status(500).json({ error: "Server error" });
   }
 };

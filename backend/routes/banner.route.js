@@ -8,9 +8,9 @@ import {
 } from "../controllers/banner.controller.js";
 
 // Imports End
+router.get("/all", getAllBanners);
+router.get("/:id", getBanner);
 router.post("/create", createBanner);
 router.put("/update/:id", updateBanner);
-router.get("/:id", getBanner);
-router.get("/all", getAllBanners);
 
 export default router;
