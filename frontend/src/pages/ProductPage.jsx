@@ -7,8 +7,9 @@ import ProductSlider from "../components/ProductSlider";
 import ProductCard from "../components/ProductCard";
 import SectionHeading from "../components/SectionHeading";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
+import toast from "react-hot-toast";
 
 const ProductPage = ({ products }) => {
   const [activeImage, setActiveImage] = useState(""); // State for active image
@@ -16,28 +17,56 @@ const ProductPage = ({ products }) => {
   const [activeTab, setActiveTab] = useState("description");
 
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
     queryFn: async () => {
       try {
         const response = await fetch(`/api/product/${id}`);
-
         if (!response.ok) {
           throw new Error(`Failed to fetch product: ${response.statusText}`);
         }
-
         const data = await response.json();
-
         return data;
       } catch (error) {
         throw new Error(`Failed to fetch product: ${error.message}`);
       }
     },
-
     retry: false,
   });
 
+
+  const addToCartMutation = useMutation({
+    mutationFn: async ({ productId, salePrice, price }) => {
+      const response = await fetch(`/api/cart/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId, salePrice, price }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add to cart");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["cart"]);
+      toast.success("Product added to cart!");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to add product to cart");
+    },
+  });
+
+  const handleAddToCart = () => {
+    addToCartMutation.mutate({
+      productId: product.id,
+      salePrice: product.salePrice,
+      price: product.price,
+    });
+  };
   const mainImageUrl = product?.productImages?.[0]?.url || "";
 
   const handleImageClick = (url) => {
@@ -138,7 +167,9 @@ const ProductPage = ({ products }) => {
               </div>
             </div>
 
-            <button className="uppercase bg-black text-white px-4 sm:px-5 py-2 text-sm sm:text-base rounded mt-7 sm:mt-8 hover:bg-gray-800 transition duration-300 flex items-center gap-2">
+            <button
+              onClick={handleAddToCart}
+              className="uppercase bg-black text-white px-4 sm:px-5 py-2 text-sm sm:text-base rounded mt-7 sm:mt-8 hover:bg-gray-800 transition duration-300 flex items-center gap-2">
               Add to cart <Redo size={18} />
             </button>
 
@@ -158,17 +189,15 @@ const ProductPage = ({ products }) => {
         <div className="flex border-b">
           <button
             onClick={() => setActiveTab("description")}
-            className={`px-5 py-3 text-sm ${
-              activeTab === "description" ? "border-b-2 border-black" : ""
-            }`}
+            className={`px-5 py-3 text-sm ${activeTab === "description" ? "border-b-2 border-black" : ""
+              }`}
           >
             Description
           </button>
           <button
             onClick={() => setActiveTab("reviews")}
-            className={`px-5 py-3 text-sm ${
-              activeTab === "reviews" ? "border-b-2 border-black" : ""
-            }`}
+            className={`px-5 py-3 text-sm ${activeTab === "reviews" ? "border-b-2 border-black" : ""
+              }`}
           >
             Reviews (122)
           </button>

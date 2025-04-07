@@ -13,6 +13,7 @@ import userRoutes from "./routes/user.route.js";
 import productRoutes from "./routes/product.route.js";
 import enquiryRoutes from "./routes/enquiry.route.js";
 import bannerRoutes from "./routes/banner.route.js";
+import cartRoutes from "./routes/cart.route.js";
 // imports End
 
 const app = express();
@@ -49,6 +50,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/enquiry", enquiryRoutes);
 app.use("/api/banner/", bannerRoutes);
+app.use("/api/cart/", cartRoutes);
 
 // Running App
 const PORT = process.env.PORT || 9000;
