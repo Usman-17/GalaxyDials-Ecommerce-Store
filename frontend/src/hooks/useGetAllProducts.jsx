@@ -3,10 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 const useGetAllProducts = () => {
   const {
     data: products,
-    isLoading,
-    error,
-    refetch,
-    isRefetching,
+    productIsLoading,
+    productError,
+    productRefetch,
+    productIsRefetching,
   } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
@@ -21,7 +21,13 @@ const useGetAllProducts = () => {
     retry: false,
   });
 
-  return { products, isLoading, error, refetch, isRefetching };
+  return {
+    products,
+    productIsLoading,
+    productError,
+    productRefetch,
+    productIsRefetching,
+  };
 };
 
 export { useGetAllProducts };

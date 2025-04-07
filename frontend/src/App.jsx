@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useContext, useEffect } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -9,13 +9,12 @@ import {
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 
-import { useGetAllProducts } from "./hooks/useGetAllProducts";
-
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PreLoader from "./components/PreLoader";
 
 import HomePage from "./pages/HomePage";
+import { AppContext } from "./context/AppContext";
 const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
@@ -33,7 +32,7 @@ const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 // imports End
 
 const App = () => {
-  const { products, isLoading } = useGetAllProducts();
+  const { products, productIsLoading } = useContext(AppContext);
 
   // fetch Authentication User Data
   const { data: authUser } = useQuery({
@@ -56,7 +55,7 @@ const App = () => {
     retry: false,
   });
 
-  if (isLoading) {
+  if (productIsLoading) {
     return (
       <div className="min-h-[100vh] flex items-center justify-center">
         <PreLoader />
@@ -88,22 +87,9 @@ const App = () => {
           }
         >
           <Routes>
-            <Route
-              path="/"
-              element={<HomePage products={products} isLoading={isLoading} />}
-            />
-            <Route
-              path="/collection"
-              element={
-                <CollectionPage products={products} isLoading={isLoading} />
-              }
-            />
-            <Route
-              path="/product/:id"
-              element={
-                <ProductPage products={products} isLoading={isLoading} />
-              }
-            />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/collection" element={<CollectionPage />} />
+            <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/place-order" element={<PlaceOrderPage />} />
             <Route path="/my-orders" element={<OrdersPage />} />

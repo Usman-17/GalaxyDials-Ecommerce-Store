@@ -59,7 +59,7 @@ const Header = ({ products }) => {
             to="/collection"
             className="flex flex-col items-center gap-1"
           >
-            <p>COLLECTION</p>
+            <p>ALL PRODUCTS</p>
             <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
           </NavLink>
 
@@ -111,7 +111,7 @@ const Header = ({ products }) => {
               className="flex items-center gap-1 text-gray-700 hover:text-black"
             >
               <img src={collection} alt="collection" className="w-7" />
-              <p className="hidden mt-1.5 text-md">Collection</p>
+              <p className="hidden mt-1.5 text-md">ALL PRODUCTS</p>
             </NavLink>
 
             <NavLink

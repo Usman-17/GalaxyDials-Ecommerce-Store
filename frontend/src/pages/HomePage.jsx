@@ -8,8 +8,11 @@ import OurPolicy from "../components/OurPolicy";
 import AdBanner from "../components/AdBanner";
 import ProductCard from "../components/ProductCard";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
 
-const HomePage = ({ products, isLoading }) => {
+const HomePage = () => {
+  const { products, productIsLoading } = useContext(AppContext);
   return (
     <>
       <Helmet>
@@ -26,14 +29,14 @@ const HomePage = ({ products, isLoading }) => {
       </Helmet>
 
       <Hero />
-      <SaleProduct products={products} isLoading={isLoading} />
-      <SpecialProduct products={products} isLoading={isLoading} />
-      <PopularProduct products={products} isLoading={isLoading} />
+      <SaleProduct />
+      <SpecialProduct />
+      <PopularProduct />
       <AdBanner />
 
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0 sm:gap-2 lg:gap-4">
-          {isLoading
+          {productIsLoading
             ? Array.from({ length: 5 }).map((_, index) => (
                 <ProductCardSkeleton key={index} />
               ))

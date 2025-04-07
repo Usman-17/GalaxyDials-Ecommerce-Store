@@ -5,9 +5,12 @@ import SpecialProductCard from "./SpecialProductCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { AppContext } from "../context/AppContext";
+import { useContext } from "react";
 // imports End
 
-const SpecialProduct = ({ products }) => {
+const SpecialProduct = () => {
+  const { products } = useContext(AppContext);
   const settings = {
     className: "center",
     infinite: true,

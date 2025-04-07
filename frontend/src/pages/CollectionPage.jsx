@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Helmet } from "react-helmet";
 import { ChevronDown } from "lucide-react";
 
@@ -7,10 +7,13 @@ import FilterSkeleton from "../components/Skeleton/FilterSkeleton";
 import SectionHeading from "../components/SectionHeading";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 
-import banner from "../assets/collection-banner.jpg";
+// import banner from "../assets/collection-banner.jpg";
+import { AppContext } from "../context/AppContext";
 // Imports End
 
-const CollectionPage = ({ products = [], isLoading }) => {
+const CollectionPage = () => {
+  const { products = [], productIsLoading } = useContext(AppContext);
+
   const [showFilter, setShowFilter] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -72,14 +75,14 @@ const CollectionPage = ({ products = [], isLoading }) => {
       </Helmet>
 
       {/* banner  */}
-      <img
+      {/* <img
         src={banner}
         alt="Promotional banner showcasing our latest collection of wristwatches"
         width="100%"
         loading="lazy"
         decoding="async"
         className="object-contain"
-      />
+      /> */}
 
       <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-3 sm:pt-10 border-t">
         {/* Left Side Filter  */}
@@ -104,7 +107,7 @@ const CollectionPage = ({ products = [], isLoading }) => {
             } sm:block`}
           >
             <p className="uppercase mb-3 text-sm font-medium">Categories</p>
-            {isLoading ? (
+            {productIsLoading ? (
               <FilterSkeleton />
             ) : (
               <div className="flex flex-col gap-3 text-sm text-gray-700">
@@ -137,7 +140,7 @@ const CollectionPage = ({ products = [], isLoading }) => {
           >
             <p className="uppercase mb-3 text*sm font-medium ">Brands </p>
 
-            {isLoading ? (
+            {productIsLoading ? (
               <FilterSkeleton />
             ) : (
               <div className="flex flex-col gap-3 text-sm text-gray-700">
@@ -165,8 +168,8 @@ const CollectionPage = ({ products = [], isLoading }) => {
         </div>
 
         {/* Right Side All Products */}
-        <div className="flex-1">
-          <div className="flex justify-between items-center text-xs sm:text-2xl mb-4 gap-6">
+        <div className="flex-1 mb-20">
+          <div className="flex justify-between items-center text-xs sm:text-2xl mb-2 gap-6">
             {/* Section Heading */}
             <SectionHeading
               text1={"ALL"}
@@ -188,7 +191,7 @@ const CollectionPage = ({ products = [], isLoading }) => {
 
           {/* All Products */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 gap-y-6">
-            {isLoading
+            {productIsLoading
               ? Array.from({ length: 10 }).map((_, index) => (
                   <ProductCardSkeleton key={index} />
                 ))

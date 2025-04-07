@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const ProductCard = ({ to, image, title, brand, price, salePrice }) => {
   return (
     <Link to={to}>
-      <div className="rounded-lg transition-shadow duration-300 ease-in-out max-w-sm mx-auto sm:max-w-none group py-2">
+      <div className="rounded-lg transition-shadow duration-300 ease-in-out max-w-sm mx-auto sm:max-w-none group py-2 hover:shadow-sm mb-2">
         <div className="relative overflow-hidden">
           <div className="relative w-full h-0 pb-[100%] rounded-t-md overflow-hidden">
             <img
@@ -27,7 +27,7 @@ const ProductCard = ({ to, image, title, brand, price, salePrice }) => {
         <div className="py-2 px-2">
           <p className="text-xs sm:text-sm text-gray-500">{brand}</p>
           <h3
-            className="font-semibold text-xs sm:text-xl md:text-base tracking-tight"
+            className="font-medium text-xs sm:text-sm md:text-base tracking-tight text-gray-800"
             style={{
               display: "-webkit-box",
               WebkitLineClamp: 2,
@@ -44,7 +44,7 @@ const ProductCard = ({ to, image, title, brand, price, salePrice }) => {
             <div className="flex gap-1 sm:gap-2 items-center">
               {salePrice ? (
                 <>
-                  <p className="text-lg sm:text-xl font-bold text-red-500">
+                  <p className="text-lg sm:text-md font-semibold text-red-500">
                     Rs. {salePrice}
                   </p>
                   <p className="text-xs sm:text-sm text-gray-500 line-through">

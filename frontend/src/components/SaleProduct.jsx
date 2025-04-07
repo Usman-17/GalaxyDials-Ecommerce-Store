@@ -2,8 +2,11 @@ import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import ProductSlider from "./ProductSlider";
 import SectionHeading from "./SectionHeading";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
-const SaleProduct = ({ products, isLoading }) => {
+const SaleProduct = () => {
+  const { products, productIsLoading } = useContext(AppContext);
   return (
     <div className="py-2">
       <div className="sm:mt-5">
@@ -14,7 +17,7 @@ const SaleProduct = ({ products, isLoading }) => {
 
       <div>
         <ProductSlider>
-          {isLoading
+          {productIsLoading
             ? Array.from({ length: 6 }).map((_, index) => (
                 <ProductCardSkeleton key={index} />
               ))

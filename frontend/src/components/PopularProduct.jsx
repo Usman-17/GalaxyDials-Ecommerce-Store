@@ -2,8 +2,11 @@ import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import ProductSlider from "./ProductSlider";
 import SectionHeading from "./SectionHeading";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
-const PopularProduct = ({ products, isLoading }) => {
+const PopularProduct = () => {
+  const { products, productIsLoading } = useContext(AppContext);
   return (
     <>
       {products && (
@@ -14,7 +17,7 @@ const PopularProduct = ({ products, isLoading }) => {
 
           <div>
             <ProductSlider>
-              {isLoading
+              {productIsLoading
                 ? Array.from({ length: 6 }).map((_, index) => (
                     <ProductCardSkeleton key={index} />
                   ))
