@@ -1,61 +1,110 @@
-import { Cart } from "../models/cart.model.js";
-import Product from "../models/product.model.js";
+import User from "../models/user.model.js";
 
-// PATH     : /api/user/cart
+// PATH     : /api/cart/add
 // METHOD   : POST
-// ACCESS   : PUBLIC
-// DESC     : add to cart
+// ACCESS   : Public
+// DESC     : Add to Cart
 export const addToCart = async (req, res) => {
-  const { productId, price, salePrice } = req.body;
+  try {
+    // Extract user ID from the authentication middleware
+    const userId = req.user._id;
+    const { itemId, color } = req.body;
 
-  // Check if the required fields are provided
-  if (!productId || !price) {
-    return res.status(400).json({
-      error: "Product ID and price are required.",
-    });
+    // Find the user
+    const userData = await User.findById(userId);
+    if (!userData) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    let cartData = userData.cartData || {}; // Ensure cartData is initialized
+
+    // Initialize the item in the cart if it doesn't exist
+    if (!cartData[itemId]) {
+      cartData[itemId] = {};
+    }
+
+    // Increment the color count if exists, otherwise set to 1
+    cartData[itemId][color] = (cartData[itemId][color] || 0) + 1;
+
+    // Update user cart in the database
+    await User.findByIdAndUpdate(userId, { cartData });
+
+    res.json({ success: true, data: cartData });
+  } catch (error) {
+    console.error("Error in addToCart controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
+};
+
+// PATH     : /api/cart/upate
+// METHOD   : PUT
+// ACCESS   : Public
+// DESC     : Update Cart
+export const updateCart = async (req, res) => {
+  const userId = req.user._id;
 
   try {
-    // Find the product in the database
-    const product = await Product.findById(productId);
+    const { itemId, color, quantity } = req.body;
 
-    if (!product) {
-      return res.status(404).json({
-        error: "Product not found.",
-      });
+    // Validate input
+    if (!itemId || !color || quantity === undefined) {
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Get the user's cart (assuming you have authentication middleware)
-    const userCart = await Cart.findOne({ user: req.user.id });
-
-    if (!userCart) {
-      return res.status(404).json({
-        error: "User cart not found.",
-      });
+    // Fetch user data
+    const userData = await User.findById(userId);
+    if (!userData) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    // Add the product to the cart
-    const existingItem = userCart.items.find((item) =>
-      item.product.equals(productId)
-    );
+    let cartData = userData.cartData || {};
 
-    if (existingItem) {
-      existingItem.quantity += 1; // Increase quantity if already in cart
+    // If item doesn't exist in the cart, return an error
+    if (!cartData[itemId] || !cartData[itemId][color]) {
+      return res.status(404).json({ error: "Item not found in cart" });
+    }
+
+    // If quantity is zero, remove the item from the cart
+    if (quantity === 0) {
+      delete cartData[itemId][color];
+
+      // If there are no more colors for this item, remove the item itself
+      if (Object.keys(cartData[itemId]).length === 0) {
+        delete cartData[itemId];
+      }
     } else {
-      userCart.items.push({
-        product: productId,
-        price,
-        salePrice: salePrice || price, // Default to price if salePrice is not available
-        quantity: 1,
-      });
+      // Update the quantity
+      cartData[itemId][color] = quantity;
     }
 
-    await userCart.save();
-    res.status(200).json({ message: "Product added to cart successfully!" });
+    // Update the cart in the database (only update the cartData field)
+    await User.findByIdAndUpdate(userId, { $set: { cartData } });
+
+    res.json({ success: true, data: cartData });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "Server error while adding product to cart.",
-    });
+    console.error("Error in updateCart controller:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// PATH     : /api/cart/upate
+// METHOD   : GET
+// ACCESS   : Public
+// DESC     : Get User Cart
+export const getUserCart = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const userData = await User.findById(userId);
+    if (!userData) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    let cartData = await userData.cartData;
+
+    res.json({ success: true, cartData });
+  } catch (error) {
+    console.error("Error in getUserCart controller:", error.message);
+    res.status(500).json({ error: error.message });
   }
 };

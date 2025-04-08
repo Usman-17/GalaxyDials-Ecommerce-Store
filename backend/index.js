@@ -49,8 +49,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/enquiry", enquiryRoutes);
-app.use("/api/banner/", bannerRoutes);
-app.use("/api/cart/", cartRoutes);
+app.use("/api/banner", bannerRoutes);
+app.use("/api/cart", cartRoutes);
 
 // Running App
 const PORT = process.env.PORT || 9000;

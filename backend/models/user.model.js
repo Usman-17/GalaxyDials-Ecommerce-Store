@@ -43,17 +43,10 @@ const userSchema = new mongoose.Schema(
       },
     },
 
-    cart: {
-      type: Array,
-      default: [],
+    cartData: {
+      type: Object,
+      default: {},
     },
-
-    wishlist: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
 
     resetPasswordToken: String,
     resetPasswordExpires: Date,
