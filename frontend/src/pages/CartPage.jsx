@@ -1,10 +1,35 @@
 import CartTotal from "../components/CartTotal";
 import SectionHeading from "../components/SectionHeading";
-import img from "../assets/watch.webp";
 import { Trash, Redo } from "lucide-react";
 import { Helmet } from "react-helmet";
+import { useUserCart } from "../hooks/useUserCart";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const CartPage = () => {
+  const { products } = useContext(AppContext);
+  const { cartData } = useUserCart();
+  const cartItems = [];
+
+  // Flatten cart data into usable format
+  for (const productId in cartData) {
+    const product = products?.find((p) => p._id === productId);
+    const colorObj = cartData[productId];
+
+    for (const color in colorObj) {
+      const quantity = colorObj[color];
+
+      cartItems.push({
+        productId,
+        color,
+        quantity,
+        ...product,
+      });
+    }
+  }
+
+  cartItems.reverse();
+
   return (
     <>
       <Helmet>
@@ -32,55 +57,50 @@ const CartPage = () => {
         <div className="mb-3">
           <SectionHeading text1={"Shopping"} text2={"Cart"} />
 
-          <div className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4">
-            <div className="flex items-start gap-2 sm:gap-6">
-              <img
-                src={img}
-                alt=""
-                className="w-16 sm:w-20 rounded-b-md"
-                loading="lazy"
-                decoding="async"
-              />
-
-              <div>
-                {/* title */}
-                <p
-                  className="text-xs sm:text-lg font-medium"
-                  style={{
-                    display: "-webkit-box",
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                    lineHeight: "1.3",
-                  }}
+          <div className="">
+            {cartItems.map((item, i) => {
+              return (
+                <div
+                  key={i}
+                  className="py-4 border-t border-b border-gray-200 text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
                 >
-                  POEDAGAR Luxury Men ograph P996 POEDAGAR Luxury
-                </p>
+                  <div className="flex items-start gap-6">
+                    <img
+                      src={item?.productImages?.[0]?.url}
+                      alt="Product"
+                      className="w-16 sm:w-20"
+                    />
 
-                <div className="flex items-center gap-5 sm:mt-2">
-                  {/* Price */}
-                  <p className="text-sm sm:text-lg">Rs. 4000</p>
+                    <div className="text-xs sm:text-lg font-medium">
+                      <p className="truncate w-52 sm:w-96">{item?.title}</p>
 
-                  {/* Color */}
-                  <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50 text-xs sm:text-sm rounded">
-                    Gold
-                  </p>
+                      <div className="flex items-center gap-5 mt-2">
+                        <p>Rs. {item?.price}</p>
+
+                        {/* Color */}
+                        <p className="px-2 sm:py-1 border bg-slate-50 text-sm">
+                          {item.color}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quantity */}
+                  <input
+                    className="border border-gray-300 rounded-md max-w-[80px] px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent transition-all duration-100 w-full sm:w-auto"
+                    type="number"
+                    min={1}
+                    value={item.quantity}
+                  />
+
+                  {/* Remove */}
+                  <Trash
+                    className="cursor-pointer mr-4 sm:mr-5 hover:text-red-600 transition-colors duration-100 ease-in-out"
+                    size={20}
+                  />
                 </div>
-              </div>
-            </div>
-
-            <input
-              type="number"
-              min={1}
-              max={5}
-              defaultValue={1}
-              className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
-            />
-
-            <Trash
-              className="cursor-pointer mr-4 sm:mr-5 hover:text-red-600 transition-colors duration-100 ease-in-out"
-              size={20}
-            />
+              );
+            })}
           </div>
 
           <div className="flex justify-end my-20 ">
