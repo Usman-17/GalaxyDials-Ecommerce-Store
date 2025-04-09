@@ -5,10 +5,14 @@ import { Helmet } from "react-helmet";
 import { useUserCart } from "../hooks/useUserCart";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const CartPage = () => {
+  const queryClient = useQueryClient();
   const { products } = useContext(AppContext);
   const { cartData } = useUserCart();
+
   const cartItems = [];
 
   // Flatten cart data into usable format
@@ -29,6 +33,30 @@ const CartPage = () => {
   }
 
   cartItems.reverse();
+
+  // Delete Cart item Mutation
+  const { mutate: deleteCartMutation } = useMutation({
+    mutationFn: async ({ itemId, color }) => {
+      const res = await fetch("/api/cart/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ itemId, color }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update cart");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userCart"]);
+      toast.success("Product removed from cart");
+    },
+    onError: () => {
+      toast.error("Something went wrong");
+    },
+  });
 
   return (
     <>
@@ -93,8 +121,14 @@ const CartPage = () => {
                     value={item.quantity}
                   />
 
-                  {/* Remove */}
+                  {/* Remove From Cart */}
                   <Trash
+                    onClick={() =>
+                      deleteCartMutation({
+                        itemId: item.productId,
+                        color: item.color,
+                      })
+                    }
                     className="cursor-pointer mr-4 sm:mr-5 hover:text-red-600 transition-colors duration-100 ease-in-out"
                     size={20}
                   />

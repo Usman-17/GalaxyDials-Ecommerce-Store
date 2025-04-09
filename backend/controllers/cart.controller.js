@@ -108,3 +108,45 @@ export const getUserCart = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/cart/delete
+// METHOD   : DELETE
+// ACCESS   : PUBlIC
+// DESC     : Delete a cart item
+export const deleteCartItem = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { itemId, color } = req.body;
+
+    if (!itemId || !color) {
+      return res.status(400).json({ error: "Missing itemId or color" });
+    }
+
+    const userData = await User.findById(userId);
+    if (!userData) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const cartData = userData.cartData || {};
+
+    if (!cartData[itemId] || !cartData[itemId][color]) {
+      return res.status(404).json({ error: "Item not found in cart" });
+    }
+
+    // Remove the specified color of the item
+    delete cartData[itemId][color];
+
+    // If no colors left for this item, remove the item entirely
+    if (Object.keys(cartData[itemId]).length === 0) {
+      delete cartData[itemId];
+    }
+
+    // Update the cart in DB
+    await User.findByIdAndUpdate(userId, { $set: { cartData } });
+
+    res.json({ success: true, message: "Item deleted successfully", cartData });
+  } catch (error) {
+    console.error("Error in deleteCartItem controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
