@@ -27,11 +27,6 @@ const productSchema = new mongoose.Schema(
       min: 0,
     },
 
-    salePrice: {
-      type: Number,
-      min: 0,
-    },
-
     category: {
       type: String,
       required: true,
@@ -42,26 +37,14 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    color: {
-      type: String,
+    colors: {
+      type: Array,
       required: true,
     },
 
     tags: {
       type: [String],
       required: true,
-    },
-
-    countInStock: {
-      type: Number,
-      min: 0,
-      default: 0,
-    },
-
-    sold: {
-      type: Number,
-      default: 0,
-      min: 0,
     },
 
     productImages: [

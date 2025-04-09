@@ -8,7 +8,7 @@ export const addToCart = async (req, res) => {
   try {
     // Extract user ID from the authentication middleware
     const userId = req.user._id;
-    const { itemId, color } = req.body;
+    const { itemId, color, quantity = 1 } = req.body;
 
     // Find the user
     const userData = await User.findById(userId);
@@ -24,7 +24,7 @@ export const addToCart = async (req, res) => {
     }
 
     // Increment the color count if exists, otherwise set to 1
-    cartData[itemId][color] = (cartData[itemId][color] || 0) + 1;
+    cartData[itemId][color] = (cartData[itemId][color] || 0) + quantity;
 
     // Update user cart in the database
     await User.findByIdAndUpdate(userId, { cartData });

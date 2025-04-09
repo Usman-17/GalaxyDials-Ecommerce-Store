@@ -7,7 +7,6 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { useQuery } from "@tanstack/react-query";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -32,28 +31,7 @@ const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 // imports End
 
 const App = () => {
-  const { products, productIsLoading } = useContext(AppContext);
-
-  // fetch Authentication User Data
-  const { data: authUser } = useQuery({
-    queryKey: ["authUser"],
-    queryFn: async () => {
-      try {
-        const res = await fetch("/api/auth/me");
-        const data = await res.json();
-        if (data.error) return null;
-
-        if (!res.ok) {
-          throw new Error(data.error || "Something went wrong");
-        }
-
-        return data;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
-    retry: false,
-  });
+  const { products, productIsLoading, authUser } = useContext(AppContext);
 
   if (productIsLoading) {
     return (

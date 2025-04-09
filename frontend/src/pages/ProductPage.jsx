@@ -7,17 +7,19 @@ import ProductSlider from "../components/ProductSlider";
 import ProductCard from "../components/ProductCard";
 import SectionHeading from "../components/SectionHeading";
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
-import toast from "react-hot-toast";
+import { useAddToCart } from "../hooks/useAddToCart";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ProductPage = ({ products }) => {
-  const [activeImage, setActiveImage] = useState(""); // State for active image
-
+  const [activeImage, setActiveImage] = useState("");
   const [activeTab, setActiveTab] = useState("description");
+  const [color, setColor] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   const { id } = useParams();
-  const queryClient = useQueryClient();
+  const { addToCart, cartIsPending } = useAddToCart();
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -36,41 +38,14 @@ const ProductPage = ({ products }) => {
     retry: false,
   });
 
-
-  const addToCartMutation = useMutation({
-    mutationFn: async ({ productId, salePrice, price }) => {
-      const response = await fetch(`/api/cart/add`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ productId, salePrice, price }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add to cart");
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["cart"]);
-      toast.success("Product added to cart!");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to add product to cart");
-    },
-  });
-
-  const handleAddToCart = () => {
-    addToCartMutation.mutate({
-      productId: product.id,
-      salePrice: product.salePrice,
-      price: product.price,
-    });
-  };
   const mainImageUrl = product?.productImages?.[0]?.url || "";
 
   const handleImageClick = (url) => {
     setActiveImage(url);
+  };
+
+  const handleAddToCart = (itemId, color, quantity) => {
+    addToCart({ itemId, color, quantity });
   };
 
   return (
@@ -110,13 +85,13 @@ const ProductPage = ({ products }) => {
 
           {/* ---Product Info---- */}
           <div className="flex-1">
-            <h4 className="text-gray-600 text-sm sm:text-base">
+            <h4 className="text-gray-600 text-sm sm:text-base uppercase">
               {product?.brand}
             </h4>
             <h1
-              className="font-semibold text-lg sm:text-2xl sm:mt-2 tracking-wide"
+              className="font-medium text-2xl sm:mt-1 tracking-wide"
               style={{
-                lineHeight: "1.2",
+                lineHeight: "1.1",
               }}
             >
               {product?.title}
@@ -145,32 +120,58 @@ const ProductPage = ({ products }) => {
             </div>
 
             {/* Category */}
-            <p className="text-sm sm:text-base text-gray-500 mt-4">
+            <p className="text-sm sm:text-base text-gray-500 mt-2">
               Category:{" "}
               <span className="font-medium text-gray-700">
                 {product?.category}
               </span>
             </p>
 
-            <div className="flex flex-col gap-4 my-4">
-              <p>Select Color</p>
+            <div className="my-4 flex items-center gap-4">
+              <label className="block mb-1">Quantity</label>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) =>
+                  setQuantity(Math.max(1, parseInt(e.target.value)))
+                }
+                min={1}
+                className="border w-20 px-2 py-1 rounded"
+              />
+            </div>
+
+            {/*-----Select Colors---- */}
+            <div className="flex gap-4 my-4 items-center">
+              <p>Select Colors:</p>
+
               <div className="flex gap-2">
-                <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
-                  Red
-                </button>
-                <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
-                  Gold
-                </button>
-                <button className="border py-1 px-4 bg-gray-100 text-sm sm:text-base rounded-sm">
-                  Black
-                </button>
+                {product?.colors?.map((item, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setColor(item)}
+                    className={`border py-1 px-3 bg-gray-100 cursor-pointer rounded-sm ${
+                      item === color ? "border-gray-800" : ""
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
               </div>
             </div>
 
+            {/* Add To Cart Button */}
             <button
-              onClick={handleAddToCart}
-              className="uppercase bg-black text-white px-4 sm:px-5 py-2 text-sm sm:text-base rounded mt-7 sm:mt-8 hover:bg-gray-800 transition duration-300 flex items-center gap-2">
-              Add to cart <Redo size={18} />
+              onClick={() => handleAddToCart(product._id, color, quantity)}
+              disabled={cartIsPending}
+              className="uppercase bg-gray-900 text-white px-4 sm:px-5 py-2.5 text-sm rounded mt-7 sm:mt-8 hover:bg-gray-950 transition duration-100 flex items-center gap-2"
+            >
+              {cartIsPending ? (
+                <LoadingSpinner content="Adding to cart" />
+              ) : (
+                <>
+                  Add to cart <Redo size={18} />
+                </>
+              )}
             </button>
 
             <hr className="mt-8 sm:w-4/5" />
@@ -189,15 +190,17 @@ const ProductPage = ({ products }) => {
         <div className="flex border-b">
           <button
             onClick={() => setActiveTab("description")}
-            className={`px-5 py-3 text-sm ${activeTab === "description" ? "border-b-2 border-black" : ""
-              }`}
+            className={`px-5 py-3 text-sm ${
+              activeTab === "description" ? "border-b-2 border-black" : ""
+            }`}
           >
             Description
           </button>
           <button
             onClick={() => setActiveTab("reviews")}
-            className={`px-5 py-3 text-sm ${activeTab === "reviews" ? "border-b-2 border-black" : ""
-              }`}
+            className={`px-5 py-3 text-sm ${
+              activeTab === "reviews" ? "border-b-2 border-black" : ""
+            }`}
           >
             Reviews (122)
           </button>

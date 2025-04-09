@@ -10,17 +10,9 @@ import slugify from "slugify";
 // DESC     : Create Product
 export const createProduct = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      price,
-      salePrice,
-      category,
-      brand,
-      color,
-      tags,
-      countInStock,
-    } = req.body;
+    const { title, description, price, category, brand, colors, tags } =
+      req.body;
+
     const { productImages } = req.files;
 
     // Check for required fields
@@ -81,12 +73,10 @@ export const createProduct = async (req, res) => {
       slug,
       description,
       price,
-      salePrice,
       category,
       brand,
-      color,
+      colors,
       tags,
-      countInStock,
       productImages: uploadedImages,
     });
 
