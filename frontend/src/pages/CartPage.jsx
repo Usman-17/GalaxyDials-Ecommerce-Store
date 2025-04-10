@@ -1,38 +1,44 @@
+import { useContext, useEffect, useMemo, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import CartTotal from "../components/CartTotal";
 import SectionHeading from "../components/SectionHeading";
-import { Trash, Redo } from "lucide-react";
-import { Helmet } from "react-helmet";
-import { useUserCart } from "../hooks/useUserCart";
-import { useContext } from "react";
-import { AppContext } from "../context/AppContext";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet";
+import { Trash, Redo } from "lucide-react";
+import { useUserCart } from "../hooks/useUserCart";
+import { AppContext } from "../context/AppContext";
+// imports End
 
 const CartPage = () => {
+  const [localQuantities, setLocalQuantities] = useState({});
+
   const queryClient = useQueryClient();
   const { products } = useContext(AppContext);
   const { cartData } = useUserCart();
 
-  const cartItems = [];
+  const cartItems = useMemo(() => {
+    const items = [];
 
-  // Flatten cart data into usable format
-  for (const productId in cartData) {
-    const product = products?.find((p) => p._id === productId);
-    const colorObj = cartData[productId];
+    for (const productId in cartData) {
+      const product = products?.find((p) => p._id === productId);
+      const colorObj = cartData[productId];
 
-    for (const color in colorObj) {
-      const quantity = colorObj[color];
+      for (const color in colorObj) {
+        const quantity = colorObj[color];
 
-      cartItems.push({
-        productId,
-        color,
-        quantity,
-        ...product,
-      });
+        items.push({
+          productId,
+          color,
+          quantity,
+          ...product,
+        });
+      }
     }
-  }
 
-  cartItems.reverse();
+    return items.reverse();
+  }, [cartData, products]);
 
   // Delete Cart item Mutation
   const { mutate: deleteCartMutation } = useMutation({
@@ -58,6 +64,39 @@ const CartPage = () => {
     },
   });
 
+  // Update Cart Mutation
+  const { mutate: updateCartMutation } = useMutation({
+    mutationFn: async ({ itemId, color, quantity }) => {
+      const res = await fetch("/api/cart/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ itemId, color, quantity }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update cart");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userCart"]);
+    },
+    onError: () => {
+      toast.error("Something went wrong");
+    },
+  });
+
+  // Setup local quantities
+  useEffect(() => {
+    const initial = {};
+    cartItems.forEach((item) => {
+      const key = `${item.productId}_${item.color}`;
+      initial[key] = item.quantity;
+    });
+    setLocalQuantities(initial);
+  }, [cartItems]);
+
   return (
     <>
       <Helmet>
@@ -81,22 +120,24 @@ const CartPage = () => {
         <link rel="canonical" href="https://galaxydials.com/cart" />
       </Helmet>
 
-      <div className="border-t pt-4 sm:pt-14">
+      <div className="border-t pt-4 sm:pt-14 mb-16">
         <div className="mb-3">
           <SectionHeading text1={"Shopping"} text2={"Cart"} />
 
           <div className="">
             {cartItems.map((item, i) => {
+              const key = `${item.productId}_${item.color}`;
               return (
                 <div
                   key={i}
                   className="py-4 border-t border-b border-gray-200 text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
                 >
                   <div className="flex items-start gap-6">
+                    <p>{i + 1}</p>
                     <img
                       src={item?.productImages?.[0]?.url}
                       alt="Product"
-                      className="w-16 sm:w-20"
+                      className="w-12"
                     />
 
                     <div className="text-xs sm:text-lg font-medium">
@@ -115,10 +156,27 @@ const CartPage = () => {
 
                   {/* Quantity */}
                   <input
-                    className="border border-gray-300 rounded-md max-w-[80px] px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent transition-all duration-100 w-full sm:w-auto"
+                    className="w-20 sm:w-24 text-center text-sm sm:text-base font-medium bg-white border border-gray-300 focus:border-gray-400 focus:ring-2 focus:ring-gray-100 rounded-lg shadow-sm px-2 py-2 transition-all duration-200 outline-none"
                     type="number"
                     min={1}
-                    value={item.quantity}
+                    value={localQuantities[key] || item.quantity}
+                    onChange={(e) => {
+                      const newQty = Number(e.target.value);
+                      setLocalQuantities((prev) => ({
+                        ...prev,
+                        [key]: newQty,
+                      }));
+                    }}
+                    onBlur={(e) => {
+                      const newQty = Number(e.target.value);
+                      if (newQty !== item.quantity) {
+                        updateCartMutation({
+                          itemId: item.productId,
+                          color: item.color,
+                          quantity: newQty,
+                        });
+                      }
+                    }}
                   />
 
                   {/* Remove From Cart */}
@@ -141,7 +199,7 @@ const CartPage = () => {
             <div className="w-full sm:w-[450px]">
               <CartTotal />
               <div className="w-full text-end">
-                <button className="bg-black text-white text-sm my-8 px-3 py-2.5 sm:px-6 sm:py-3 rounded flex items-center gap-1 justify-end float-end">
+                <button className="bg-black text-white text-sm my-8 px-3 py-2.5 sm:px-6 sm:py-3 rounded flex items-center gap-1 justify-end float-end ">
                   PROCEED TO CHECKOUT
                   <Redo size={18} />
                 </button>

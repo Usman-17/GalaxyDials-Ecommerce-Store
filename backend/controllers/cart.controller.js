@@ -51,36 +51,29 @@ export const updateCart = async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Fetch user data
-    const userData = await User.findById(userId);
-    if (!userData) {
+    // Update the cart in the database (only update the cartData field)
+    const cartDataUpdate = {
+      $set: { [`cartData.${itemId}.${color}`]: quantity },
+    };
+
+    // If quantity is zero, remove item
+    if (quantity === 0) {
+      cartDataUpdate.$unset = { [`cartData.${itemId}.${color}`]: 1 };
+      cartDataUpdate.$set = { [`cartData.${itemId}`]: null };
+      colors;
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      cartDataUpdate,
+      { new: true }
+    );
+
+    if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    let cartData = userData.cartData || {};
-
-    // If item doesn't exist in the cart, return an error
-    if (!cartData[itemId] || !cartData[itemId][color]) {
-      return res.status(404).json({ error: "Item not found in cart" });
-    }
-
-    // If quantity is zero, remove the item from the cart
-    if (quantity === 0) {
-      delete cartData[itemId][color];
-
-      // If there are no more colors for this item, remove the item itself
-      if (Object.keys(cartData[itemId]).length === 0) {
-        delete cartData[itemId];
-      }
-    } else {
-      // Update the quantity
-      cartData[itemId][color] = quantity;
-    }
-
-    // Update the cart in the database (only update the cartData field)
-    await User.findByIdAndUpdate(userId, { $set: { cartData } });
-
-    res.json({ success: true, data: cartData });
+    res.json({ success: true, data: updatedUser.cartData });
   } catch (error) {
     console.error("Error in updateCart controller:", error);
     res.status(500).json({ error: "Internal Server Error" });
