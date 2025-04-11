@@ -100,3 +100,25 @@ export const placeOrder = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/order/get
+// METHOD   : GET
+// ACCESS   : PUBLIC
+// DESC     : get user orders
+export const userOrders = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Find all orders associated with the user
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ error: "No orders found for this user" });
+    }
+
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error("Error in userOrders Controller:", error.message);
+    return res.status(500).json({ error: error.message });
+  }
+};

@@ -55,7 +55,7 @@ const ProfileDropdown = () => {
                 onClick={closeDropdown}
               >
                 <ShoppingCart size={16} />
-                Orders
+                My Orders
               </Link>
 
               {/* Admin */}
