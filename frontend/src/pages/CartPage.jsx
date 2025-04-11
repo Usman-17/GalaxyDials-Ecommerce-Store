@@ -6,6 +6,7 @@ import SectionHeading from "../components/SectionHeading";
 
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 import { Trash, Redo } from "lucide-react";
 import { useUserCart } from "../hooks/useUserCart";
 import { AppContext } from "../context/AppContext";
@@ -96,6 +97,8 @@ const CartPage = () => {
     });
     setLocalQuantities(initial);
   }, [cartItems]);
+
+  console.log(cartItems);
 
   return (
     <>
@@ -199,10 +202,13 @@ const CartPage = () => {
             <div className="w-full sm:w-[450px]">
               <CartTotal />
               <div className="w-full text-end">
-                <button className="bg-black text-white text-sm my-8 px-3 py-2.5 sm:px-6 sm:py-3 rounded flex items-center gap-1 justify-end float-end ">
+                <Link
+                  to={"/place-order"}
+                  className="bg-black text-white text-sm my-8 px-3 py-2.5 sm:px-6 sm:py-3 rounded flex items-center gap-1 justify-end float-end "
+                >
                   PROCEED TO CHECKOUT
                   <Redo size={18} />
-                </button>
+                </Link>
               </div>
             </div>
           </div>
