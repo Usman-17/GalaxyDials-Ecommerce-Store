@@ -7,7 +7,7 @@ import SectionHeading from "../components/SectionHeading";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import { Trash, Redo } from "lucide-react";
+import { Trash, Redo, ShoppingCart } from "lucide-react";
 import { useUserCart } from "../hooks/useUserCart";
 import { AppContext } from "../context/AppContext";
 // imports End
@@ -127,91 +127,100 @@ const CartPage = () => {
         <div className="mb-3">
           <SectionHeading text1={"Shopping"} text2={"Cart"} />
 
-          <div className="">
-            {cartItems.map((item, i) => {
-              const key = `${item.productId}_${item.color}`;
-              return (
-                <div
-                  key={i}
-                  className="py-4 border-t border-b border-gray-200 text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
-                >
-                  <div className="flex items-start gap-6">
-                    <p>{i + 1}</p>
-                    <img
-                      src={item?.productImages?.[0]?.url}
-                      alt="Product"
-                      className="w-12"
-                    />
-
-                    <div className="text-xs sm:text-lg font-medium">
-                      <p className="truncate w-52 sm:w-96">{item?.title}</p>
-
-                      <div className="flex items-center gap-5 mt-2">
-                        <p>Rs. {item?.price}</p>
-
-                        {/* Color */}
-                        <p className="px-2 sm:py-1 border bg-slate-50 text-sm">
-                          {item.color}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Quantity */}
-                  <input
-                    className="w-20 sm:w-24 text-center text-sm sm:text-base font-medium bg-white border border-gray-300 focus:border-gray-400 focus:ring-2 focus:ring-gray-100 rounded-lg shadow-sm px-2 py-2 transition-all duration-200 outline-none"
-                    type="number"
-                    min={1}
-                    value={localQuantities[key] || item.quantity}
-                    onChange={(e) => {
-                      const newQty = Number(e.target.value);
-                      setLocalQuantities((prev) => ({
-                        ...prev,
-                        [key]: newQty,
-                      }));
-                    }}
-                    onBlur={(e) => {
-                      const newQty = Number(e.target.value);
-                      if (newQty !== item.quantity) {
-                        updateCartMutation({
-                          itemId: item.productId,
-                          color: item.color,
-                          quantity: newQty,
-                        });
-                      }
-                    }}
-                  />
-
-                  {/* Remove From Cart */}
-                  <Trash
-                    onClick={() =>
-                      deleteCartMutation({
-                        itemId: item.productId,
-                        color: item.color,
-                      })
-                    }
-                    className="cursor-pointer mr-4 sm:mr-5 hover:text-red-600 transition-colors duration-100 ease-in-out"
-                    size={20}
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex justify-end my-20 ">
-            <div className="w-full sm:w-[450px]">
-              <CartTotal />
-              <div className="w-full text-end">
+          <div>
+            {cartItems.length === 0 ? (
+              <div className="text-center py-20 text-gray-500">
+                <ShoppingCart size={64} className="mx-auto mb-4" />
+                <p className="text-xl font-semibold">Your cart is empty</p>
                 <Link
-                  to={"/place-order"}
-                  className="bg-black text-white text-sm my-8 px-3 py-2.5 sm:px-6 sm:py-3 rounded flex items-center gap-1 justify-end float-end "
+                  to="/collection"
+                  className="mt-6 inline-block px-6 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
                 >
-                  PROCEED TO CHECKOUT
-                  <Redo size={18} />
+                  Continue Shopping
                 </Link>
               </div>
-            </div>
+            ) : (
+              cartItems.map((item, i) => {
+                const key = `${item.productId}_${item.color}`;
+                return (
+                  <div
+                    key={i}
+                    className="py-4 border-t border-b border-gray-200 text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4"
+                  >
+                    <div className="flex items-start gap-6">
+                      <p>{i + 1}</p>
+                      <img
+                        src={item?.productImages?.[0]?.url}
+                        alt="Product"
+                        className="w-12"
+                      />
+                      <div className="text-xs sm:text-lg font-medium">
+                        <p className="truncate w-52 sm:w-96">{item?.title}</p>
+                        <div className="flex items-center gap-5 mt-2">
+                          <p>Rs. {item?.price}</p>
+                          <p className="px-2 sm:py-1 border bg-slate-50 text-sm">
+                            {item.color}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <input
+                      className="w-20 sm:w-24 text-center text-sm sm:text-base font-medium bg-white border border-gray-300 focus:border-gray-400 focus:ring-2 focus:ring-gray-100 rounded-lg shadow-sm px-2 py-2 transition-all duration-200 outline-none"
+                      type="number"
+                      min={1}
+                      value={localQuantities[key] || item.quantity}
+                      onChange={(e) => {
+                        const newQty = Number(e.target.value);
+                        setLocalQuantities((prev) => ({
+                          ...prev,
+                          [key]: newQty,
+                        }));
+                      }}
+                      onBlur={(e) => {
+                        const newQty = Number(e.target.value);
+                        if (newQty !== item.quantity) {
+                          updateCartMutation({
+                            itemId: item.productId,
+                            color: item.color,
+                            quantity: newQty,
+                          });
+                        }
+                      }}
+                    />
+
+                    <Trash
+                      onClick={() =>
+                        deleteCartMutation({
+                          itemId: item.productId,
+                          color: item.color,
+                        })
+                      }
+                      className="cursor-pointer mr-4 sm:mr-5 hover:text-red-600 transition-colors duration-100 ease-in-out"
+                      size={20}
+                    />
+                  </div>
+                );
+              })
+            )}
           </div>
+
+          {cartItems.length > 0 && (
+            <div className="flex justify-end my-20">
+              <div className="w-full sm:w-[450px]">
+                <CartTotal />
+                <div className="w-full text-end">
+                  <Link
+                    to={"/place-order"}
+                    className="bg-black text-white text-sm my-8 px-3 py-2.5 sm:px-6 sm:py-3 rounded flex items-center gap-1 justify-end float-end"
+                  >
+                    PROCEED TO CHECKOUT
+                    <Redo size={18} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
