@@ -17,6 +17,7 @@ const LoginPage = lazy(() => import("./pages/LoginPage"));
 const ProductListPage = lazy(() => import("./pages/ProductListPage"));
 const AddProductPage = lazy(() => import("./pages/AddProductPage"));
 const EnquiryPage = lazy(() => import("./pages/EnquiryPage"));
+const OrdersPage = lazy(() => import("./pages/OrdersPage"));
 // imports End
 
 const App = () => {
@@ -106,6 +107,11 @@ const App = () => {
             element={
               authUser ? <BannerDetailsPage /> : <Navigate to="/login" />
             }
+          />
+
+          <Route
+            path="/orders"
+            element={authUser ? <OrdersPage /> : <Navigate to="/login" />}
           />
         </Routes>
       </Suspense>

@@ -122,3 +122,17 @@ export const userOrders = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/order/all
+// METHOD   : GET
+// ACCESS   : Private
+// DESC     : get All orders
+export const allOrders = async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error("Error in allOrders Controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
