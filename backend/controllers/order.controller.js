@@ -136,3 +136,35 @@ export const allOrders = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// PATH     : /api/order/update
+// METHOD   : POST
+// ACCESS   : Public
+// DESC     : update user order status
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Set timestamps if the status is Cancelled or Delivered
+    if (status === "Cancelled" && !order.cancelledAt) {
+      order.cancelledAt = new Date();
+    }
+
+    if (status === "Delivered" && !order.deliveredAt) {
+      order.deliveredAt = new Date();
+    }
+
+    order.status = status;
+    await order.save();
+
+    res.status(200).json({ message: "Order status updated" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

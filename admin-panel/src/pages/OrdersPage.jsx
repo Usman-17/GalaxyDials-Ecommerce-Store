@@ -1,12 +1,15 @@
 import parcel_icon from "../assets/parcel_icon.svg";
 
+import toast from "react-hot-toast";
 import { Printer } from "lucide-react";
 import { Empty, Skeleton } from "antd";
-import { useQuery } from "@tanstack/react-query";
 import { Col, Container, Row } from "react-bootstrap";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // Imports End
 
 const OrdersPage = () => {
+  const queryClient = useQueryClient();
+
   const {
     data: orders,
     isLoading,
@@ -20,6 +23,50 @@ const OrdersPage = () => {
       return result.orders;
     },
     retry: false,
+  });
+
+  // Update Order Status Mutation
+  const { mutate: updateStatus } = useMutation({
+    mutationFn: async ({ orderId, status }) => {
+      const res = await fetch(`/api/order/status/${orderId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update order status");
+      return res.json();
+    },
+
+    // Optimistic Update
+    onMutate: async ({ orderId, status }) => {
+      await queryClient.cancelQueries(["allOrders"]);
+
+      const previousOrders = queryClient.getQueryData(["allOrders"]);
+
+      queryClient.setQueryData(["allOrders"], (oldOrders) =>
+        oldOrders?.map((order) =>
+          order._id === orderId ? { ...order, status } : order
+        )
+      );
+
+      return { previousOrders };
+    },
+
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(["allOrders"], context.previousOrders);
+      toast.error("Failed to update order status");
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries(["allOrders"]);
+    },
+
+    onSuccess: () => {
+      toast.success("Order status updated");
+    },
   });
 
   return (
@@ -111,7 +158,16 @@ const OrdersPage = () => {
                               sm={2}
                               className="d-flex align-items-center gap-3"
                             >
-                              <select className="form-select">
+                              <select
+                                value={order.status}
+                                onChange={(e) =>
+                                  updateStatus({
+                                    orderId: order._id,
+                                    status: e.target.value,
+                                  })
+                                }
+                                className="form-select"
+                              >
                                 <option value="Order Placed">
                                   Order Placed
                                 </option>

@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
+import cron from "node-cron";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
@@ -44,6 +45,27 @@ app.use(
     credentials: true,
   })
 );
+
+cron.schedule("0 0 1 * *", async () => {
+  try {
+    const dateThreshold = new Date();
+    dateThreshold.setDate(dateThreshold.getDate() - 30);
+
+    // Delete Cancelled orders
+    const cancelledResult = await Order.deleteMany({
+      status: "Cancelled",
+      cancelledAt: { $lte: dateThreshold },
+    });
+
+    // Delete Delivered orders
+    const deliveredResult = await Order.deleteMany({
+      status: "Delivered",
+      deliveredAt: { $lte: dateThreshold },
+    });
+  } catch (error) {
+    console.error("Error in cron job deleting orders:", error);
+  }
+});
 
 // Routes Setup
 app.use("/api/auth", authRoutes);
