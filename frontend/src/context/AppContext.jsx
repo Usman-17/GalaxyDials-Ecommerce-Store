@@ -14,12 +14,15 @@ export const AppContextProvider = ({ children }) => {
   const { data: authUser } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
-      const res = await fetch("/api/auth/me");
+      const res = await fetch("/api/auth/user");
       const data = await res.json();
       if (data.error || !res.ok) return null;
       return data;
     },
     retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    staleTime: 0,
   });
 
   const cartTotalAmount = useMemo(() => {

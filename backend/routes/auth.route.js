@@ -2,26 +2,29 @@ import express from "express";
 const router = express.Router();
 
 import {
-  adminLogout,
+  adminLogin,
   forgotPassword,
-  getMe,
-  loginAdmin,
-  loginUser,
+  getUser,
+  logout,
   resetPassword,
   signup,
   updateProfile,
-  userLogout,
+  userLogin,
 } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middlewares/authMiddleware.js";
 
-router.get("/me", protectRoute, getMe);
+// Auth routes
 router.post("/signup", signup);
-router.post("/login", loginUser);
-router.post("/login/admin", loginAdmin);
-router.post("/logout", userLogout);
-router.post("/logout/admin", adminLogout);
-router.put("/profile/update", protectRoute, updateProfile);
+router.post("/login", userLogin);
+router.post("/logout", logout);
 router.post("/forgot-password", forgotPassword);
 router.put("/reset-password/:token", resetPassword);
+
+// Protected user routes
+router.get("/user", protectRoute, getUser);
+router.put("/profile/update", protectRoute, updateProfile);
+
+// Admin protected route
+router.post("/login/admin", adminLogin);
 
 export default router;

@@ -24,30 +24,25 @@ const App = () => {
   const { data: authUser, isLoading } = useQuery({
     queryKey: ["authUser"],
     queryFn: async () => {
-      try {
-        const res = await fetch("/api/auth/me");
-        const data = await res.json();
-        if (data.error) return null;
-
-        if (!res.ok) {
-          throw new Error(data.error || "Something went wrong");
-        }
-
-        return data;
-      } catch (error) {
-        throw new Error(error);
-      }
+      const res = await fetch("/api/auth/user");
+      const data = await res.json();
+      if (data.error || !res.ok) return null;
+      return data;
     },
     retry: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
   });
 
-  if (isLoading) {
+  if (isLoading && !authUser) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center">
         <Spin size="large" />
       </div>
     );
   }
+
   return (
     <BrowserRouter>
       {authUser && (

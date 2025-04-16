@@ -3,10 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { v2 as cloudinary } from "cloudinary";
 
-import {
-  generateUserTokenAndSetCookie,
-  generateAdminTokenAndSetCookie,
-} from "../utils/generateToken.js";
+import { generateToken } from "../utils/generateToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 
 // PATH     : /api/auth/signup
@@ -63,7 +60,7 @@ export const signup = async (req, res) => {
     await newUser.save();
 
     // Generate token and set cookie
-    generateUserTokenAndSetCookie(newUser._id, res);
+    generateToken(newUser._id, res);
 
     res.status(201).json({
       _id: newUser._id,
@@ -81,7 +78,7 @@ export const signup = async (req, res) => {
 // METHOD   : POST
 // ACCESS   : PUBLIC
 // DESC     : Login a User
-export const loginUser = async (req, res) => {
+export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -105,7 +102,7 @@ export const loginUser = async (req, res) => {
     }
 
     // Generate token and set cookie
-    generateUserTokenAndSetCookie(user, res);
+    generateToken(user, res);
 
     // Send user info in response
     res.status(200).json({
@@ -124,7 +121,7 @@ export const loginUser = async (req, res) => {
 // METHOD   : POST
 // ACCESS   : PUBLIC
 // DESC     : Login a Admin
-export const loginAdmin = async (req, res) => {
+export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -149,7 +146,7 @@ export const loginAdmin = async (req, res) => {
     }
 
     // Generate token and set cookie for the admin
-    generateAdminTokenAndSetCookie(admin, res);
+    generateToken(admin, res);
 
     // Send user info in response
     res.status(200).json({
@@ -168,26 +165,12 @@ export const loginAdmin = async (req, res) => {
 // METHOD   : POST
 // ACCESS   : PUBLIC
 // DESC     : Logout a User
-export const userLogout = async (req, res) => {
+export const logout = async (req, res) => {
   try {
-    res.cookie("user_jwt", "", { maxAge: 0 });
+    res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "User Logout successful" });
   } catch (error) {
     console.log("Error in user logout controller", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-// PATH     : /api/auth/logout/admin
-// METHOD   : POST
-// ACCESS   : PUBLIC
-// DESC     : Logout a admin
-export const adminLogout = async (req, res) => {
-  try {
-    res.cookie("admin_jwt", "", { maxAge: 0 });
-    res.status(200).json({ message: "Admin Logout successful" });
-  } catch (error) {
-    console.log("Error in admin logout controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -196,19 +179,17 @@ export const adminLogout = async (req, res) => {
 // METHOD   : POST
 // ACCESS   : PRIVATE
 // DESC     : Check User authenticated
-export const getMe = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!user) return res.status(404).json({ error: "User not found" });
+
     res.status(200).json(user);
   } catch (error) {
-    console.log("Error in getMe controller:", error.message);
+    console.log("Error in getUser controller:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 // PATH     : /api/user/update/profile"
 // METHOD   : POST
 // ACCESS   : PUBLIC

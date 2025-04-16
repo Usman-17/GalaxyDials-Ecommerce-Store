@@ -1,33 +1,37 @@
 import toast from "react-hot-toast";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useLogout = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate: logoutMutation } = useMutation({
     mutationFn: async () => {
-      try {
-        const res = await fetch("/api/auth/logout/admin", {
-          method: "POST",
-        });
+      const res = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to logout account");
-      } catch (error) {
-        throw new Error(error);
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Logout failed:", data);
+        throw new Error(data.error || "Failed to logout");
       }
+
+      return data;
     },
 
     onSuccess: () => {
-      // navigate("/login");
-      toast.success("Logout successfully!");
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      toast.success("Logout successful!");
+      queryClient.invalidateQueries(["authUser"]);
+      navigate("/login");
     },
 
-    onError: () => {
-      toast.error("Logout Failed");
+    onError: (error) => {
+      console.error("Logout error:", error);
+      toast.error(error.message || "Logout failed");
     },
   });
 

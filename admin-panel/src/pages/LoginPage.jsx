@@ -1,9 +1,11 @@
 import { useState } from "react";
+
+import { Spin } from "antd";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
-import { Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Spin } from "antd";
+import { Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
 // imports End
 
 const LoginPage = () => {
@@ -12,6 +14,7 @@ const LoginPage = () => {
   const [isShow, setIsShow] = useState(false);
 
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const {
     mutate: loginMutation,
@@ -20,24 +23,23 @@ const LoginPage = () => {
     error,
   } = useMutation({
     mutationFn: async ({ email, password }) => {
-      try {
-        const res = await fetch("/api/auth/login/admin", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
+      const res = await fetch("/api/auth/login/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (!res.ok)
-          throw new Error(data.error || "Login failed. Please try again.");
-      } catch (error) {
-        throw new Error(error);
+      if (!res.ok) {
+        throw new Error(data.error || "Login failed. Please try again.");
       }
+      return data;
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      queryClient.invalidateQueries(["authUser"]);
+      navigate("/");
       toast.success("Successfully logged in");
     },
 
@@ -48,17 +50,10 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      toast.error("Please fill in both email and password");
-      return;
-    }
     loginMutation({ email, password });
   };
 
-  const togglePassword = () => {
-    setIsShow(!isShow);
-  };
-
+  const togglePassword = () => setIsShow(!isShow);
   return (
     <div className="auth-wrapper d-flex align-items-center justify-content-center">
       <Container>
@@ -113,7 +108,7 @@ const LoginPage = () => {
 
                 {/* Button */}
                 <div
-                  className="btn d-flex gap-2 gap-lg-3 text-center 
+                  className="btn d-flex gap-2 gap-lg-3 text-center
               align-items-center justify-content-center my-1 mt-4"
                 >
                   {/* login */}
