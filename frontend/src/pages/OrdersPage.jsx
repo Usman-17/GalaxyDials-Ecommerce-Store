@@ -1,23 +1,63 @@
-import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { ShoppingBag, Redo } from "lucide-react";
+
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 import SectionHeading from "../components/SectionHeading";
 import OrderSkeleton from "../components/Skeleton/OrderSkeleton";
 
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+
 const OrdersPage = () => {
-  const { data: orders, isLoading } = useQuery({
-    queryKey: ["userOrders"],
+  const queryClient = useQueryClient();
+  const { authUser } = useContext(AppContext);
+  const [cancellingOrderId, setCancellingOrderId] = useState(null);
+
+  // Get User Order Query
+  const { data: orders = [], isLoading } = useQuery({
+    queryKey: ["userOrders", authUser?._id],
     queryFn: async () => {
       const res = await fetch("/api/order/userorders");
-      if (!res.ok) {
-        throw new Error("Failed to fetch user orders");
-      }
+      if (!res.ok) throw new Error("Failed to fetch user orders");
       const result = await res.json();
       return result.orders;
     },
+    enabled: !!authUser?._id,
     retry: false,
   });
 
+  // Cancel Order Mutation
+  const { mutate: cancelOrder } = useMutation({
+    mutationFn: async (orderId) => {
+      setCancellingOrderId(orderId);
+      const res = await fetch(`/api/order/status/${orderId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "Cancelled" }),
+      });
+
+      if (!res.ok) throw new Error("Failed to cancel order");
+      return res.json();
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userOrders", authUser?._id]);
+      toast.success("Order cancelled successfully");
+    },
+
+    onError: () => {
+      toast.error("Unable to cancel order");
+    },
+
+    onSettled: () => {
+      setCancellingOrderId(null);
+    },
+  });
+
   return (
-    <div className="border-t border-gray-300 pt-4 sm:pt-12">
+    <div className="border-t border-gray-300 pt-4 sm:pt-12 min-h-screen">
       <div className="text-2xl font-semibold mb-6">
         <SectionHeading text1="My" text2="Orders" />
       </div>
@@ -42,13 +82,12 @@ const OrdersPage = () => {
                     <img
                       src={item.productImages?.[0]?.url}
                       alt={item.title}
-                      className="w-12 sm:w-12 h-12 rounded-md object-cover"
+                      className="w-12 h-12 rounded-md object-cover"
                     />
                     <div>
-                      <p className="sm:text-base font-medium flex-wrap w-80 sm:w-96">
+                      <p className="sm:text-base font-medium w-80 sm:w-96">
                         {item.title}
                       </p>
-
                       <div className="flex gap-3 mt-1 text-base">
                         <p>Rs. {item.price.toLocaleString()}</p>
                         <p>Qty: {item.quantity}</p>
@@ -65,14 +104,12 @@ const OrdersPage = () => {
                       {new Date(order.date).toDateString()}
                     </span>
                   </p>
-
                   <p>
                     Payment:{" "}
                     <span className="text-gray-800 font-medium">
                       {order.paymentMethod}
                     </span>
                   </p>
-
                   <p>
                     Total Amount:{" "}
                     <span className="text-gray-800 font-medium">
@@ -94,7 +131,7 @@ const OrdersPage = () => {
                         ? "bg-orange-500"
                         : order.status === "Packing"
                         ? "bg-purple-500"
-                        : order.status === "Cancel"
+                        : order.status === "Cancelled"
                         ? "bg-red-500"
                         : "bg-yellow-500"
                     }`}
@@ -105,15 +142,33 @@ const OrdersPage = () => {
                 </div>
 
                 {order.status === "Order Placed" && (
-                  <button className="border px-4 py-2 text-sm font-medium rounded-sm border-gray-500 cursor-pointer hover:bg-gray-200 transition">
-                    Cancel My Order
+                  <button
+                    onClick={() => cancelOrder(order._id)}
+                    disabled={cancellingOrderId === order._id}
+                    className="border px-4 py-2 text-sm font-medium rounded-sm border-gray-500 cursor-pointer hover:bg-gray-200 transition disabled:opacity-50"
+                  >
+                    {cancellingOrderId === order._id
+                      ? "Cancelling..."
+                      : "Cancel My Order"}
                   </button>
                 )}
               </div>
             </div>
           ))
         ) : (
-          <p className="text-gray-600 text-lg">You have no orders yet.</p>
+          authUser && (
+            <div className="text-center py-28 text-gray-500">
+              <ShoppingBag size={64} className="mx-auto mb-3" />
+              <p className="text-lg font-medium">You have no orders yet.</p>
+              <Link
+                to="/collection"
+                className="mt-4 inline-flex items-center gap-2 px-6 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+              >
+                <p>Continue Shopping</p>
+                <Redo size={20} />
+              </Link>
+            </div>
+          )
         )}
       </div>
     </div>
