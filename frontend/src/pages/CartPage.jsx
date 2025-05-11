@@ -1,13 +1,13 @@
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { Trash, Redo, ShoppingCart } from "lucide-react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import CartTotal from "../components/CartTotal";
 import SectionHeading from "../components/SectionHeading";
 
-import toast from "react-hot-toast";
-import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import { Trash, Redo, ShoppingCart } from "lucide-react";
 import { useUserCart } from "../hooks/useUserCart";
 import { AppContext } from "../context/AppContext";
 // imports End
@@ -16,32 +16,30 @@ const CartPage = () => {
   const [localQuantities, setLocalQuantities] = useState({});
 
   const queryClient = useQueryClient();
-  const { products } = useContext(AppContext);
+
   const { cartData } = useUserCart();
+  const { products } = useContext(AppContext);
 
   const cartItems = useMemo(() => {
     const items = [];
 
     for (const productId in cartData) {
       const product = products?.find((p) => p._id === productId);
-      const colorObj = cartData[productId];
+      const data = cartData[productId];
 
-      for (const color in colorObj) {
-        const quantity = colorObj[color];
-
-        items.push({
-          productId,
-          color,
-          quantity,
-          ...product,
-        });
+      if (typeof data === "number") {
+        items.push({ productId, color: "", quantity: data, ...product });
+      } else {
+        for (const color in data) {
+          items.push({ productId, color, quantity: data[color], ...product });
+        }
       }
     }
 
     return items.reverse();
   }, [cartData, products]);
 
-  // Delete Cart item Mutation
+  // Delete Cart Item Mutation
   const { mutate: deleteCartMutation } = useMutation({
     mutationFn: async ({ itemId, color }) => {
       const res = await fetch("/api/cart/delete", {
@@ -97,8 +95,6 @@ const CartPage = () => {
     });
     setLocalQuantities(initial);
   }, [cartItems]);
-
-  console.log(cartItems);
 
   return (
     <>
@@ -158,9 +154,12 @@ const CartPage = () => {
                         <p className="truncate w-52 sm:w-96">{item?.title}</p>
                         <div className="flex items-center gap-5 mt-2">
                           <p>Rs. {item?.price}</p>
-                          <p className="px-2 sm:py-1 border bg-slate-50 text-sm">
-                            {item.color}
-                          </p>
+
+                          {item.color && (
+                            <p className="px-2 sm:py-1 border bg-slate-50 text-sm">
+                              {item.color}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>

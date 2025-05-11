@@ -18,7 +18,7 @@ const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const PlaceOrderPage = lazy(() => import("./pages/PlaceOrderPage"));
-const OrdersPage = lazy(() => import("./pages/OrdersPage"));
+const MyOrdersPage = lazy(() => import("./pages/MyOrdersPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const LoginPage = lazy(() => import("./pages/Auth/LoginPage"));
@@ -70,7 +70,7 @@ const App = () => {
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/place-order" element={<PlaceOrderPage />} />
-            <Route path="/order" element={<OrdersPage />} />
+            <Route path="/order" element={<MyOrdersPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/profile" element={<ProfilePage />} />

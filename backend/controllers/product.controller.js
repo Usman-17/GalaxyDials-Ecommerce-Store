@@ -102,9 +102,8 @@ export const updateProduct = async (req, res) => {
       salePrice,
       category,
       brand,
-      color,
+      colors,
       tags,
-      countInStock,
     } = req.body;
 
     const product = await Product.findById(id);
@@ -129,7 +128,7 @@ export const updateProduct = async (req, res) => {
       product.salePrice = salePrice === "" ? null : salePrice;
     if (category) product.category = category;
     if (brand) product.brand = brand;
-    if (color) product.color = color;
+    if (colors) product.colors = colors;
     if (tags) product.tags = tags;
 
     // Handle product image upload

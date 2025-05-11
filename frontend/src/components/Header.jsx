@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import SearchBar from "./SearchBar";
 
 import { NavLink, Link } from "react-router-dom";
@@ -6,13 +6,16 @@ import { Search, ShoppingBag } from "lucide-react";
 
 import logo from "../assets/logo.png";
 import home from "../assets/home.png";
-import collection from "../assets/products.png";
-import tracking from "../assets/tracking.png";
 import inbox from "../assets/inbox.png";
+import tracking from "../assets/tracking.png";
+import collection from "../assets/products.png";
+
 import ProfileDropdown from "./ProfileDropdown";
+import { AppContext } from "../context/AppContext";
 // Imports End
 
 const Header = ({ products }) => {
+  const { authUser } = useContext(AppContext);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const toggleSearchBar = () => {
@@ -88,10 +91,25 @@ const Header = ({ products }) => {
 
           <ProfileDropdown />
 
+          {/* Cart  */}
           <Link to="/cart" className="relative">
             <ShoppingBag />
             <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
-              10
+              {authUser?.cartData
+                ? Object.values(authUser.cartData).reduce((acc, product) => {
+                    if (typeof product === "number") {
+                      return acc + product;
+                    }
+
+                    return (
+                      acc +
+                      Object.values(product).reduce(
+                        (total, qty) => total + qty,
+                        0
+                      )
+                    );
+                  }, 0)
+                : 0}
             </p>
           </Link>
         </div>

@@ -1,5 +1,5 @@
-import Order from "../models/order.model.js";
 import User from "../models/user.model.js";
+import Order from "../models/order.model.js";
 import Product from "../models/product.model.js";
 
 // PATH     : /api/order/place
@@ -11,7 +11,6 @@ export const placeOrder = async (req, res) => {
     const userId = req.user._id;
     const { cart, totalAmount, deliveryInfo } = req.body;
 
-    // Validate if cart is valid
     if (!cart || Object.keys(cart).length === 0) {
       return res
         .status(400)
@@ -33,20 +32,27 @@ export const placeOrder = async (req, res) => {
       return res.status(400).json({ error: "Incomplete address information." });
     }
 
-    // Transform cart object to items array
     const items = [];
 
     for (const productId in cart) {
       const colorQuantities = cart[productId];
 
-      for (const color in colorQuantities) {
-        const quantity = colorQuantities[color];
-
+      if (typeof colorQuantities === "number") {
         items.push({
           productId,
-          quantity,
-          color,
+          quantity: colorQuantities,
+          color: null,
         });
+      } else if (typeof colorQuantities === "object") {
+        for (const color in colorQuantities) {
+          const quantity = colorQuantities[color];
+
+          items.push({
+            productId,
+            quantity,
+            color: color || null,
+          });
+        }
       }
     }
 
@@ -139,7 +145,7 @@ export const allOrders = async (req, res) => {
 
 // PATH     : /api/order/update
 // METHOD   : POST
-// ACCESS   : Public
+// ACCESS   : Public & Private
 // DESC     : update user order status
 export const updateOrderStatus = async (req, res) => {
   try {

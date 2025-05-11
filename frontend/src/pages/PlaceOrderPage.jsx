@@ -1,12 +1,15 @@
-import { useContext, useState } from "react";
-import CartTotal from "../components/CartTotal";
-import SectionHeading from "../components/SectionHeading";
-import { AppContext } from "../context/AppContext";
-import { useUserCart } from "../hooks/useUserCart";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Redo } from "lucide-react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import CartTotal from "../components/CartTotal";
+import SectionHeading from "../components/SectionHeading";
 import LoadingSpinner from "../components/LoadingSpinner";
+
+import { AppContext } from "../context/AppContext";
+import { useUserCart } from "../hooks/useUserCart";
+// Imports End
 
 const PlaceOrderPage = () => {
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -66,6 +69,8 @@ const PlaceOrderPage = () => {
       setIsPlacingOrder(false);
     }
   };
+
+  console.log(cartData);
 
   return (
     <form

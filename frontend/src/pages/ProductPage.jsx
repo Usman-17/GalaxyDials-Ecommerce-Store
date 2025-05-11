@@ -1,16 +1,18 @@
-import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { Redo } from "lucide-react";
+import { useParams } from "react-router-dom";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 
 import ProductSlider from "../components/ProductSlider";
 import ProductCard from "../components/ProductCard";
 import SectionHeading from "../components/SectionHeading";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
-import { useAddToCart } from "../hooks/useAddToCart";
 import LoadingSpinner from "../components/LoadingSpinner";
+import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
+
+import { useQuery } from "@tanstack/react-query";
+import { useAddToCart } from "../hooks/useAddToCart";
+// Imports End
 
 const ProductPage = ({ products }) => {
   const [activeImage, setActiveImage] = useState("");
@@ -98,25 +100,10 @@ const ProductPage = ({ products }) => {
             </h1>
 
             {/* Price */}
-            <div className="flex items-center">
-              {(product?.price || product?.salePrice) && (
-                <div className="flex items-center gap-1 sm:gap-2 mt-2">
-                  {product?.salePrice ? (
-                    <>
-                      <p className="text-lg sm:text-2xl font-bold text-red-600">
-                        Rs. {product?.salePrice}
-                      </p>
-                      <p className="text-xs sm:text-lg text-gray-500 line-through">
-                        Rs. {product?.price}
-                      </p>
-                    </>
-                  ) : (
-                    <p className="text-lg sm:text-xl font-bold text-gray-900">
-                      Rs. {product?.price}
-                    </p>
-                  )}
-                </div>
-              )}
+            <div>
+              <p className="text-lg sm:text-2xl font-bold text-red-600 mt-2">
+                Rs. {product?.price}
+              </p>
             </div>
 
             {/* Category */}
@@ -141,23 +128,25 @@ const ProductPage = ({ products }) => {
             </div>
 
             {/*-----Select Colors---- */}
-            <div className="flex gap-4 my-4 items-center">
-              <p>Select Colors:</p>
+            {product.colors.length > 0 && (
+              <div className="flex gap-4 my-4 items-center">
+                <p>Select Colors:</p>
 
-              <div className="flex gap-2">
-                {product?.colors?.map((item, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setColor(item)}
-                    className={`border py-1 px-3 bg-gray-100 cursor-pointer rounded-sm ${
-                      item === color ? "border-gray-800" : ""
-                    }`}
-                  >
-                    {item}
-                  </button>
-                ))}
+                <div className="flex gap-2">
+                  {product?.colors?.map((item, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setColor(item)}
+                      className={`border py-1 px-3 bg-gray-100 cursor-pointer rounded-sm ${
+                        item === color ? "border-gray-800" : ""
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Add To Cart Button */}
             <button

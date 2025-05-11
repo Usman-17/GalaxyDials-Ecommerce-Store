@@ -1,7 +1,8 @@
 import { createContext, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useGetAllProducts } from "../hooks/useGetAllProducts";
+
 import { useUserCart } from "../hooks/useUserCart";
+import { useGetAllProducts } from "../hooks/useGetAllProducts";
 // imports End
 
 export const AppContext = createContext();
@@ -25,6 +26,7 @@ export const AppContextProvider = ({ children }) => {
     staleTime: 0,
   });
 
+  // Cart Total
   const cartTotalAmount = useMemo(() => {
     let total = 0;
 
@@ -39,14 +41,26 @@ export const AppContextProvider = ({ children }) => {
       }
 
       const colors = cartData[productId];
-      for (const color in colors) {
-        const quantity = colors[color];
+      if (typeof colors === "number") {
+        const quantity = colors;
         const price = Number(product.price);
 
         if (!isNaN(price)) {
           total += quantity * price;
         } else {
           console.warn("Invalid price for product:", product);
+        }
+      } else {
+        // Handle products with colors
+        for (const color in colors) {
+          const quantity = colors[color];
+          const price = Number(product.price);
+
+          if (!isNaN(price)) {
+            total += quantity * price;
+          } else {
+            console.warn("Invalid price for product:", product);
+          }
         }
       }
     }

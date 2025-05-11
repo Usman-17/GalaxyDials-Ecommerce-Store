@@ -10,7 +10,7 @@ import OrderSkeleton from "../components/Skeleton/OrderSkeleton";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-const OrdersPage = () => {
+const MyOrdersPage = () => {
   const queryClient = useQueryClient();
   const { authUser } = useContext(AppContext);
   const [cancellingOrderId, setCancellingOrderId] = useState(null);
@@ -56,6 +56,8 @@ const OrdersPage = () => {
     },
   });
 
+  console.log(orders);
+
   return (
     <div className="border-t border-gray-300 pt-4 sm:pt-12 min-h-screen">
       <div className="text-2xl font-semibold mb-6">
@@ -90,8 +92,15 @@ const OrdersPage = () => {
                       </p>
                       <div className="flex gap-3 mt-1 text-base">
                         <p>Rs. {item.price.toLocaleString()}</p>
-                        <p>Qty: {item.quantity}</p>
-                        <p>Color: {item.color}</p>
+                        <p>
+                          <strong>Qty:</strong> {item.quantity}
+                        </p>
+
+                        {item.color && (
+                          <p>
+                            <strong>Color:</strong> {item.color}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -175,4 +184,4 @@ const OrdersPage = () => {
   );
 };
 
-export default OrdersPage;
+export default MyOrdersPage;

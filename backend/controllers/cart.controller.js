@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Product from "../models/product.model.js";
 
 // PATH     : /api/cart/add
 // METHOD   : POST
@@ -10,35 +11,52 @@ export const addToCart = async (req, res) => {
     const userId = req.user._id;
     const { itemId, color, quantity = 1 } = req.body;
 
+    if (!itemId) {
+      return res.status(400).json({ error: "itemId is required" });
+    }
+
     // Find the user
     const userData = await User.findById(userId);
-    if (!userData) {
-      return res.status(404).json({ error: "User not found" });
+    if (!userData) return res.status(404).json({ error: "User not found" });
+
+    const product = await Product.findById(itemId);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
     }
 
-    let cartData = userData.cartData || {}; // Ensure cartData is initialized
+    let cartData = userData.cartData || {};
 
     // Initialize the item in the cart if it doesn't exist
-    if (!cartData[itemId]) {
-      cartData[itemId] = {};
+    if (product.colors && product.colors.length > 0) {
+      // ✅ Product has color options
+      if (!color) {
+        return res
+          .status(400)
+          .json({ error: "Color is required for this product" });
+      }
+
+      if (!cartData[itemId]) {
+        cartData[itemId] = {};
+      }
+
+      cartData[itemId][color] = (cartData[itemId][color] || 0) + quantity;
+    } else {
+      // ✅ Product does not have color options
+      cartData[itemId] = (cartData[itemId] || 0) + quantity;
     }
 
-    // Increment the color count if exists, otherwise set to 1
-    cartData[itemId][color] = (cartData[itemId][color] || 0) + quantity;
-
-    // Update user cart in the database
     await User.findByIdAndUpdate(userId, { cartData });
 
     res.json({ success: true, data: cartData });
   } catch (error) {
-    console.error("Error in addToCart controller:", error.message);
+    console.error("Error in addToCart:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-// PATH     : /api/cart/upate
+// PATH     : /api/cart/update
 // METHOD   : PUT
-// ACCESS   : Public
+// ACCESS   : Private
 // DESC     : Update Cart
 export const updateCart = async (req, res) => {
   const userId = req.user._id;
@@ -46,28 +64,58 @@ export const updateCart = async (req, res) => {
   try {
     const { itemId, color, quantity } = req.body;
 
-    // Validate input
-    if (!itemId || !color || quantity === undefined) {
-      return res.status(400).json({ error: "Missing required fields" });
+    if (!itemId || quantity === undefined) {
+      return res.status(400).json({ error: "Missing itemId or quantity" });
     }
 
-    // Update the cart in the database (only update the cartData field)
-    const cartDataUpdate = {
-      $set: { [`cartData.${itemId}.${color}`]: quantity },
-    };
-
-    // If quantity is zero, remove item
-    if (quantity === 0) {
-      cartDataUpdate.$unset = { [`cartData.${itemId}.${color}`]: 1 };
-      cartDataUpdate.$set = { [`cartData.${itemId}`]: null };
-      colors;
+    const product = await Product.findById(itemId);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
     }
 
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: userId },
-      cartDataUpdate,
-      { new: true }
-    );
+    let updateQuery = {};
+
+    if (product.colors && product.colors.length > 0) {
+      // ✅ Product has colors
+      if (!color) {
+        return res
+          .status(400)
+          .json({ error: "Color is required for this product" });
+      }
+
+      if (quantity === 0) {
+        updateQuery = {
+          $unset: {
+            [`cartData.${itemId}.${color}`]: 1,
+          },
+        };
+      } else {
+        updateQuery = {
+          $set: {
+            [`cartData.${itemId}.${color}`]: quantity,
+          },
+        };
+      }
+    } else {
+      // ✅ Product has no colors
+      if (quantity === 0) {
+        updateQuery = {
+          $unset: {
+            [`cartData.${itemId}`]: 1,
+          },
+        };
+      } else {
+        updateQuery = {
+          $set: {
+            [`cartData.${itemId}`]: quantity,
+          },
+        };
+      }
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateQuery, {
+      new: true,
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
@@ -75,7 +123,7 @@ export const updateCart = async (req, res) => {
 
     res.json({ success: true, data: updatedUser.cartData });
   } catch (error) {
-    console.error("Error in updateCart controller:", error);
+    console.error("Error in updateCart:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -104,15 +152,20 @@ export const getUserCart = async (req, res) => {
 
 // PATH     : /api/cart/delete
 // METHOD   : DELETE
-// ACCESS   : PUBlIC
+// ACCESS   : Private
 // DESC     : Delete a cart item
 export const deleteCartItem = async (req, res) => {
   try {
     const userId = req.user._id;
     const { itemId, color } = req.body;
 
-    if (!itemId || !color) {
-      return res.status(400).json({ error: "Missing itemId or color" });
+    if (!itemId) {
+      return res.status(400).json({ error: "Missing itemId" });
+    }
+
+    const product = await Product.findById(itemId);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
     }
 
     const userData = await User.findById(userId);
@@ -122,24 +175,38 @@ export const deleteCartItem = async (req, res) => {
 
     const cartData = userData.cartData || {};
 
-    if (!cartData[itemId] || !cartData[itemId][color]) {
-      return res.status(404).json({ error: "Item not found in cart" });
-    }
+    if (product.colors && product.colors.length > 0) {
+      // ✅ Product has colors
+      if (!color) {
+        return res
+          .status(400)
+          .json({ error: "Color is required for this product" });
+      }
 
-    // Remove the specified color of the item
-    delete cartData[itemId][color];
+      if (!cartData[itemId] || !cartData[itemId][color]) {
+        return res.status(404).json({ error: "Item/color not found in cart" });
+      }
 
-    // If no colors left for this item, remove the item entirely
-    if (Object.keys(cartData[itemId]).length === 0) {
+      delete cartData[itemId][color];
+
+      // If no colors left for the item, delete the item
+      if (Object.keys(cartData[itemId]).length === 0) {
+        delete cartData[itemId];
+      }
+    } else {
+      // ✅ Product has no colors
+      if (!cartData[itemId]) {
+        return res.status(404).json({ error: "Item not found in cart" });
+      }
+
       delete cartData[itemId];
     }
 
-    // Update the cart in DB
     await User.findByIdAndUpdate(userId, { $set: { cartData } });
 
     res.json({ success: true, message: "Item deleted successfully", cartData });
   } catch (error) {
-    console.error("Error in deleteCartItem controller:", error.message);
+    console.error("Error in deleteCartItem:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

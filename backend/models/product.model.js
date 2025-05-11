@@ -38,8 +38,7 @@ const productSchema = new mongoose.Schema(
     },
 
     colors: {
-      type: Array,
-      required: true,
+      type: [String],
     },
 
     tags: {

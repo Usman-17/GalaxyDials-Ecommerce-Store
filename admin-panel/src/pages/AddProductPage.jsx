@@ -15,10 +15,9 @@ const AddProductPage = () => {
     description: "",
     category: "",
     brand: "",
-    color: "",
+    colors: [],
     tags: [],
     price: "",
-    salePrice: "",
     productImages: [],
   });
 
@@ -38,10 +37,9 @@ const AddProductPage = () => {
           description: data.description || "",
           category: data.category || "",
           brand: data.brand || "",
-          color: data.color || "",
+          colors: data.colors || "",
           tags: data.tags || "",
           price: data.price || "",
-          salePrice: data.salePrice || "",
           productImages: data.productImages || [],
         });
 
@@ -97,8 +95,8 @@ const AddProductPage = () => {
   const handleDescriptionChange = (newContent) =>
     setFormData({ ...formData, description: newContent });
 
-  const handleSelectChange = (value) =>
-    setFormData((prevState) => ({ ...prevState, tags: value }));
+  const handleSelectChange = (value, key) =>
+    setFormData({ ...formData, [key]: value });
 
   // Multiple Image Upload Handler
   const handleProductImgChange = (e) => {
@@ -129,6 +127,7 @@ const AddProductPage = () => {
   // Submit
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const formDataToSend = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (Array.isArray(value)) {
@@ -195,65 +194,52 @@ const AddProductPage = () => {
               {/* Category & Brand */}
               <Row className="g-3">
                 <Col xs={12} sm={6}>
-                  <div className="mb-0 mb-lg-3">
+                  <div className="mb-3">
                     <label className="label">Category</label>
-                    <Input
-                      placeholder="Enter Product Category"
-                      size="large"
-                      id="category"
-                      name="category"
-                      type="text"
-                      required
+                    <Select
+                      style={{ width: "100%" }}
                       value={formData.category}
-                      onChange={handleInputChange}
-                    />
+                      onChange={(value) =>
+                        handleSelectChange(value, "category")
+                      }
+                      placeholder="Select or Enter Category"
+                    >
+                      <Select.Option value="Watches">Watches</Select.Option>
+                    </Select>
                   </div>
                 </Col>
+
                 <Col xs={12} sm={6}>
                   <div className="mb-3">
                     <label className="label">Brand</label>
-                    <Input
-                      placeholder="Enter Product Brand"
-                      size="large"
-                      id="brand"
-                      name="brand"
-                      type="text"
-                      required
+                    <Select
+                      style={{ width: "100%" }}
                       value={formData.brand}
-                      onChange={handleInputChange}
-                    />
+                      onChange={(value) => handleSelectChange(value, "brand")}
+                      placeholder="Select or Enter Brand"
+                    >
+                      <Select.Option value="POEDAGAR">POEDAGAR</Select.Option>
+                      <Select.Option value="OLEVS">OLEVS</Select.Option>
+                      <Select.Option value="NAVIFORCE">NAVIFORCE</Select.Option>
+                      <Select.Option value="BINBOND">BINBOND</Select.Option>
+                      <Select.Option value="LIGE">LIGE</Select.Option>
+                      <Select.Option value="CURREN">CURREN</Select.Option>
+                    </Select>
                   </div>
                 </Col>
               </Row>
 
-              {/* Color & Tags */}
               <Row className="g-3">
-                <Col xs={12} sm={6}>
-                  <div className="mb-0 mb-lg-3">
-                    <label className="label">Colors</label>
-                    <Input
-                      placeholder="Enter Product Colors"
-                      size="large"
-                      id="color"
-                      name="color"
-                      type="text"
-                      required
-                      value={formData.color}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </Col>
-
                 <Col xs={12} sm={6}>
                   <div className="mb-3">
                     <label className="label">Tags</label>
                     <Select
-                      mode="multiple"
-                      required
-                      placeholder="Select or Enter Tags"
-                      style={{ width: "100%", height: "40px" }}
+                      mode="tags"
+                      style={{ width: "100%" }}
+                      placeholder="Enter or Select Tags"
                       value={formData.tags}
-                      onChange={handleSelectChange}
+                      onChange={(value) => handleSelectChange(value, "tags")}
+                      tokenSeparators={[","]}
                     >
                       <Select.Option value="featured">Featured</Select.Option>
                       <Select.Option value="special">Special</Select.Option>
@@ -262,9 +248,42 @@ const AddProductPage = () => {
                     </Select>
                   </div>
                 </Col>
+
+                <Col xs={12} sm={6}>
+                  <div className="mb-3">
+                    <label className="label">Colors</label>
+                    <Select
+                      mode="tags"
+                      style={{ width: "100%" }}
+                      placeholder="Enter or Select Colors"
+                      value={formData.colors}
+                      onChange={(value) => handleSelectChange(value, "colors")}
+                      tokenSeparators={[","]}
+                    >
+                      {[
+                        "Red",
+                        "Blue",
+                        "Green",
+                        "Black",
+                        "White",
+                        "Yellow",
+                        "Purple",
+                        "Orange",
+                        "Pink",
+                        "Brown",
+                        "Golden",
+                        "Silver",
+                      ].map((color) => (
+                        <Select.Option key={color} value={color}>
+                          {color}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </div>
+                </Col>
               </Row>
 
-              {/* Price & Sale Price */}
+              {/* Price  */}
               <Row className="g-3">
                 <Col xs={12} sm={6}>
                   <div className="mb-0 mb-lg-3">
@@ -277,21 +296,6 @@ const AddProductPage = () => {
                       type="number"
                       required
                       value={formData.price}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </Col>
-
-                <Col xs={12} sm={6}>
-                  <div className="mb-3">
-                    <label className="label">Sale Price</label>
-                    <Input
-                      placeholder="Enter Product Sale Price"
-                      size="large"
-                      id="salePrice"
-                      name="salePrice"
-                      type="number"
-                      value={formData.salePrice}
                       onChange={handleInputChange}
                     />
                   </div>
