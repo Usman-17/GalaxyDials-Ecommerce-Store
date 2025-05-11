@@ -174,7 +174,7 @@ const CollectionPage = () => {
             <SectionHeading
               text1={"ALL"}
               text2={"COLLECTIONS"}
-              className="text-[13px]"
+              className="text-[12px]"
             />
 
             {/* Product Sorting */}
