@@ -4,26 +4,13 @@ import toast from "react-hot-toast";
 import { Printer } from "lucide-react";
 import { Empty, Skeleton } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useGetAllOrders } from "../hooks/useGetAllOrders";
 // Imports End
 
 const OrdersPage = () => {
   const queryClient = useQueryClient();
-
-  const {
-    data: orders,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["allOrders"],
-    queryFn: async () => {
-      const res = await fetch("/api/order/all");
-      if (!res.ok) throw new Error("Failed to fetch Enquires");
-      const result = await res.json();
-      return result.orders;
-    },
-    retry: false,
-  });
+  const { orders = [], ordersError, ordersIsLoading } = useGetAllOrders();
 
   // Update Order Status Mutation
   const { mutate: updateStatus } = useMutation({
@@ -42,11 +29,11 @@ const OrdersPage = () => {
 
     // Optimistic Update
     onMutate: async ({ orderId, status }) => {
-      await queryClient.cancelQueries(["allOrders"]);
+      await queryClient.cancelQueries(["orders"]);
 
-      const previousOrders = queryClient.getQueryData(["allOrders"]);
+      const previousOrders = queryClient.getQueryData(["orders"]);
 
-      queryClient.setQueryData(["allOrders"], (oldOrders) =>
+      queryClient.setQueryData(["orders"], (oldOrders) =>
         oldOrders?.map((order) =>
           order._id === orderId ? { ...order, status } : order
         )
@@ -56,12 +43,12 @@ const OrdersPage = () => {
     },
 
     onError: (err, variables, context) => {
-      queryClient.setQueryData(["allOrders"], context.previousOrders);
+      queryClient.setQueryData(["orders"], context.previousOrders);
       toast.error("Failed to update order status");
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries(["allOrders"]);
+      queryClient.invalidateQueries(["orders"]);
     },
 
     onSuccess: () => {
@@ -80,11 +67,11 @@ const OrdersPage = () => {
                 <p className="text-muted">View and Manage All Orders</p>
               </div>
 
-              {error ? (
-                <p>{error.message}</p>
+              {ordersError ? (
+                <p>{ordersError.message}</p>
               ) : (
                 <>
-                  {isLoading ? (
+                  {ordersIsLoading ? (
                     <>
                       <Skeleton active className="mt-2" />
                       <Skeleton active className="mt-2" />

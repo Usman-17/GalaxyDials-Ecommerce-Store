@@ -4,10 +4,11 @@ import { Redo } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "react-bootstrap";
 import { Empty, Skeleton, Table, Tag, Modal, Spin } from "antd";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import EditButton from "../components/EditButton";
 import DeleteButton from "../components/DeleteButton";
+import { useGetAllProducts } from "../hooks/useGetAllProducts";
 // imports End
 
 const columns = [
@@ -65,23 +66,12 @@ const columns = [
 ];
 
 const ProductListPage = () => {
+  const { products = [], productIsLoading, productError } = useGetAllProducts();
+
   const queryClient = useQueryClient();
   const [deletingProductId, setDeletingProductId] = useState(null);
 
-  const {
-    data: products,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const res = await fetch("/api/product/all");
-      if (!res.ok) throw new Error("Failed to fetch products");
-      return res.json();
-    },
-    retry: false,
-  });
-
+  //  Delete Product Mutation
   const { mutate: deleteProduct } = useMutation({
     mutationFn: async (id) => {
       const res = await fetch(`/api/product/${id}`, {
@@ -160,11 +150,11 @@ const ProductListPage = () => {
               </Link>
             </div>
 
-            {error ? (
-              <p>{error.message}</p>
+            {productError ? (
+              <p>{productError.message}</p>
             ) : (
               <>
-                {isLoading ? (
+                {productIsLoading ? (
                   <Skeleton active className="mt-5" />
                 ) : products?.length > 0 ? (
                   <Table

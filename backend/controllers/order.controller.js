@@ -136,7 +136,7 @@ export const userOrders = async (req, res) => {
 export const allOrders = async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
-    res.json({ success: true, orders });
+    return res.status(200).json(orders);
   } catch (error) {
     console.error("Error in allOrders Controller:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
