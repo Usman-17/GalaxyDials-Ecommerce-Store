@@ -10,8 +10,6 @@ import SideBar from "./components/common/SideBar";
 
 import Dashboard from "./pages/Dashboard";
 import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
-import AddBannerPage from "./pages/AddBannerPage";
-import BannerDetailsPage from "./pages/BannerDetailsPage";
 const UsersPage = lazy(() => import("./pages/UsersPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const ProductListPage = lazy(() => import("./pages/ProductListPage"));
@@ -95,17 +93,6 @@ const App = () => {
             path="/enquiries/:id"
             element={
               authUser ? <EnquiryDetailsPage /> : <Navigate to="/login" />
-            }
-          />
-
-          <Route
-            path="/banners/add"
-            element={authUser ? <AddBannerPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/banners/manage"
-            element={
-              authUser ? <BannerDetailsPage /> : <Navigate to="/login" />
             }
           />
 
