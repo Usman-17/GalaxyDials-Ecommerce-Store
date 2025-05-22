@@ -6,22 +6,21 @@ import { Brand } from "../models/brand.model.js";
 // DESC     : Create Brand
 export const createBrand = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { name } = req.body;
 
-    if (!title) {
+    if (!name) {
       return res.status(400).json({ error: "Brand Name are required" });
     }
 
-    const existingBrand = await Brand.findOne({ title });
+    const existingBrand = await Brand.findOne({ name });
     if (existingBrand) {
       return res
         .status(400)
         .json({ error: "Brand with this namne already exists" });
     }
 
-    const newBrand = new Brand({ title });
-    await newBrand.save();
-    return res.status(201).json(newBrand);
+    const brand = await new Brand({ name }).save();
+    return res.status(201).json(brand);
   } catch (error) {
     console.error("Error in createBrand controller:", error.message);
     res.status(500).json({ error: error.message });
@@ -35,12 +34,12 @@ export const createBrand = async (req, res) => {
 export const updateBrand = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title } = req.body;
+    const { name } = req.body;
 
     const brand = await Brand.findById(id);
     if (!brand) return res.status(404).json({ error: "Brand not found" });
 
-    if (title) brand.title = title;
+    if (name) brand.name = name;
 
     await brand.save();
     res.status(200).json({ brand });
@@ -59,7 +58,6 @@ export const getAllbrands = async (req, res) => {
     const brand = await Brand.find().sort({ createdAt: -1 });
 
     if (!brand.length === 0) return res.status(200).json([]);
-
     return res.status(200).json(brand);
   } catch (error) {
     console.log("Error in getAllbrands Controller:", error.message);

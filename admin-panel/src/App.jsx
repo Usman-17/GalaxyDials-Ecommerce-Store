@@ -10,6 +10,8 @@ import SideBar from "./components/common/SideBar";
 
 import Dashboard from "./pages/Dashboard";
 import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
+import AddBrandPage from "./pages/AddBrandPage";
+import BrandListingPage from "./pages/BrandListingPage";
 const UsersPage = lazy(() => import("./pages/UsersPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const ProductListPage = lazy(() => import("./pages/ProductListPage"));
@@ -99,6 +101,18 @@ const App = () => {
           <Route
             path="/orders"
             element={authUser ? <OrdersPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/brand/add"
+            element={authUser ? <AddBrandPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/brand/edit/:id"
+            element={authUser ? <AddBrandPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="brand/manage"
+            element={authUser ? <BrandListingPage /> : <Navigate to="/login" />}
           />
         </Routes>
       </Suspense>

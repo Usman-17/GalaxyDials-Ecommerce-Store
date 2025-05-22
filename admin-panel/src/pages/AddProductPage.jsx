@@ -22,9 +22,26 @@ const AddProductPage = () => {
   });
 
   const [productImgPreview, setProductImgPreview] = useState([]);
+  const [brands, setBrands] = useState([]);
+
   const editor = useRef(null);
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // Fetch brands from API
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await fetch("/api/brand/all");
+        const data = await res.json();
+        setBrands(data);
+      } catch (error) {
+        console.error("Failed to fetch brands:", error);
+      }
+    };
+
+    fetchBrands();
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -216,14 +233,14 @@ const AddProductPage = () => {
                       style={{ width: "100%" }}
                       value={formData.brand}
                       onChange={(value) => handleSelectChange(value, "brand")}
-                      placeholder="Select or Enter Brand"
+                      placeholder="Select Brand"
+                      showSearch
                     >
-                      <Select.Option value="POEDAGAR">POEDAGAR</Select.Option>
-                      <Select.Option value="OLEVS">OLEVS</Select.Option>
-                      <Select.Option value="NAVIFORCE">NAVIFORCE</Select.Option>
-                      <Select.Option value="BINBOND">BINBOND</Select.Option>
-                      <Select.Option value="LIGE">LIGE</Select.Option>
-                      <Select.Option value="CURREN">CURREN</Select.Option>
+                      {brands.map((brand) => (
+                        <Select.Option key={brand._id} value={brand._id}>
+                          {brand.name}
+                        </Select.Option>
+                      ))}
                     </Select>
                   </div>
                 </Col>

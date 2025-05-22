@@ -1,8 +1,8 @@
 import Product from "../models/product.model.js";
-import User from "../models/user.model.js";
+import { Brand } from "../models/brand.model.js";
 
-import { v2 as cloudinary } from "cloudinary";
 import slugify from "slugify";
+import { v2 as cloudinary } from "cloudinary";
 
 // PATH     : /api/product/create
 // METHOD   : POST
@@ -18,6 +18,11 @@ export const createProduct = async (req, res) => {
     // Check for required fields
     if (!title || !description || !price || !category || !brand || !tags) {
       return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const brandExists = await Brand.findById(brand);
+    if (!brandExists) {
+      return res.status(400).json({ error: "Invalid brand ID" });
     }
 
     // Generate a slug from the product title
@@ -95,16 +100,8 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      title,
-      description,
-      price,
-      salePrice,
-      category,
-      brand,
-      colors,
-      tags,
-    } = req.body;
+    const { title, description, price, category, brand, colors, tags } =
+      req.body;
 
     const product = await Product.findById(id);
     if (!product) {
@@ -122,12 +119,18 @@ export const updateProduct = async (req, res) => {
       product.title = title;
       product.slug = newSlug;
     }
+
+    if (brand) {
+      const brandExists = await Brand.findById(brand);
+      if (!brandExists) {
+        return res.status(400).json({ error: "Invalid brand ID" });
+      }
+      product.brand = brand;
+    }
+
     if (description) product.description = description;
     if (price) product.price = price;
-    if (salePrice !== undefined)
-      product.salePrice = salePrice === "" ? null : salePrice;
     if (category) product.category = category;
-    if (brand) product.brand = brand;
     if (colors) product.colors = colors;
     if (tags) product.tags = tags;
 
@@ -177,7 +180,9 @@ export const updateProduct = async (req, res) => {
 // DESC     : Get all product
 export const getAllproducts = async (req, res) => {
   try {
-    const product = await Product.find().sort({ createdAt: -1 });
+    const product = await Product.find()
+      .populate("brand")
+      .sort({ createdAt: -1 });
 
     if (!product.length === 0) return res.status(200).json([]);
 
@@ -195,7 +200,7 @@ export const getAllproducts = async (req, res) => {
 export const getProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate("brand");
     res.status(200).json(product);
   } catch (error) {
     console.log("Error in getProduct Controller", error.message);

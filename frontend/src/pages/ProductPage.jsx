@@ -75,7 +75,7 @@ const ProductPage = () => {
         {/* Product Info */}
         <div className="flex-1">
           <h4 className="text-gray-600 text-sm sm:text-base uppercase">
-            {product?.brand}
+            {product?.brand?.name}
           </h4>
           <h1
             className="font-medium text-2xl sm:mt-1 tracking-wide"

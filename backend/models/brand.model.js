@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 var brandSchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: [true, "Brand Name is required."],
       unique: true,

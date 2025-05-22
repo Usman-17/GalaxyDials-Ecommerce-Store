@@ -19,7 +19,7 @@ const SpecialProductCard = ({ to, image, title, brand, price, salePrice }) => {
 
         {/* Content Section */}
         <div className="w-2/3 px-2 flex flex-col rounded-r-md mt-1.5 sm:mt-2">
-          <p className="text-xs sm:text-sm text-gray-500">{brand}</p>
+          <p className="text-xs sm:text-sm text-gray-500">{brand?.name}</p>
 
           <h3
             className="text-sm sm:text-md font-semibold text-gray-900 mb-1"

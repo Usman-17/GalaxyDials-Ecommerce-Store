@@ -48,7 +48,7 @@ const HomePage = () => {
                     to={`/product/${product._id}`}
                     image={product.productImages[0]?.url}
                     title={product.title}
-                    brand={product.brand}
+                    brand={product?.brand?.name}
                     price={product.price}
                     salePrice={product.salePrice}
                   />

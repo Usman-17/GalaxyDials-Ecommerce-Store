@@ -25,7 +25,7 @@ const ProductCard = ({ to, image, title, brand, price, salePrice }) => {
 
         {/* Product Info */}
         <div className="py-2 px-2">
-          <p className="text-xs sm:text-sm text-gray-500">{brand}</p>
+          <p className="text-xs sm:text-sm text-gray-500">{brand?.name}</p>
           <h3
             className="font-medium text-xs sm:text-sm md:text-base tracking-tight text-gray-800"
             style={{
