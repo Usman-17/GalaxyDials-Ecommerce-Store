@@ -9,6 +9,7 @@ import {
   Box,
   ShoppingBag,
   Bold,
+  Sparkle,
 } from "lucide-react";
 import useLogout from "../../hooks/useLogout";
 // imports End
@@ -44,6 +45,11 @@ const menuItems = [
     key: "brand/add",
     icon: <Bold size={20} />,
     title: "Brand",
+  },
+  {
+    key: "category/add",
+    icon: <Sparkle size={20} />,
+    title: "Category",
   },
 ];
 

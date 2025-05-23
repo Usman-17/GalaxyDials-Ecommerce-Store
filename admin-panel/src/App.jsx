@@ -12,6 +12,8 @@ import Dashboard from "./pages/Dashboard";
 import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
 import AddBrandPage from "./pages/AddBrandPage";
 import BrandListingPage from "./pages/BrandListingPage";
+import AddCategoryPage from "./pages/AddCategoryPage";
+import CategoryListingPage from "./pages/CategoryListingPage";
 const UsersPage = lazy(() => import("./pages/UsersPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const ProductListPage = lazy(() => import("./pages/ProductListPage"));
@@ -113,6 +115,21 @@ const App = () => {
           <Route
             path="brand/manage"
             element={authUser ? <BrandListingPage /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            path="/category/add"
+            element={authUser ? <AddCategoryPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/category/edit/:id"
+            element={authUser ? <AddCategoryPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="category/manage"
+            element={
+              authUser ? <CategoryListingPage /> : <Navigate to="/login" />
+            }
           />
         </Routes>
       </Suspense>
