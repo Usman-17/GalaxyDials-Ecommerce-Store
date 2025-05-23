@@ -91,7 +91,7 @@ const ProductPage = () => {
           <p className="text-sm sm:text-base text-gray-500 mt-2">
             Category:{" "}
             <span className="font-medium text-gray-700">
-              {product?.category || "N/A"}
+              {product?.category.name || "N/A"}
             </span>
           </p>
 

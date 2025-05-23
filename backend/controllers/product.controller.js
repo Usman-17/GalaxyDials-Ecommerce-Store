@@ -1,5 +1,6 @@
 import Product from "../models/product.model.js";
 import { Brand } from "../models/brand.model.js";
+import { Category } from "../models/category.model.js";
 
 import slugify from "slugify";
 import { v2 as cloudinary } from "cloudinary";
@@ -23,6 +24,11 @@ export const createProduct = async (req, res) => {
     const brandExists = await Brand.findById(brand);
     if (!brandExists) {
       return res.status(400).json({ error: "Invalid brand ID" });
+    }
+
+    const categoryExists = await Category.findById(category);
+    if (!categoryExists) {
+      return res.status(400).json({ error: "Invalid Categort ID" });
     }
 
     // Generate a slug from the product title
@@ -128,9 +134,16 @@ export const updateProduct = async (req, res) => {
       product.brand = brand;
     }
 
+    if (category) {
+      const categoryExists = await Category.findById(category);
+      if (!categoryExists) {
+        return res.status(400).json({ error: "Invalid category ID" });
+      }
+      product.category = category;
+    }
+
     if (description) product.description = description;
     if (price) product.price = price;
-    if (category) product.category = category;
     if (colors) product.colors = colors;
     if (tags) product.tags = tags;
 
@@ -182,6 +195,7 @@ export const getAllproducts = async (req, res) => {
   try {
     const product = await Product.find()
       .populate("brand")
+      .populate("category")
       .sort({ createdAt: -1 });
 
     if (!product.length === 0) return res.status(200).json([]);
@@ -200,7 +214,9 @@ export const getAllproducts = async (req, res) => {
 export const getProduct = async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await Product.findById(id).populate("brand");
+    const product = await Product.findById(id)
+      .populate("brand")
+      .populate("category");
     res.status(200).json(product);
   } catch (error) {
     console.log("Error in getProduct Controller", error.message);

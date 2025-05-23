@@ -33,8 +33,6 @@ const CollectionPage = () => {
     );
   };
 
-  const uniqueCategories = [...new Set(products.map((p) => p.category))];
-
   const uniqueBrands = [
     ...new Map(
       products
@@ -44,10 +42,20 @@ const CollectionPage = () => {
     ).values(),
   ];
 
+  const uniqueCategories = [
+    ...new Map(
+      products
+        .map((p) => p.category)
+        .filter(Boolean)
+        .map((category) => [category._id, category])
+    ).values(),
+  ];
+
   const filteredProducts = products.filter((product) => {
+    const categoryName = product.category?.name || product.category;
     const matchesCategory =
       selectedCategories.length === 0 ||
-      selectedCategories.includes(product.category);
+      selectedCategories.includes(categoryName);
 
     const brandName = product.brand?.name || product.brand;
     const matchesBrand =
@@ -115,11 +123,11 @@ const CollectionPage = () => {
                     <input
                       type="checkbox"
                       className="w-4 h-4 accent-gray-700"
-                      value={category}
-                      onChange={() => handleCategoryChange(category)}
-                      checked={selectedCategories.includes(category)}
+                      value={category.name}
+                      onChange={() => handleCategoryChange(category.name)}
+                      checked={selectedCategories.includes(category.name)}
                     />
-                    <span className="font-medium">{category}</span>
+                    <span className="font-medium">{category.name}</span>
                   </label>
                 ))}
               </div>

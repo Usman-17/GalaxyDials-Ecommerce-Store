@@ -23,6 +23,7 @@ const AddProductPage = () => {
 
   const [productImgPreview, setProductImgPreview] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const editor = useRef(null);
   const navigate = useNavigate();
@@ -41,6 +42,21 @@ const AddProductPage = () => {
     };
 
     fetchBrands();
+  }, []);
+
+  // Fetch Categoeis from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/category/all");
+        const data = await res.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Failed to fetch brands:", error);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -219,9 +235,14 @@ const AddProductPage = () => {
                       onChange={(value) =>
                         handleSelectChange(value, "category")
                       }
-                      placeholder="Select or Enter Category"
+                      placeholder="Select Category"
+                      showSearch
                     >
-                      <Select.Option value="Watches">Watches</Select.Option>
+                      {categories.map((category) => (
+                        <Select.Option key={category._id} value={category._id}>
+                          {category.name}
+                        </Select.Option>
+                      ))}
                     </Select>
                   </div>
                 </Col>
