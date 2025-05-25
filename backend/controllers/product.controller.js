@@ -126,22 +126,8 @@ export const updateProduct = async (req, res) => {
       product.slug = newSlug;
     }
 
-    if (brand) {
-      const brandExists = await Brand.findById(brand);
-      if (!brandExists) {
-        return res.status(400).json({ error: "Invalid brand ID" });
-      }
-      product.brand = brand;
-    }
-
-    if (category) {
-      const categoryExists = await Category.findById(category);
-      if (!categoryExists) {
-        return res.status(400).json({ error: "Invalid category ID" });
-      }
-      product.category = category;
-    }
-
+    if (brand) product.brand.name = brand;
+    if (category) product.category.name = category;
     if (description) product.description = description;
     if (price) product.price = price;
     if (colors) product.colors = colors;

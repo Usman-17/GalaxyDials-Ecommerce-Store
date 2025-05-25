@@ -68,8 +68,8 @@ const AddProductPage = () => {
         setFormData({
           title: data.title || "",
           description: data.description || "",
-          category: data.category || "",
-          brand: data.brand || "",
+          category: data.category.name || "",
+          brand: data.brand.name || "",
           colors: data.colors || "",
           tags: data.tags || "",
           price: data.price || "",
