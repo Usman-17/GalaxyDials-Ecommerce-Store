@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Redo } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { Dot, Redo } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 
@@ -44,8 +44,31 @@ const ProductPage = () => {
   };
 
   return (
-    <div className="border-t-2 pt-5 sm:pt-10 transition-opacity ease-in duration-500 opacity-100">
-      <div className="flex flex-col sm:flex-row gap-4 sm:gap-12">
+    <div className="border-t transition-opacity ease-in duration-500 opacity-100">
+      {/* Breadcrumb  */}
+      <nav
+        aria-label="breadcrumb"
+        className="my-4 text-sm text-gray-600 select-none hidden sm:block"
+      >
+        <ol className="flex items-center space-x-1">
+          <li className="flex items-center">
+            <Link
+              to="/collection"
+              className="hover:text-rose-500 transition-colors duration-200"
+            >
+              All Products
+            </Link>
+          </li>
+          <li className="flex items-center">
+            <Dot size={14} className="mx-1 text-gray-400" />
+            <span className="font-semibold text-gray-800 sm:max-w-xs truncate">
+              {product?.title}
+            </span>
+          </li>
+        </ol>
+      </nav>
+
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 pt-5 sm:pt-0">
         {/* Images */}
         <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
           <div className="flex sm:flex-col sm:w-[17.5%] w-full gap-1 sm:gap-0 overflow-y-auto max-h-[510px]">
@@ -55,12 +78,12 @@ const ProductPage = () => {
                 src={image.url}
                 alt={`Thumbnail ${index + 1}`}
                 onClick={() => handleImageClick(image.url)}
-                className="w-[21.5%] sm:w-full sm:mb-3 cursor-pointer rounded-md transition-transform duration-300 transform hover:scale-105 object-contain"
+                className="w-[20.5%] sm:w-full sm:mb-3 cursor-pointer rounded-md transition-transform duration-300 transform hover:scale-105 object-contain"
               />
             ))}
           </div>
 
-          <div className="w-full sm:w-[80%] flex items-center justify-center">
+          <div className="w-full sm:w-[80%] lg:w-[90%] flex items-center justify-center">
             <InnerImageZoom
               src={activeImage || mainImageUrl}
               zoomType="hover"
@@ -75,7 +98,7 @@ const ProductPage = () => {
         {/* Product Info */}
         <div className="flex-1">
           <h4 className="text-gray-600 text-sm sm:text-base uppercase">
-            {product?.brand?.name}
+            {product?.brand.name}
           </h4>
           <h1
             className="font-medium text-2xl sm:mt-1 tracking-wide"
@@ -85,7 +108,7 @@ const ProductPage = () => {
           </h1>
 
           <p className="text-lg sm:text-2xl font-bold text-red-600 mt-2">
-            Rs. {product?.price}
+            Rs. {product?.price.toLocaleString()}
           </p>
 
           <p className="text-sm sm:text-base text-gray-500 mt-2">
@@ -217,7 +240,10 @@ const ProductPage = () => {
       </div>
 
       {/* Related products */}
-      <RelatedProducts category={product.category} brand={product.brand} />
+      <RelatedProducts
+        category={product.category.name}
+        brand={product.brand.name}
+      />
     </div>
   );
 };

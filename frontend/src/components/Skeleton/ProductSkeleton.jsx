@@ -3,63 +3,81 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const ProductSkeleton = () => {
   return (
-    <div className="flex flex-col sm:flex-row gap-4 sm:gap-12">
-      {/* Product Images */}
-      <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-1">
-        {/*  small images */}
-        <div className="flex sm:flex-col items-center justify-center sm:justify-normal sm:items-start sm:w-[25%] w-full gap-1 sm:gap-2">
-          {Array(4)
-            .fill()
-            .map((_, index) => (
-              <Skeleton
-                key={index}
-                className="w-20 sm:w-28 h-20 sm:h-24 rounded-md"
-                style={{ minWidth: "60px" }}
-              />
-            ))}
-        </div>
+    <div className="animate-pulse border-t-2">
+      {/* Breadcrumb Skeleton */}
+      <nav
+        aria-label="breadcrumb"
+        className="my-4 text-sm text-gray-600 select-none hidden sm:block"
+      >
+        <ol className="flex items-center space-x-1">
+          <li className="flex items-center">
+            <Skeleton width={90} height={12} />
+          </li>
+          <li className="flex items-center">
+            <span className="mx-1 text-gray-400">•</span>
+            <Skeleton width={270} height={12} />
+          </li>
+        </ol>
+      </nav>
 
-        {/*  Main Image */}
-        <div className="w-full flex justify-center">
-          <Skeleton className="w-80 h-80 sm:h-96 sm:w-96" />
-        </div>
-      </div>
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-12">
+        {/* Image Section Skeleton */}
+        <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
+          {/* Product Images */}
+          <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-1">
+            {/*  small images */}
+            <div className="flex sm:flex-col items-center justify-center sm:justify-normal sm:items-start sm:w-[25%] w-full gap-1 sm:gap-2">
+              {Array(4)
+                .fill()
+                .map((_, index) => (
+                  <Skeleton
+                    key={index}
+                    className="w-20 sm:w-36  h-20 sm:h-28 rounded-md"
+                  />
+                ))}
+            </div>
 
-      {/*  Product Info */}
-      <div className="flex-1">
-        {/* Brand */}
-        <Skeleton className="h-3 sm:h-4 w-20 sm:w-28 mb-2" />
-
-        {/* Product Title */}
-        <Skeleton className="h-4 sm:h-6 w-full sm:w-4/5" />
-        <Skeleton className="h-4 sm:h-5 w-60 sm:w-3/5 mb-4" />
-
-        {/* Price */}
-        <Skeleton className="h-5 sm:h-6 w-28 sm:w-32 mb-3" />
-        <Skeleton className="h-4 sm:h-5 w-16 sm:w-20 mb-1" />
-
-        {/* Category */}
-        <Skeleton className="h-4 sm:h-5 w-24 sm:w-28 mb-2" />
-
-        {/* Color Options */}
-        <div className="flex flex-col gap-4 my-4">
-          <Skeleton className="h-4 sm:h-5 w-20 sm:w-24" />
-          <div className="flex gap-2">
-            <Skeleton className="h-8 w-16 rounded-sm" />
-            <Skeleton className="h-8 w-16 rounded-sm" />
-            <Skeleton className="h-8 w-16 rounded-sm" />
+            {/*  Main Image */}
+            <div className="w-full flex justify-center">
+              <Skeleton className="w-80 h-80 sm:h-[500px] sm:w-[500px]" />
+            </div>
           </div>
         </div>
 
-        {/*  Add to Cart Button */}
-        <Skeleton className="h-10 w-48 sm:w-64 rounded-md" />
-        <hr className="mt-8 sm:w-4/5" />
+        {/* Product Info Skeleton */}
+        <div className="flex-1">
+          <Skeleton width={80} height={18} className="mb-2" />
+          <Skeleton width={`70%`} height={28} className="mb-3" />
+          <Skeleton width={100} height={24} className="mb-2" />
+          <Skeleton width={`40%`} height={20} className="mb-5" />
 
-        {/*  Additional Info */}
-        <div className="mt-5">
-          <Skeleton className="h-4 sm:h-5 w-40 mb-1" />
-          <Skeleton className="h-4 sm:h-5 w-56 mb-1" />
-          <Skeleton className="h-4 sm:h-5 w-72" />
+          <Skeleton width={80} height={16} className="mb-2" />
+          <Skeleton width={60} height={32} className="mb-5" />
+
+          <Skeleton width={100} height={18} className="mb-2" />
+          <div className="flex gap-2 mb-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} width={50} height={30} />
+            ))}
+          </div>
+
+          <Skeleton width={140} height={40} className="mb-6" />
+
+          <Skeleton width={`60%`} height={14} className="mb-1" />
+          <Skeleton width={`40%`} height={14} className="mb-1" />
+          <Skeleton width={`50%`} height={14} />
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="mt-10 sm:mt-20">
+        <div className="flex border-b">
+          <Skeleton width={100} height={30} className="mr-4" />
+          <Skeleton width={100} height={30} />
+        </div>
+
+        <div className="border px-3 sm:px-6 py-3 sm:py-6 mt-4">
+          <Skeleton count={5} height={16} className="mb-2" />
         </div>
       </div>
     </div>
