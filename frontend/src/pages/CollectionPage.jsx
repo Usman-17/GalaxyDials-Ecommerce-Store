@@ -3,8 +3,9 @@ import { Helmet } from "react-helmet";
 import { ChevronDown } from "lucide-react";
 
 import ProductCard from "../components/ProductCard";
-import FilterSkeleton from "../components/Skeleton/FilterSkeleton";
 import SectionHeading from "../components/SectionHeading";
+import InViewAnimation from "../components/InViewAnimation";
+import FilterSkeleton from "../components/Skeleton/FilterSkeleton";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 // Imports End
@@ -168,11 +169,13 @@ const CollectionPage = () => {
         {/* Right Side All Products */}
         <div className="flex-1 mb-20">
           <div className="flex justify-between items-center text-xs sm:text-2xl mb-2 gap-6">
-            <SectionHeading
-              text1={"ALL"}
-              text2={"COLLECTIONS"}
-              className="text-[12px]"
-            />
+            <InViewAnimation delay={0.1}>
+              <SectionHeading
+                text1={"ALL"}
+                text2={"COLLECTIONS"}
+                className="text-[12px] select-none"
+              />
+            </InViewAnimation>
 
             <select
               value={sortOption}
@@ -185,13 +188,16 @@ const CollectionPage = () => {
             </select>
           </div>
 
+          {/* All Products */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 gap-y-6">
             {productIsLoading
               ? Array.from({ length: 10 }).map((_, index) => (
                   <ProductCardSkeleton key={index} />
                 ))
-              : sortedProducts.map((product) => (
-                  <ProductCard key={product._id} product={product} />
+              : sortedProducts.map((product, index) => (
+                  <InViewAnimation key={product._id} delay={index * 0.1}>
+                    <ProductCard key={product._id} product={product} />
+                  </InViewAnimation>
                 ))}
           </div>
         </div>

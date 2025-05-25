@@ -8,6 +8,7 @@ import TextMarquee from "../components/TextMarquee";
 import SaleProduct from "../components/SaleProduct";
 import PopularProduct from "../components/PopularProduct";
 import SpecialProduct from "../components/SpecialProduct";
+import InViewAnimation from "../components/InViewAnimation";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
@@ -42,11 +43,11 @@ const HomePage = () => {
             ? Array.from({ length: 5 }).map((_, index) => (
                 <ProductCardSkeleton key={index} />
               ))
-            : products
-                ?.slice(0, 5)
-                .map((product) => (
+            : products?.slice(0, 5).map((product, index) => (
+                <InViewAnimation key={product._id} delay={index * 0.1}>
                   <ProductCard product={product} key={product?._id} />
-                ))}
+                </InViewAnimation>
+              ))}
         </div>
       </div>
 
