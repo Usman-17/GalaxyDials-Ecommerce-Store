@@ -1,15 +1,16 @@
+import { useContext } from "react";
 import { Helmet } from "react-helmet";
 
 import Hero from "../components/Hero";
-import SaleProduct from "../components/SaleProduct";
-import SpecialProduct from "../components/SpecialProduct";
-import PopularProduct from "../components/PopularProduct";
-import OurPolicy from "../components/OurPolicy";
 import AdBanner from "../components/AdBanner";
+import OurPolicy from "../components/OurPolicy";
 import ProductCard from "../components/ProductCard";
+import TextMarquee from "../components/TextMarquee";
+import SaleProduct from "../components/SaleProduct";
+import PopularProduct from "../components/PopularProduct";
+import SpecialProduct from "../components/SpecialProduct";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 import { AppContext } from "../context/AppContext";
-import { useContext } from "react";
 
 const HomePage = () => {
   const { products, productIsLoading } = useContext(AppContext);
@@ -29,6 +30,7 @@ const HomePage = () => {
       </Helmet>
 
       <Hero />
+      <TextMarquee />
       <SaleProduct />
       <SpecialProduct />
       <PopularProduct />

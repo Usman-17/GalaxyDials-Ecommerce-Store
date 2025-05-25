@@ -7,7 +7,7 @@ import banner_3 from "../assets/hero_banner_3.jpg";
 
 const Hero = () => {
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
