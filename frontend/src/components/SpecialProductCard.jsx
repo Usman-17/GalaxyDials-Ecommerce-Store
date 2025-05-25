@@ -1,72 +1,71 @@
 import { Link } from "react-router-dom";
 
-const SpecialProductCard = ({ to, image, title, brand, price, salePrice }) => {
+const SpecialProductCard = ({ product }) => {
   return (
-    <Link to={to}>
-      <div className="bg-white rounded-2xl flex overflow-hidden transition-transform duration-300 ease-in-out hover:shadow-sm max-w-4xl mx-auto mb-2 border group">
-        {/* Image Section */}
-        <div className="w-1/2 sm:w-1/4">
-          <div className="relative w-full h-0 pb-[100%] overflow-hidden">
-            <img
-              src={image}
-              alt={title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-            />
+    <Link
+      to={`/product/${product._id}`}
+      className="group block max-w-4xl mx-auto rounded-xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-sm hover:shadow-md transition-shadow duration-400 bg-white"
+    >
+      <div className="flex flex-col sm:flex-row">
+        {/* Image Side */}
+        <div className="relative w-full sm:w-1/3 bg-white clip-image-curve">
+          <img
+            src={product?.productImages?.[0]?.url}
+            alt={product?.title}
+            loading="lazy"
+            decoding="async"
+            className="object-cover w-full h-64 sm:h-full transition-transform duration-200 ease-in-out group-hover:scale-105"
+          />
+
+          {/*  tag */}
+          <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm select-none sm:opacity-0 sm:group-hover:opacity-100">
+            Special
           </div>
         </div>
 
-        {/* Content Section */}
-        <div className="w-2/3 px-2 flex flex-col rounded-r-md mt-1.5 sm:mt-2">
-          <p className="text-xs sm:text-sm text-gray-500">{brand?.name}</p>
+        {/* Content side */}
+        <div className="px-4 sm:px-6 py-5 sm:py-3 flex flex-col sm:w-2/3 rounded-b-3xl sm:rounded-r-3xl sm:rounded-bl-none bg-white">
+          <div>
+            <p className="uppercase tracking-widest font-semibold text-xs sm:text-sm text-gray-500">
+              {product?.brand.name}
+            </p>
 
-          <h3
-            className="text-sm sm:text-md font-semibold text-gray-900 mb-1"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              lineHeight: "1.3",
-            }}
-          >
-            {title}
-          </h3>
+            <p className="text-red-600 font-semibold text-sm">
+              Limited Time Deals
+            </p>
 
-          {/* Rating Section */}
-          <div className="flex items-center sm:mb-2">
-            {[...Array(5)].map((_, index) => (
-              <svg
-                key={index}
-                className="w-5 h-5 text-yellow-300"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" />
-              </svg>
-            ))}
+            <h3 className="text-xl font-bold mb-1 line-clamp-2 leading-tight">
+              {product?.title}
+            </h3>
+
+            {/* Rating */}
+            <div className="flex items-center space-x-1 mb-5 sm:mb-0">
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  className="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" />
+                </svg>
+              ))}
+            </div>
           </div>
 
-          {/* Price Section */}
-          {price || salePrice ? (
-            <div className="flex gap-1 sm:gap-2 items-center">
-              {salePrice ? (
-                <>
-                  <p className="text-lg sm:text-xl font-bold text-red-500">
-                    Rs. {salePrice}
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-500 line-through">
-                    Rs. {price}
-                  </p>
-                </>
-              ) : (
-                <p className="text-lg sm:text-xl font-bold text-gray-900">
-                  Rs. {price}
-                </p>
-              )}
-            </div>
-          ) : null}
+          {/* Price & button */}
+          <div className="flex items-center justify-between sm:mt-10">
+            <p className="text-3xl font-bold text-gray-800">
+              Rs. {product?.price.toLocaleString()}
+            </p>
+
+            <button
+              className="opacity-0 group-hover:opacity-100 bg-red-500 text-white px-5 py-2 rounded-full text-sm font-semibold transition-opacity duration-300 shadow-md"
+              aria-label={`View details of ${product?.title}`}
+            >
+              View Details
+            </button>
+          </div>
         </div>
       </div>
     </Link>
