@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from "react";
-import SearchBar from "./SearchBar";
+import { useState, useContext, useRef } from "react";
 
 import { NavLink, Link } from "react-router-dom";
 import { Search, ShoppingBag } from "lucide-react";
@@ -10,33 +9,19 @@ import inbox from "../assets/inbox.png";
 import tracking from "../assets/tracking.png";
 import collection from "../assets/products.png";
 
+import SearchModal from "./SearchModal";
 import ProfileDropdown from "./ProfileDropdown";
 import { AppContext } from "../context/AppContext";
 // Imports End
 
-const Header = ({ products }) => {
+const Header = () => {
   const { authUser } = useContext(AppContext);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const searchRef = useRef(null);
 
   const toggleSearchBar = () => {
     setIsSearchVisible((prev) => !prev);
   };
-
-  const handleClickOutside = (e) => {
-    if (
-      !e.target.closest(".search-container") &&
-      !e.target.closest(".search-icon")
-    ) {
-      setIsSearchVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
 
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[2vw]">
@@ -78,16 +63,21 @@ const Header = ({ products }) => {
         </ul>
 
         <div className="flex items-center gap-4 sm:gap-5 justify-center">
-          <Search
-            className="cursor-pointer search-icon"
-            onClick={toggleSearchBar}
-            aria-expanded={isSearchVisible}
-            aria-label="Toggle Search Bar"
-          />
+          {/* Search  */}
+          <div>
+            <Search
+              className="cursor-pointer"
+              onClick={toggleSearchBar}
+              aria-expanded={isSearchVisible}
+              aria-label="Toggle Search Bar"
+            />
 
-          {isSearchVisible && (
-            <SearchBar products={products} onClose={toggleSearchBar} />
-          )}
+            {isSearchVisible && (
+              <div ref={searchRef}>
+                <SearchModal onClose={() => setIsSearchVisible(false)} />
+              </div>
+            )}
+          </div>
 
           <ProfileDropdown />
 

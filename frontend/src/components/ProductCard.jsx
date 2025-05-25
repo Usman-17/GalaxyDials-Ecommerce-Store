@@ -1,31 +1,36 @@
 import { Link } from "react-router-dom";
 
-const ProductCard = ({ to, image, title, brand, price, salePrice }) => {
+const ProductCard = ({ product }) => {
   return (
-    <Link to={to}>
+    <Link to={`/product/${product?._id}`}>
       <div className="rounded-lg transition-shadow duration-300 ease-in-out max-w-sm mx-auto sm:max-w-none group py-2 hover:shadow-sm mb-2">
         <div className="relative overflow-hidden">
           <div className="relative w-full h-0 pb-[100%] rounded-t-md overflow-hidden">
+            {/* First Image (Default) */}
             <img
-              src={image}
-              alt={title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105 shadow-lg hover:shadow-xl"
+              src={product?.productImages[0]?.url}
+              alt={product?.title}
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0"
               loading="lazy"
               decoding="async"
             />
-          </div>
 
-          {/* Sale Badge */}
-          {salePrice && (
-            <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-3 sm:py-0.5 rounded-xl opacity-100 group-hover:opacity-0 transition-opacity duration-300">
-              Sale
-            </div>
-          )}
+            {/* Second Image (Shown on Hover) */}
+            {product?.productImages[1]?.url && (
+              <img
+                src={product?.productImages[1].url}
+                alt={`${product?.title} - Alt`}
+                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
+              />
+            )}
+          </div>
         </div>
 
         {/* Product Info */}
         <div className="py-2 px-2">
-          <p className="text-xs sm:text-sm text-gray-500">{brand?.name}</p>
+          <p className="text-xs sm:text-sm text-gray-500">
+            {product?.brand.name}
+          </p>
           <h3
             className="font-medium text-xs sm:text-sm md:text-base tracking-tight text-gray-800"
             style={{
@@ -36,28 +41,13 @@ const ProductCard = ({ to, image, title, brand, price, salePrice }) => {
               lineHeight: "1.3",
             }}
           >
-            {title}
+            {product?.title}
           </h3>
 
           {/* Price */}
-          {(price || salePrice) && (
-            <div className="flex gap-1 sm:gap-2 items-center">
-              {salePrice ? (
-                <>
-                  <p className="text-lg sm:text-md font-semibold text-red-500">
-                    Rs. {salePrice}
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-500 line-through">
-                    Rs. {price}
-                  </p>
-                </>
-              ) : (
-                <p className="text-lg sm:text-xl font-bold text-gray-900">
-                  Rs. {price}
-                </p>
-              )}
-            </div>
-          )}
+          <p className="text-lg font-semibold text-gray-900">
+            Rs. {product?.price.toLocaleString()}
+          </p>
         </div>
       </div>
     </Link>
