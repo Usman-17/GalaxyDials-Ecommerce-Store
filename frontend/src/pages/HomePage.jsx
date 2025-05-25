@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Helmet } from "react-helmet";
 
 import Hero from "../components/Hero";
@@ -10,10 +9,11 @@ import SaleProduct from "../components/SaleProduct";
 import PopularProduct from "../components/PopularProduct";
 import SpecialProduct from "../components/SpecialProduct";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
-import { AppContext } from "../context/AppContext";
+import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const HomePage = () => {
-  const { products, productIsLoading } = useContext(AppContext);
+  const { products, productIsLoading } = useGetAllProducts();
+
   return (
     <>
       <Helmet>
@@ -45,15 +45,7 @@ const HomePage = () => {
             : products
                 ?.slice(0, 5)
                 .map((product) => (
-                  <ProductCard
-                    key={product._id}
-                    to={`/product/${product._id}`}
-                    image={product.productImages[0]?.url}
-                    title={product.title}
-                    brand={product?.brand?.name}
-                    price={product.price}
-                    salePrice={product.salePrice}
-                  />
+                  <ProductCard product={product} key={product?._id} />
                 ))}
         </div>
       </div>

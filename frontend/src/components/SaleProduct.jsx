@@ -1,14 +1,14 @@
 import ProductCard from "./ProductCard";
-import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import ProductSlider from "./ProductSlider";
 import SectionHeading from "./SectionHeading";
-import { useContext } from "react";
-import { AppContext } from "../context/AppContext";
+import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
+import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const SaleProduct = () => {
-  const { products, productIsLoading } = useContext(AppContext);
+  const { products, productIsLoading } = useGetAllProducts();
+
   return (
-    <div className="py-2">
+    <div className="py-2 mt-2 sm:mt-8">
       <div className="sm:mt-5">
         <div className="py-1 text-3xl">
           <SectionHeading text1={"Our"} text2={"Flash Sale"} />
@@ -23,17 +23,7 @@ const SaleProduct = () => {
               ))
             : products?.map((product) => {
                 if (product.tags.includes("sale")) {
-                  return (
-                    <ProductCard
-                      key={product._id}
-                      to={`/product/${product._id}`}
-                      image={product.productImages[0]?.url}
-                      title={product.title}
-                      brand={product.brand}
-                      price={product.price}
-                      salePrice={product.salePrice}
-                    />
-                  );
+                  return <ProductCard product={product} key={product._id} />;
                 }
               })}
         </ProductSlider>

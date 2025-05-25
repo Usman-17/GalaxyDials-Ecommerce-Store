@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { ChevronDown } from "lucide-react";
 
@@ -6,11 +6,11 @@ import ProductCard from "../components/ProductCard";
 import FilterSkeleton from "../components/Skeleton/FilterSkeleton";
 import SectionHeading from "../components/SectionHeading";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
-
-import { AppContext } from "../context/AppContext";
+import { useGetAllProducts } from "../hooks/useGetAllProducts";
+// Imports End
 
 const CollectionPage = () => {
-  const { products = [], productIsLoading } = useContext(AppContext);
+  const { products = [], productIsLoading } = useGetAllProducts();
 
   const [showFilter, setShowFilter] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -191,15 +191,7 @@ const CollectionPage = () => {
                   <ProductCardSkeleton key={index} />
                 ))
               : sortedProducts.map((product) => (
-                  <ProductCard
-                    key={product._id}
-                    to={`/product/${product._id}`}
-                    image={product.productImages[0]?.url}
-                    title={product.title}
-                    brand={product.brand}
-                    price={product.price}
-                    salePrice={product.salePrice}
-                  />
+                  <ProductCard key={product._id} product={product} />
                 ))}
           </div>
         </div>

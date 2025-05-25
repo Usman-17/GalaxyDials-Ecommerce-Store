@@ -1,12 +1,11 @@
 import ProductCard from "./ProductCard";
-import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import ProductSlider from "./ProductSlider";
 import SectionHeading from "./SectionHeading";
-import { useContext } from "react";
-import { AppContext } from "../context/AppContext";
+import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
+import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const PopularProduct = () => {
-  const { products, productIsLoading } = useContext(AppContext);
+  const { products, productIsLoading } = useGetAllProducts();
   return (
     <>
       {products && (
@@ -24,15 +23,7 @@ const PopularProduct = () => {
                 : products?.map((product) => {
                     if (product.tags.includes("popular")) {
                       return (
-                        <ProductCard
-                          key={product._id}
-                          to={`/product/${product._id}`}
-                          image={product.productImages[0]?.url}
-                          title={product.title}
-                          brand={product.brand}
-                          price={product.price}
-                          salePrice={product.salePrice}
-                        />
+                        <ProductCard key={product._id} product={product} />
                       );
                     }
                   })}
