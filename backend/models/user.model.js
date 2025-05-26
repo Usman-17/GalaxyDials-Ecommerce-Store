@@ -48,11 +48,24 @@ const userSchema = new mongoose.Schema(
       default: {},
     },
 
+    loginAttempts: {
+      type: Number,
+      default: 0,
+    },
+
+    lockUntil: {
+      type: Date,
+    },
+
     resetPasswordToken: String,
     resetPasswordExpires: Date,
   },
   { timestamps: true }
 );
+
+userSchema.virtual("isLocked").get(function () {
+  return !!(this.lockUntil && this.lockUntil > Date.now());
+});
 
 // Method to create password reset token
 userSchema.methods.createPasswordResetToken = async function () {

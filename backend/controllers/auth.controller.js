@@ -6,6 +6,9 @@ import { v2 as cloudinary } from "cloudinary";
 import { generateToken } from "../utils/generateToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 
+const MAX_LOGIN_ATTEMPTS = parseInt(process.env.MAX_LOGIN_ATTEMPTS || "5");
+const LOCK_TIME = parseInt(process.env.LOCK_TIME || "900000");
+
 // PATH     : /api/auth/signup
 // METHOD   : POST
 // ACCESS   : PUBLIC
@@ -82,29 +85,44 @@ export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate email and password
-    if (!email || !password) {
+    if (!email || !password)
       return res.status(400).json({ error: "Email and Password are required" });
-    }
 
-    // Find user by email
     const user = await User.findOne({ email });
 
-    if (!user) {
+    if (!user)
       return res.status(400).json({ error: "Invalid email or password" });
+
+    //  Check if account is locked
+    if (user.lockUntil && user.lockUntil > Date.now()) {
+      const remainingTime = Math.ceil((user.lockUntil - Date.now()) / 60000);
+
+      return res.status(403).json({
+        error: `Account is locked. Try again in ${remainingTime} minute(s).`,
+      });
     }
 
-    // Compare provided password with hashed password
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(400).json({ error: "Incorrect password" });
+      user.loginAttempts = (user.loginAttempts || 0) + 1;
+
+      if (user.loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+        user.lockUntil = new Date(Date.now() + LOCK_TIME);
+      }
+
+      await user.save();
+      return res.status(400).json({ error: "Invalid email or password" });
     }
 
-    // Generate token and set cookie
+    // Reset login attempts and unlock if password is correct
+    user.loginAttempts = 0;
+    user.lockUntil = undefined;
+
+    await user.save();
+
     generateToken(user, res);
 
-    // Send user info in response
     res.status(200).json({
       _id: user._id,
       fullName: user.fullName,

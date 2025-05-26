@@ -8,6 +8,7 @@ import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import cron from "node-cron";
+import helmet from "helmet";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
@@ -31,6 +32,7 @@ cloudinary.config({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //to parse from data(urlencoded)
 app.use(cookieParser());
+app.use(helmet());
 
 app.use(
   fileUpload({

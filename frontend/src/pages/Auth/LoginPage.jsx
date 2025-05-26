@@ -37,8 +37,13 @@ const LoginPage = () => {
       queryClient.invalidateQueries(["authUser"]);
       navigate("/");
     },
+
     onError: (error) => {
-      toast.error(error.message || "Invalid email or password");
+      if (error.message.includes("locked")) {
+        toast.error(error.message);
+      } else {
+        toast.error(error.message || "Invalid email or password");
+      }
     },
   });
 
