@@ -173,7 +173,7 @@ const CollectionPage = () => {
               <SectionHeading
                 text1={"ALL"}
                 text2={"COLLECTIONS"}
-                className="text-[12px] select-none"
+                className="text-[11.5px] select-none"
               />
             </InViewAnimation>
 

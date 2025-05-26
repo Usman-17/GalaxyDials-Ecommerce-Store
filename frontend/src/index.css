@@ -81,7 +81,7 @@ nav a.active img {
 
 @media (min-width: 768px) {
   .slick-prev {
-    left: 580px !important;
+    left: 630px !important;
   }
 
   .slick-next {
@@ -89,9 +89,21 @@ nav a.active img {
   }
 }
 
+@media (min-width: 820px) {
+  .slick-prev {
+    left: 680px !important;
+  }
+}
+
 @media (min-width: 834px) {
   .slick-prev {
-    left: 640px !important;
+    left: 700px !important;
+  }
+}
+
+@media (min-width: 884px) {
+  .slick-prev {
+    left: 750px !important;
   }
 }
 
@@ -116,6 +128,11 @@ nav a.active img {
 @media (min-width: 1350px) {
   .slick-prev {
     left: 1180px !important;
+  }
+}
+@media (min-width: 1600px) {
+  .slick-prev {
+    left: 1410px !important;
   }
 }
 

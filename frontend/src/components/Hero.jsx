@@ -18,7 +18,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="slider-container mb-7 sm:mb-5">
+    <div className="slider-container mb-7 sm:mb-0">
       <Slider {...settings}>
         <Link to="/collection" aria-label="Go to collection">
           <div>

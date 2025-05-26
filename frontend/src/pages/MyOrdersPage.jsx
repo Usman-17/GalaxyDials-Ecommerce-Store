@@ -2,17 +2,16 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { ShoppingBag, Redo } from "lucide-react";
 
-import { useContext } from "react";
-import { AppContext } from "../context/AppContext";
 import SectionHeading from "../components/SectionHeading";
 import OrderSkeleton from "../components/Skeleton/OrderSkeleton";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+// Imports End
 
 const MyOrdersPage = () => {
   const queryClient = useQueryClient();
-  const { authUser } = useContext(AppContext);
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
   const [cancellingOrderId, setCancellingOrderId] = useState(null);
 
   // Get User Order Query
@@ -56,11 +55,9 @@ const MyOrdersPage = () => {
     },
   });
 
-  console.log(orders);
-
   return (
-    <div className="border-t border-gray-300 pt-4 sm:pt-12 min-h-screen">
-      <div className="text-2xl font-semibold mb-6">
+    <div className="border-t border-gray-300 pt-4 sm:pt-8 min-h-screen">
+      <div className="sm:mb-6">
         <SectionHeading text1="My" text2="Orders" />
       </div>
 
@@ -87,7 +84,7 @@ const MyOrdersPage = () => {
                       className="w-12 h-12 rounded-md object-cover"
                     />
                     <div>
-                      <p className="sm:text-base font-medium w-80 sm:w-96">
+                      <p className="sm:text-base font-medium w-full sm:w-96">
                         {item.title}
                       </p>
                       <div className="flex gap-3 mt-1 text-base">

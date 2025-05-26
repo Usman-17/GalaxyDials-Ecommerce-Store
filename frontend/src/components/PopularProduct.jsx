@@ -6,7 +6,9 @@ import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const PopularProduct = () => {
-  const { products, productIsLoading } = useGetAllProducts();
+  const { products, productIsLoading, productIsRefetching } =
+    useGetAllProducts();
+
   return (
     <>
       {products && (
@@ -19,7 +21,7 @@ const PopularProduct = () => {
 
           <div>
             <ProductSlider>
-              {productIsLoading
+              {productIsLoading || productIsRefetching
                 ? Array.from({ length: 6 }).map((_, index) => (
                     <InViewAnimation key={index} delay={index * 0.1}>
                       <ProductCardSkeleton />

@@ -6,10 +6,11 @@ import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const SaleProduct = () => {
-  const { products, productIsLoading } = useGetAllProducts();
+  const { products, productIsLoading, productIsRefetching } =
+    useGetAllProducts();
 
   return (
-    <div className="py-2 mt-2 sm:mt-8">
+    <div className="py-2 mt-2 sm:mt-0">
       <div className="sm:mt-5">
         <InViewAnimation delay={0.1}>
           <div className="py-1 text-3xl">
@@ -20,7 +21,7 @@ const SaleProduct = () => {
 
       <div>
         <ProductSlider>
-          {productIsLoading
+          {productIsLoading || productIsRefetching
             ? Array.from({ length: 6 }).map((_, index) => (
                 <InViewAnimation key={index} delay={index * 0.1}>
                   <ProductCardSkeleton />

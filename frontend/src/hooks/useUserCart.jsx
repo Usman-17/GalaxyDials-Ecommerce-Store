@@ -1,4 +1,3 @@
-// hooks/useUserCart.js
 import { useQuery } from "@tanstack/react-query";
 
 const useUserCart = () => {

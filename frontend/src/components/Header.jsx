@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from "react";
+import { useState, useRef } from "react";
 
 import { NavLink, Link } from "react-router-dom";
 import { Search, ShoppingBag } from "lucide-react";
@@ -11,11 +11,14 @@ import collection from "../assets/products.png";
 
 import SearchModal from "./SearchModal";
 import ProfileDropdown from "./ProfileDropdown";
-import { AppContext } from "../context/AppContext";
+import { useQuery } from "@tanstack/react-query";
+import { UserRound } from "lucide-react";
+
 // Imports End
 
 const Header = () => {
-  const { authUser } = useContext(AppContext);
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const searchRef = useRef(null);
 
@@ -24,7 +27,7 @@ const Header = () => {
   };
 
   return (
-    <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[2vw]">
+    <div className="px-1 sm:px-[5vw] md:px-[7vw]  xl:px-[0.5vw] 2xl:xl:px-[1vw]">
       <div className="flex items-center justify-between py-2.5 sm:py-3 font-medium">
         <Link to={"/"}>
           <img
@@ -122,16 +125,26 @@ const Header = () => {
               <p className="hidden mt-1.5 text-md">ALL PRODUCTS</p>
             </NavLink>
 
-            <NavLink
-              to="/contact"
-              className="flex items-center gap-1 text-gray-700 hover:text-black"
-            >
-              <img src={tracking} alt="order" className="w-8" />
-              <p className="hidden mt-1.5 text-md">Orders</p>
-            </NavLink>
+            {authUser ? (
+              <NavLink
+                to="/order"
+                className="flex items-center gap-1 text-gray-700 hover:text-black"
+              >
+                <img src={tracking} alt="order" className="w-8" />
+                <p className="hidden mt-1.5 text-md">Orders</p>
+              </NavLink>
+            ) : (
+              <NavLink
+                to="/login"
+                className="flex items-center gap-1 text-gray-700 hover:text-black"
+              >
+                <UserRound size={24} />
+                <p className="hidden mt-1.5 text-md">Login</p>
+              </NavLink>
+            )}
 
             <NavLink
-              to="/about"
+              to="/contact"
               className="flex items-center gap-1 text-gray-700 hover:text-black"
             >
               <img src={inbox} alt="contact" className="w-7" />
