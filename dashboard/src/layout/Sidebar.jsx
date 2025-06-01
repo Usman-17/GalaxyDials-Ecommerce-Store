@@ -25,8 +25,8 @@ const navItems = [
     icon: <Layers2 />,
     subItems: [
       { name: "Add Product", path: "/blank" },
-      { name: "Add Brand", path: "/error-404" },
-      { name: "Add Category", path: "/error-404" },
+      { name: "Add Brand", path: "/brand/create" },
+      { name: "Add Category", path: "/category/create" },
       { name: "Add Color", path: "/error-404" },
     ],
   },
@@ -41,9 +41,9 @@ const navItems = [
     path: "/orders",
   },
   {
-    name: "Enquires",
+    name: "Enquiries",
     icon: <Mails />,
-    path: "/enquies",
+    path: "/enquiries",
   },
 ];
 
@@ -86,13 +86,13 @@ const Sidebar = () => {
   };
 
   const renderMenuItems = (items, menuType) => (
-    <ul className="flex flex-col gap-4">
+    <ul className="flex flex-col gap-3">
       {items.map((nav, index) => (
         <li key={nav.name}>
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index, menuType)}
-              className="flex items-center gap-3 ml-3 overflow-hidden text-gray-500 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-3 ml-3 overflow-hidden text-gray-500 hover:text-gray-900 transition-colors cursor-pointer "
             >
               <span>{nav.icon}</span>
               {(isExpanded || isHovered || isMobileOpen) && (
@@ -100,7 +100,7 @@ const Sidebar = () => {
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
                 <ChevronDownIcon
-                  className={`w-5 h-5 transition-transform duration-200 mt-1.5 ${
+                  className={`w-5 h-5 transition-transform duration-200 mt-1.5  ${
                     openSubmenu?.type === menuType &&
                     openSubmenu?.index === index
                       ? "rotate-180"
@@ -145,7 +145,7 @@ const Sidebar = () => {
                   <li key={subItem.name}>
                     <Link
                       to={subItem.path}
-                      className={`flex justify-between items-center px-3 py-1 rounded transition-colors ${
+                      className={`flex justify-between items-center px-3 py-1 rounded transition-colors  ${
                         isActive(subItem.path)
                           ? "bg-gray-100 text-gray-900 font-medium"
                           : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
