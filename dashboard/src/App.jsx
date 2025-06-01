@@ -12,6 +12,8 @@ import EnquiriesPage from "./pages/EnquiriesPage";
 import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
 import AddCategoryPage from "./pages/AddCategoryPage";
 import CategoryListingPage from "./pages/CategoryListingPage";
+import AddBrandPage from "./pages/AddBrandPage";
+import BrandListingPage from "./pages/BrandListingPage";
 // Imports End
 
 const App = () => {
@@ -45,6 +47,36 @@ const App = () => {
         <Route path="/" element={authUser ? <Layout /> : <LoginPage />}>
           <Route index element={authUser ? <DashboardPage /> : <LoginPage />} />
 
+          {/* Brand Routes */}
+          <Route
+            path="/brand/create"
+            element={authUser ? <AddBrandPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="brand/edit/:id"
+            element={authUser ? <AddBrandPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="brand/manage"
+            element={authUser ? <BrandListingPage /> : <Navigate to="/login" />}
+          />
+
+          {/* Category Routes */}
+          <Route
+            path="/category/create"
+            element={authUser ? <AddCategoryPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="category/edit/:id"
+            element={authUser ? <AddCategoryPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="category/manage"
+            element={
+              authUser ? <CategoryListingPage /> : <Navigate to="/login" />
+            }
+          />
+
           <Route
             path="/users"
             element={authUser ? <UsersPage /> : <LoginPage />}
@@ -63,22 +95,6 @@ const App = () => {
             path="/enquiries/:id"
             element={
               authUser ? <EnquiryDetailsPage /> : <Navigate to="/login" />
-            }
-          />
-
-          {/* Category Routes */}
-          <Route
-            path="/category/create"
-            element={authUser ? <AddCategoryPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="category/edit/:id"
-            element={authUser ? <AddCategoryPage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="category/manage"
-            element={
-              authUser ? <CategoryListingPage /> : <Navigate to="/login" />
             }
           />
         </Route>
