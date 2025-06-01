@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import EnquiriesPage from "./pages/EnquiriesPage";
 import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
+import OrdersPage from "./pages/OrdersPage";
 // Imports End
 
 const App = () => {
@@ -40,6 +41,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={authUser ? <Layout /> : <LoginPage />}>
           <Route index element={authUser ? <DashboardPage /> : <LoginPage />} />
+
+          <Route
+            path="/orders"
+            element={authUser ? <OrdersPage /> : <LoginPage />}
+          />
 
           <Route
             path="/enquiries"
