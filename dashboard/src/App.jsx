@@ -10,6 +10,8 @@ import UsersPage from "./pages/UsersPage";
 import OrdersPage from "./pages/OrdersPage";
 import EnquiriesPage from "./pages/EnquiriesPage";
 import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
+import AddCategoryPage from "./pages/AddCategoryPage";
+import CategoryListingPage from "./pages/CategoryListingPage";
 // Imports End
 
 const App = () => {
@@ -61,6 +63,22 @@ const App = () => {
             path="/enquiries/:id"
             element={
               authUser ? <EnquiryDetailsPage /> : <Navigate to="/login" />
+            }
+          />
+
+          {/* Category Routes */}
+          <Route
+            path="/category/create"
+            element={authUser ? <AddCategoryPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="category/edit/:id"
+            element={authUser ? <AddCategoryPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="category/manage"
+            element={
+              authUser ? <CategoryListingPage /> : <Navigate to="/login" />
             }
           />
         </Route>
