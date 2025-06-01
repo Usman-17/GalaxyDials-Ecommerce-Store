@@ -6,9 +6,10 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
+import UsersPage from "./pages/UsersPage";
+import OrdersPage from "./pages/OrdersPage";
 import EnquiriesPage from "./pages/EnquiriesPage";
 import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
-import OrdersPage from "./pages/OrdersPage";
 // Imports End
 
 const App = () => {
@@ -42,6 +43,10 @@ const App = () => {
         <Route path="/" element={authUser ? <Layout /> : <LoginPage />}>
           <Route index element={authUser ? <DashboardPage /> : <LoginPage />} />
 
+          <Route
+            path="/users"
+            element={authUser ? <UsersPage /> : <LoginPage />}
+          />
           <Route
             path="/orders"
             element={authUser ? <OrdersPage /> : <LoginPage />}
