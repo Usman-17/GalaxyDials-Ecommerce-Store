@@ -1,9 +1,14 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./layout/Layout";
+import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
+import "react-loading-skeleton/dist/skeleton.css";
+
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
-import { Toaster } from "react-hot-toast";
+import EnquiriesPage from "./pages/EnquiriesPage";
+import EnquiryDetailsPage from "./pages/EnquiryDetailsPage";
+// Imports End
 
 const App = () => {
   // fetch Authentication User Data
@@ -35,6 +40,18 @@ const App = () => {
       <Routes>
         <Route path="/" element={authUser ? <Layout /> : <LoginPage />}>
           <Route index element={authUser ? <DashboardPage /> : <LoginPage />} />
+
+          <Route
+            path="/enquiries"
+            element={authUser ? <EnquiriesPage /> : <LoginPage />}
+          />
+
+          <Route
+            path="/enquiries/:id"
+            element={
+              authUser ? <EnquiryDetailsPage /> : <Navigate to="/login" />
+            }
+          />
         </Route>
 
         <Route
