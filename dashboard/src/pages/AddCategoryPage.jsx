@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import SectionHeading from "../components/SectionHeading";
 import LoadingSpinner from "../components/LoadingSpinner";
+import Button from "../components/Button";
 
 const AddCategoryPage = () => {
   const [formData, setFormData] = useState({ name: "" });
@@ -78,20 +79,17 @@ const AddCategoryPage = () => {
   return (
     <>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between mb-6">
+      <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-0">
         <SectionHeading
           title={id ? "Edit Category" : "Add New Category"}
           subtitle="Fill out the details below to add a category"
         />
 
-        <div>
-          <Link to="/category/manage">
-            <button className="bg-gray-100 hover:bg-gray-200 text-sm  px-3 py-2 rounded-md transition cursor-pointer flex items-center gap-2">
-              <Undo size={18} />
-              Manage All Categories
-            </button>
-          </Link>
-        </div>
+        <Button
+          title="Manage All Categories"
+          to="/category/manage"
+          Icon={Undo}
+        />
       </div>
 
       {/* Form */}
@@ -124,7 +122,8 @@ const AddCategoryPage = () => {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full flex items-center justify-center px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 rounded-md transition cursor-pointer"
+            className="bg-black text-white px-4 py-2 rounded-full hover:bg-neutral-900
+           disabled:opacity-50 w-full cursor-pointer"
           >
             {isPending ? (
               <LoadingSpinner content="Saving..." />

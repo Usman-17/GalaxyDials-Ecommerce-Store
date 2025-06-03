@@ -5,25 +5,15 @@ import { Trash2, Redo, SquarePen } from "lucide-react";
 
 import SectionHeading from "../components/SectionHeading";
 import TableSkeleton from "../components/Skeletons/TableSkeleton";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useGetAllBrands } from "../hooks/useGetAllBrands";
+import Button from "../components/Button";
 
 const BrandListingPage = () => {
   const queryClient = useQueryClient();
 
   // Fetch all brands
-  const {
-    data: brands = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["brands"],
-    queryFn: async () => {
-      const res = await fetch("/api/brand/all");
-      if (!res.ok) throw new Error("Failed to fetch brands");
-      return res.json();
-    },
-    retry: false,
-  });
+  const { brands = [], isLoading, error } = useGetAllBrands();
 
   // Delete brand mutation
   const deleteMutation = useMutation({
@@ -50,17 +40,10 @@ const BrandListingPage = () => {
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row justify-between mb-6">
+      <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-0">
         <SectionHeading title="Brands" subtitle="Manage brands below" />
 
-        <div>
-          <Link to="/brand/create">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200 text-sm transition cursor-pointer">
-              <Redo size={18} />
-              Create New Brand
-            </button>
-          </Link>
-        </div>
+        <Button title="Create New Brand" to="/brand/create" Icon={Redo} />
       </div>
 
       {error && (

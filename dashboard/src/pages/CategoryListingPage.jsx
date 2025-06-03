@@ -5,27 +5,15 @@ import { Trash2, Redo, SquarePen } from "lucide-react";
 
 import SectionHeading from "../components/SectionHeading";
 import TableSkeleton from "../components/Skeletons/TableSkeleton";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useGetAllCategories } from "../hooks/useGetAllCategories";
+import Button from "../components/Button";
 
 const CategoryListingPage = () => {
   const queryClient = useQueryClient();
 
   // Fetch all categories
-  const {
-    data: categories = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const res = await fetch("/api/category/all");
-      if (!res.ok) throw new Error("Failed to fetch category");
-      return res.json();
-    },
-    retry: false,
-  });
-
-  console.log(categories);
+  const { categories = [], isLoading, error } = useGetAllCategories();
 
   // Delete category mutation
   const deleteMutation = useMutation({
@@ -52,17 +40,10 @@ const CategoryListingPage = () => {
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row justify-between mb-6">
+      <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-0">
         <SectionHeading title="Categories" subtitle="Manage Categories below" />
 
-        <div>
-          <Link to="/category/create">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200 text-sm transition cursor-pointer">
-              <Redo size={18} />
-              Create New Category
-            </button>
-          </Link>
-        </div>
+        <Button title="Create New Category" to="/category/create" Icon={Redo} />
       </div>
 
       {error && (
