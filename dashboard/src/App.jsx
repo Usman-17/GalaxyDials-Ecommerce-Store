@@ -14,6 +14,8 @@ import AddCategoryPage from "./pages/AddCategoryPage";
 import CategoryListingPage from "./pages/CategoryListingPage";
 import AddBrandPage from "./pages/AddBrandPage";
 import BrandListingPage from "./pages/BrandListingPage";
+import ProductListingPage from "./pages/ProductListingPage";
+import AddProductPage from "./pages/AddProductPage";
 // Imports End
 
 const App = () => {
@@ -46,6 +48,24 @@ const App = () => {
       <Routes>
         <Route path="/" element={authUser ? <Layout /> : <LoginPage />}>
           <Route index element={authUser ? <DashboardPage /> : <LoginPage />} />
+
+          {/* Product Routes */}
+          <Route
+            path="/product/create"
+            element={authUser ? <AddProductPage /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            path="product/edit/:id"
+            element={authUser ? <AddProductPage /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            path="product/manage"
+            element={
+              authUser ? <ProductListingPage /> : <Navigate to="/login" />
+            }
+          />
 
           {/* Brand Routes */}
           <Route

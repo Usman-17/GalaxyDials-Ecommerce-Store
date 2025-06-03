@@ -4,3 +4,15 @@
 body {
   font-family: "Outfit", sans-serif;
 }
+
+.jodit-workplace {
+  height: 200px !important;
+}
+
+.jodit-status-bar {
+  display: none !important;
+}
+
+.jodit-toolbar-button__button {
+  min-width: 34px !important;
+}

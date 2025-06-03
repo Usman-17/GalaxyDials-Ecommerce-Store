@@ -106,12 +106,34 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, price, category, brand, colors, tags } =
+    const { title, description, price, category, brand, quantity, colors } =
       req.body;
 
     const product = await Product.findById(id);
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+    if (!product) return res.status(404).json({ error: "Product not found" });
+
+    // --- Validate Category (name or ID) ---
+    let foundCategory = null;
+    if (category) {
+      foundCategory = await Category.findById(category).catch(() => null);
+      if (!foundCategory) {
+        foundCategory = await Category.findOne({ name: category.trim() });
+      }
+      if (!foundCategory) {
+        return res.status(400).json({ error: "Invalid category" });
+      }
+    }
+
+    // --- Validate Brand (name or ID) ---
+    let foundBrand = null;
+    if (brand) {
+      foundBrand = await Brand.findById(brand).catch(() => null);
+      if (!foundBrand) {
+        foundBrand = await Brand.findOne({ name: brand.trim() });
+      }
+      if (!foundBrand) {
+        return res.status(400).json({ error: "Invalid brand" });
+      }
     }
 
     if (title) {
@@ -126,12 +148,13 @@ export const updateProduct = async (req, res) => {
       product.slug = newSlug;
     }
 
-    if (brand) product.brand.name = brand;
-    if (category) product.category.name = category;
+    // --- Update other fields only if provided ---
     if (description) product.description = description;
     if (price) product.price = price;
+    if (quantity) product.quantity = quantity;
     if (colors) product.colors = colors;
-    if (tags) product.tags = tags;
+    if (foundCategory) product.category = foundCategory._id;
+    if (foundBrand) product.brand = foundBrand._id;
 
     // Handle product image upload
     if (req.files && req.files.productImages) {
@@ -163,13 +186,10 @@ export const updateProduct = async (req, res) => {
     }
 
     await product.save();
-    res.status(200).json({
-      success: true,
-      product,
-    });
+    res.status(200).json(product);
   } catch (error) {
-    console.error("Error in updateProduct", error.message);
-    res.status(500).json({ error: error.message });
+    console.log("Update Product Error:", error);
+    res.status(500).json({ error: "Something went wrong" });
   }
 };
 
