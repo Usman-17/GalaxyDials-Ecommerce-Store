@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./layout/Layout";
 import { Toaster } from "react-hot-toast";
-import { useQuery } from "@tanstack/react-query";
 import "react-loading-skeleton/dist/skeleton.css";
+import useGetAuth from "./hooks/useGetAuth";
 
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -20,20 +20,7 @@ import AddProductPage from "./pages/AddProductPage";
 
 const App = () => {
   // fetch Authentication User Data
-  const { data: authUser, isLoading } = useQuery({
-    queryKey: ["authUser"],
-    queryFn: async () => {
-      const res = await fetch("/api/auth/user");
-      const data = await res.json();
-      if (data.error || !res.ok) return null;
-      return data;
-    },
-
-    retry: false,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000,
-  });
+  const { data: authUser, isLoading } = useGetAuth();
 
   if (isLoading && !authUser) {
     return (
