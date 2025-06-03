@@ -106,8 +106,16 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, price, category, brand, quantity, colors } =
-      req.body;
+    const {
+      title,
+      description,
+      price,
+      category,
+      brand,
+      quantity,
+      colors,
+      tags,
+    } = req.body;
 
     const product = await Product.findById(id);
     if (!product) return res.status(404).json({ error: "Product not found" });
@@ -150,6 +158,7 @@ export const updateProduct = async (req, res) => {
 
     // --- Update other fields only if provided ---
     if (description) product.description = description;
+    if (tags) product.tags = tags;
     if (price) product.price = price;
     if (quantity) product.quantity = quantity;
     if (colors) product.colors = colors;

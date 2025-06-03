@@ -262,6 +262,7 @@ const AddProductPage = () => {
                 mode="tags"
                 className="w-full"
                 value={formData.tags}
+                placeholder="Enter or Select Tags"
                 onChange={(value) => handleSelectChange(value, "tags")}
                 tokenSeparators={[","]}
               >
@@ -279,6 +280,7 @@ const AddProductPage = () => {
                 mode="tags"
                 className="w-full"
                 value={formData.colors}
+                placeholder="Enter or Select Colors"
                 onChange={(value) => handleSelectChange(value, "colors")}
                 tokenSeparators={[","]}
               >
