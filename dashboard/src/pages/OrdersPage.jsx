@@ -6,6 +6,7 @@ import { useGetAllOrders } from "../hooks/useGetAllOrders";
 import SectionHeading from "../components/SectionHeading";
 import OrdersSkeleton from "../components/Skeletons/OrdersSkeleton";
 import SummaryCard from "../components/SummaryCard";
+import { handlePrint } from "../utils/printUtils";
 
 const OrdersPage = () => {
   const queryClient = useQueryClient();
@@ -179,7 +180,7 @@ const OrdersPage = () => {
                       Total: Rs. {order.amount.toLocaleString()}
                     </p>
 
-                    <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-4">
                       <select
                         value={order.status}
                         onChange={(e) =>
@@ -202,7 +203,13 @@ const OrdersPage = () => {
                         <option value="Cancelled">Cancelled</option>
                       </select>
 
-                      <Printer size={24} />
+                      <div>
+                        <Printer
+                          size={24}
+                          onClick={() => handlePrint(order)}
+                          className="cursor-pointer hover:text-gray-700"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
