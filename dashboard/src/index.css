@@ -5,6 +5,12 @@ body {
   font-family: "Outfit", sans-serif;
 }
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 .jodit-workplace {
   height: 200px !important;
 }

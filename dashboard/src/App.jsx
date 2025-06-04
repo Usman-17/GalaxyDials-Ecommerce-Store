@@ -1,4 +1,10 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import Layout from "./layout/Layout";
 import { Toaster } from "react-hot-toast";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -16,6 +22,7 @@ import AddBrandPage from "./pages/AddBrandPage";
 import BrandListingPage from "./pages/BrandListingPage";
 import ProductListingPage from "./pages/ProductListingPage";
 import AddProductPage from "./pages/AddProductPage";
+import { useEffect } from "react";
 // Imports End
 
 const App = () => {
@@ -30,8 +37,20 @@ const App = () => {
     );
   }
 
+  // Scroll to Top Component
+  const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+  };
+
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={authUser ? <Layout /> : <LoginPage />}>
           <Route index element={authUser ? <DashboardPage /> : <LoginPage />} />
