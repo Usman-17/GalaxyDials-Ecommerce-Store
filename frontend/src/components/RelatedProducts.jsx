@@ -15,7 +15,8 @@ const RelatedProducts = ({ category, brand }) => {
     if (products.length > 0 && category && brand) {
       const matched = products
         .filter(
-          (item) => item.category.name === category && item.brand.name === brand
+          (item) =>
+            item.category?.name === category && item.brand?.name === brand
         )
         .slice(0, 5);
       setRelated(matched);
@@ -29,8 +30,8 @@ const RelatedProducts = ({ category, brand }) => {
   if (related.length === 0) return null;
 
   return (
-    <div className="my-20">
-      <div className="text-center py-8 text-3xl">
+    <div className="my-10 mb-20">
+      <div className="text-center py-2 text-3xl">
         <SectionHeading text1={"Related"} text2={"Products"} />
       </div>
 

@@ -26,8 +26,6 @@ const Hero = () => {
               src={banner_1}
               alt="Banner 1"
               className="h-40 sm:h-96 w-full object-contain"
-              loading="lazy"
-              decoding="async"
             />
           </div>
         </Link>
@@ -37,8 +35,6 @@ const Hero = () => {
               src={banner_2}
               alt="Banner 2"
               className="h-40 sm:h-96 w-full object-contain"
-              loading="lazy"
-              decoding="async"
             />
           </div>
         </Link>
@@ -48,8 +44,6 @@ const Hero = () => {
               src={banner_3}
               alt="Banner 3"
               className="h-40 sm:h-96 w-full object-contain"
-              loading="lazy"
-              decoding="async"
             />
           </div>
         </Link>

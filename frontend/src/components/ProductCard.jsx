@@ -10,7 +10,7 @@ const ProductCard = ({ product }) => {
             <img
               src={product?.productImages[0]?.url}
               alt={product?.title}
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0"
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0 "
               loading="lazy"
               decoding="async"
             />
@@ -27,12 +27,13 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Product Info */}
-        <div className="py-2 px-2">
+        <div className="py-2 px-0.5 sm:px-2">
           <p className="text-xs sm:text-sm text-gray-500">
-            {product?.brand.name}
+            {product?.brand?.name || ""}
           </p>
+
           <h3
-            className="font-medium text-xs sm:text-sm md:text-base tracking-tight text-gray-800"
+            className="font-medium text-xs sm:text-sm md:text-sm tracking-tight text-gray-800"
             style={{
               display: "-webkit-box",
               WebkitLineClamp: 2,

@@ -70,7 +70,7 @@ const ProductPage = () => {
 
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 pt-5 sm:pt-0">
         {/* Images */}
-        <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
+        {/* <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
           <div className="flex sm:flex-col sm:w-[17.5%] w-full gap-1 sm:gap-0 overflow-y-auto max-h-[510px]">
             {product?.productImages?.map((image, index) => (
               <img
@@ -93,15 +93,45 @@ const ProductPage = () => {
               decoding="async"
             />
           </div>
+        </div> */}
+
+        <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
+          {/* Thumbnails */}
+          <div className="flex sm:flex-col sm:w-[17.5%] w-full gap-1 sm:gap-0 overflow-y-auto max-h-[510px]">
+            {product?.productImages?.map((image, index) => (
+              <img
+                key={index}
+                src={image.url}
+                alt={`Thumbnail ${index + 1}`}
+                onClick={() => handleImageClick(image.url)}
+                className="w-[20.5%] sm:w-full sm:mb-3 cursor-pointer rounded-md transition-transform duration-300 transform hover:scale-105 object-contain"
+              />
+            ))}
+          </div>
+
+          {/* Main Image */}
+          <div className="w-full sm:w-[82.5%] flex items-center justify-center">
+            <div className="w-full sm:h-[510px] relative">
+              <InnerImageZoom
+                src={activeImage || mainImageUrl}
+                zoomType="hover"
+                zoomScale={1}
+                className="rounded-md object-contain sm:h-full w-full"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Product Info */}
         <div className="flex-1">
           <h4 className="text-gray-600 text-sm sm:text-base uppercase">
-            {product?.brand.name}
+            {product?.brand?.name || ""}
           </h4>
+
           <h1
-            className="font-medium text-2xl sm:mt-1 tracking-wide"
+            className="font-medium text-md sm:text-lg sm:mt-1 tracking-normal sm:tracking-wide"
             style={{ lineHeight: "1.1" }}
           >
             {product?.title}
@@ -241,8 +271,8 @@ const ProductPage = () => {
 
       {/* Related products */}
       <RelatedProducts
-        category={product.category.name}
-        brand={product.brand.name}
+        category={product.category.name || ""}
+        brand={product?.brand?.name || ""}
       />
     </div>
   );

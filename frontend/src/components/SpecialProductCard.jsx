@@ -4,7 +4,7 @@ const SpecialProductCard = ({ product }) => {
   return (
     <Link
       to={`/product/${product._id}`}
-      className="group block max-w-4xl mx-auto rounded-xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-sm hover:shadow-md transition-shadow duration-400 bg-white"
+      className="group block max-w-4xl mx-auto rounded-xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-sm transition-shadow duration-400 bg-white"
     >
       <div className="flex flex-col sm:flex-row">
         {/* Image Side */}
@@ -27,14 +27,14 @@ const SpecialProductCard = ({ product }) => {
         <div className="px-4 sm:px-6 py-5 sm:py-3 flex flex-col sm:w-2/3 rounded-b-3xl sm:rounded-r-3xl sm:rounded-bl-none bg-white">
           <div>
             <p className="uppercase tracking-widest font-semibold text-xs sm:text-sm text-gray-500">
-              {product?.brand.name}
+              {product?.brand?.name || ""}
             </p>
 
             <p className="text-red-600 font-semibold text-sm">
               Limited Time Deals
             </p>
 
-            <h3 className="text-xl font-bold mb-1 line-clamp-2 leading-tight">
+            <h3 className="text-md font-semibold mb-2 line-clamp-2 leading-tight">
               {product?.title}
             </h3>
 
@@ -55,7 +55,7 @@ const SpecialProductCard = ({ product }) => {
 
           {/* Price & button */}
           <div className="flex items-center justify-between sm:mt-10">
-            <p className="text-3xl font-bold text-gray-800">
+            <p className="text-2xl font-bold text-gray-800">
               Rs. {product?.price.toLocaleString()}
             </p>
 

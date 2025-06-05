@@ -5,6 +5,7 @@ import { Input, Select } from "antd";
 import JoditEditor from "jodit-react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Button from "../components/Button";
 import SectionHeading from "../components/SectionHeading";
@@ -22,6 +23,7 @@ const AddProductPage = () => {
     tags: [],
     price: "",
     productImages: [],
+    existingImages: [],
   });
 
   const [productImages, setProductImages] = useState([]);
@@ -43,8 +45,8 @@ const AddProductPage = () => {
         setFormData({
           title: data.title || "",
           description: data.description || "",
-          category: data.category._id || "",
-          brand: data.brand._id || "",
+          category: data.category?._id || "",
+          brand: data.brand?._id || "",
           colors: data.colors || [],
           tags: data.tags || [],
           price: data.price || "",
@@ -78,7 +80,9 @@ const AddProductPage = () => {
 
     onSuccess: () => {
       toast.success(
-        `Product "${formData.title}" ${id ? "updated" : "created"} successfully`
+        `Product "${formData.title.slice(0, 10)}" ${
+          id ? "updated" : "created"
+        } successfully`
       );
 
       navigate("/product/manage");
@@ -221,9 +225,20 @@ const AddProductPage = () => {
           </div>
 
           {/* Right Side */}
-          <div className="space-y-6.5 mt-1">
+          <div className="space-y-3 mt-1">
             <div>
-              <label className="block mb-1 text-sm font-medium">Category</label>
+              <div className="flex items-center justify-between ">
+                <label htmlFor="category" className="text-sm font-medium">
+                  Category
+                </label>
+                <Link
+                  to="/category/create"
+                  className="text-xs text-blue-600 hover:underline"
+                >
+                  Create New Category
+                </Link>
+              </div>
+
               <Select
                 className="w-full"
                 value={formData.category}
@@ -240,7 +255,17 @@ const AddProductPage = () => {
             </div>
 
             <div>
-              <label className="block mb-1 text-sm font-medium">Brand</label>
+              <div className="flex items-center justify-between ">
+                <label htmlFor="brand" className="text-sm font-medium">
+                  Brand
+                </label>
+                <Link
+                  to="/brand/create"
+                  className="text-xs text-blue-600 hover:underline"
+                >
+                  Create New Brand
+                </Link>
+              </div>
               <Select
                 className="w-full"
                 value={formData.brand}

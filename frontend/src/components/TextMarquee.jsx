@@ -25,7 +25,7 @@ const TextMarquee = () => {
           {scrollingMessages.map((msg, idx) => (
             <div
               key={idx}
-              className="marquee-item inline-flex items-center mr-[120px] text-[15px] font-medium text-[#111111]"
+              className="marquee-item inline-flex items-center mr-[120px] text-xs sm:text-[15px] font-medium text-[#111111]"
             >
               <StarIcon />
               <span>{msg}</span>

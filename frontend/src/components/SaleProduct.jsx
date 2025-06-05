@@ -10,7 +10,7 @@ const SaleProduct = () => {
     useGetAllProducts();
 
   return (
-    <div className="py-2 mt-2 sm:mt-0">
+    <div>
       <div className="sm:mt-5">
         <InViewAnimation delay={0.1}>
           <div className="py-1 text-3xl">
