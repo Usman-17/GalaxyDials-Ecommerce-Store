@@ -7,11 +7,16 @@ import SectionHeading from "../components/SectionHeading";
 import InViewAnimation from "../components/InViewAnimation";
 import FilterSkeleton from "../components/Skeleton/FilterSkeleton";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
+
+import { useGetAllBrands } from "../hooks/useGetAllBrands";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
+import { useGetAllCategories } from "../hooks/useGetAllCategories";
 // Imports End
 
 const CollectionPage = () => {
+  const { brands = [], brandIsLoading } = useGetAllBrands();
   const { products = [], productIsLoading } = useGetAllProducts();
+  const { categories = [], categoryIsLoading } = useGetAllCategories();
 
   const [showFilter, setShowFilter] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -33,24 +38,6 @@ const CollectionPage = () => {
         : [...prevSelected, brandName]
     );
   };
-
-  const uniqueBrands = [
-    ...new Map(
-      products
-        .map((p) => p.brand)
-        .filter(Boolean)
-        .map((brand) => [brand._id, brand])
-    ).values(),
-  ];
-
-  const uniqueCategories = [
-    ...new Map(
-      products
-        .map((p) => p.category)
-        .filter(Boolean)
-        .map((category) => [category._id, category])
-    ).values(),
-  ];
 
   const filteredProducts = products.filter((product) => {
     const categoryName = product.category?.name || product.category;
@@ -112,23 +99,25 @@ const CollectionPage = () => {
             } sm:block`}
           >
             <p className="uppercase mb-3 text-sm font-medium">Categories</p>
-            {productIsLoading ? (
+
+            {categoryIsLoading ? (
               <FilterSkeleton />
             ) : (
-              <div className="flex flex-col gap-3 text-sm text-gray-700">
-                {uniqueCategories.map((category, index) => (
+              <div className="flex flex-col gap-3 text-sm text-gray-700 select-none">
+                {categories.map((category, index) => (
                   <label
                     key={index}
                     className="flex items-center gap-2 cursor-pointer"
                   >
                     <input
                       type="checkbox"
-                      className="w-4 h-4 accent-gray-700"
+                      className="w-4 h-4 accent-rose-500"
                       value={category.name}
                       onChange={() => handleCategoryChange(category.name)}
                       checked={selectedCategories.includes(category.name)}
+                      aria-label={`Filter by ${category.name}`}
                     />
-                    <span className="font-medium">{category.name}</span>
+                    <span className="font-medium">{category?.name}</span>
                   </label>
                 ))}
               </div>
@@ -142,21 +131,22 @@ const CollectionPage = () => {
             } sm:block`}
           >
             <p className="uppercase mb-3 text-sm font-medium">Brands</p>
-            {productIsLoading ? (
+            {brandIsLoading ? (
               <FilterSkeleton />
             ) : (
-              <div className="flex flex-col gap-3 text-sm text-gray-700">
-                {uniqueBrands.map((brand) => (
+              <div className="flex flex-col gap-3 text-sm text-gray-700 select-none">
+                {brands.map((brand) => (
                   <label
                     key={brand._id}
                     className="flex items-center gap-2 cursor-pointer"
                   >
                     <input
                       type="checkbox"
-                      className="w-4 h-4 accent-gray-700"
+                      className="w-4 h-4 accent-rose-500"
                       value={brand.name}
                       onChange={() => handleBrandChange(brand.name)}
                       checked={selectedBrands.includes(brand.name)}
+                      aria-label={`Filter by ${brand.name}`}
                     />
                     <span className="font-medium">{brand.name}</span>
                   </label>
@@ -190,15 +180,21 @@ const CollectionPage = () => {
 
           {/* All Products */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 gap-y-6">
-            {productIsLoading
-              ? Array.from({ length: 10 }).map((_, index) => (
-                  <ProductCardSkeleton key={index} />
-                ))
-              : sortedProducts.map((product, index) => (
-                  <InViewAnimation key={product._id} delay={index * 0.1}>
-                    <ProductCard key={product._id} product={product} />
-                  </InViewAnimation>
-                ))}
+            {productIsLoading ? (
+              Array.from({ length: 10 }).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))
+            ) : sortedProducts.length === 0 ? (
+              <p className="col-span-full text-center text-sm text-gray-500 flex justify-center py-20 items-center">
+                No products match your selected filters.
+              </p>
+            ) : (
+              sortedProducts.map((product, index) => (
+                <InViewAnimation key={product._id} delay={index * 0.1}>
+                  <ProductCard product={product} />
+                </InViewAnimation>
+              ))
+            )}
           </div>
         </div>
       </div>
