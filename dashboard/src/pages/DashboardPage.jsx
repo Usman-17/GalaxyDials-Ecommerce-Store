@@ -5,6 +5,7 @@ import SaleCard from "../components/SaleCard";
 import RecentOrders from "../components/RecentOrders";
 import { useGetAllOrders } from "../hooks/useGetAllOrders";
 import { useGetAllUsers } from "../hooks/useGetAllUsers";
+import RecentProducts from "../components/RecentProducts";
 
 const DashboardPage = () => {
   const { orders = [] } = useGetAllOrders();
@@ -39,6 +40,7 @@ const DashboardPage = () => {
 
       {/* RecentOrders Table */}
       <RecentOrders orders={orders} />
+      <RecentProducts />
     </div>
   );
 };

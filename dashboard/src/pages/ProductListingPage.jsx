@@ -6,24 +6,12 @@ import { Trash2, Redo, SquarePen } from "lucide-react";
 import Button from "../components/Button";
 import SectionHeading from "../components/SectionHeading";
 import TableSkeleton from "../components/Skeletons/TableSkeleton";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const ProductListingPage = () => {
   const queryClient = useQueryClient();
-
-  const {
-    data: products = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const res = await fetch("/api/product/all");
-      if (!res.ok) throw new Error("Failed to fetch products");
-      return res.json();
-    },
-    retry: false,
-  });
+  const { products = [], productIsLoading, productError } = useGetAllProducts();
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
@@ -57,11 +45,11 @@ const ProductListingPage = () => {
         <Button title="Create Product" to="/product/create" Icon={Redo} />
       </div>
 
-      {error && (
-        <p className="text-red-600 font-medium mb-4">{error.message}</p>
+      {productError && (
+        <p className="text-red-600 font-medium mb-4">{productError.message}</p>
       )}
 
-      {isLoading ? (
+      {productIsLoading ? (
         <TableSkeleton />
       ) : products.length > 0 ? (
         <div className="overflow-x-auto rounded-xl shadow bg-white">
