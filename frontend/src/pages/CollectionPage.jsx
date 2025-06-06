@@ -4,6 +4,7 @@ import { ChevronDown } from "lucide-react";
 
 import ProductCard from "../components/ProductCard";
 import SectionHeading from "../components/SectionHeading";
+import Animation from "../components/Animation";
 import InViewAnimation from "../components/InViewAnimation";
 import FilterSkeleton from "../components/Skeleton/FilterSkeleton";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
@@ -190,9 +191,9 @@ const CollectionPage = () => {
               </p>
             ) : (
               sortedProducts.map((product, index) => (
-                <InViewAnimation key={product._id} delay={index * 0.1}>
+                <Animation key={product._id} delay={index * 0.1}>
                   <ProductCard product={product} />
-                </InViewAnimation>
+                </Animation>
               ))
             )}
           </div>

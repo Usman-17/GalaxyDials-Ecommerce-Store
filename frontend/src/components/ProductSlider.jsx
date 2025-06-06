@@ -16,8 +16,8 @@ const ProductSlider = ({ children, slidesToShow = 6 }) => {
     initialSlide: 0,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 700,
-    autoplaySpeed: 8500,
+    speed: 500,
+    autoplaySpeed: 2500,
 
     responsive: [
       {

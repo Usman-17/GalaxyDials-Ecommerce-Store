@@ -1,6 +1,7 @@
 import ProductCard from "./ProductCard";
 import ProductSlider from "./ProductSlider";
 import SectionHeading from "./SectionHeading";
+import Animation from "./Animation";
 import InViewAnimation from "./InViewAnimation";
 import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
@@ -23,16 +24,14 @@ const SaleProduct = () => {
         <ProductSlider>
           {productIsLoading || productIsRefetching
             ? Array.from({ length: 6 }).map((_, index) => (
-                <InViewAnimation key={index} delay={index * 0.1}>
-                  <ProductCardSkeleton />
-                </InViewAnimation>
+                <ProductCardSkeleton key={index} />
               ))
             : products?.map((product, index) => {
                 if (product.tags.includes("sale")) {
                   return (
-                    <InViewAnimation key={product._id} delay={index * 0.1}>
+                    <Animation key={product._id} delay={index * 0.1}>
                       <ProductCard product={product} key={product._id} />
-                    </InViewAnimation>
+                    </Animation>
                   );
                 }
               })}
