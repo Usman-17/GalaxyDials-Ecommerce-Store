@@ -64,11 +64,7 @@ cron.schedule("0 0 1 * *", async () => {
       cancelledAt: { $lte: dateThreshold },
     });
 
-    // Delete Delivered orders
-    const deliveredResult = await Order.deleteMany({
-      status: "Delivered",
-      deliveredAt: { $lte: dateThreshold },
-    });
+    console.log(`Deleted ${cancelledResult.deletedCount} cancelled orders.`);
   } catch (error) {
     console.error("Error in cron job deleting orders:", error);
   }
