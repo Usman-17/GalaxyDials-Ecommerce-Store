@@ -135,50 +135,6 @@ export const userLogin = async (req, res) => {
   }
 };
 
-// PATH     : /api/auth/login/admin
-// METHOD   : POST
-// ACCESS   : PUBLIC
-// DESC     : Login a Admin
-export const adminLogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // Validate email and password
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email and Password are required" });
-    }
-
-    // Find admin by email
-    const admin = await User.findOne({ email });
-
-    // Check if user exists and is an admin
-    if (!admin || admin.role !== "admin") {
-      return res.status(403).json({ error: "Not Authorized" });
-    }
-
-    // Compare provided password with hashed password
-    const isPasswordCorrect = await bcrypt.compare(password, admin.password);
-
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ error: "Incorrect password" });
-    }
-
-    // Generate token and set cookie for the admin
-    generateToken(admin, res);
-
-    // Send user info in response
-    res.status(200).json({
-      _id: admin._id,
-      fullName: admin.fullName,
-      email: admin.email,
-      mobile: admin.mobile,
-    });
-  } catch (error) {
-    console.error("Error in Adminlogin controller:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
 // PATH     : /api/auth/logout
 // METHOD   : POST
 // ACCESS   : PUBLIC

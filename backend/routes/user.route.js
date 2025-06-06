@@ -10,8 +10,9 @@ import {
 } from "../controllers/user.controller.js";
 
 router.get("/:id", protectRoute, getUser);
-router.get("/", getAllUsers);
 
+// Admin Routes
+router.get("/", protectRoute, isAdmin, getAllUsers);
 router.put("/role/:id", protectRoute, isAdmin, updateUserRole);
 
 export default router;

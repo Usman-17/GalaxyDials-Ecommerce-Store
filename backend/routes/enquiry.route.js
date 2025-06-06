@@ -7,12 +7,12 @@ import {
   getAllEnquires,
   getEnquiry,
 } from "../controllers/enquiry.controller.js";
-import { protectRoute } from "../middlewares/authMiddleware.js";
+import { isAdmin, protectRoute } from "../middlewares/authMiddleware.js";
 // Imports End
 
-router.get("/all", getAllEnquires);
-router.get("/:id", protectRoute, getEnquiry);
+router.get("/all", protectRoute, isAdmin, getAllEnquires);
+router.get("/:id", protectRoute, isAdmin, getEnquiry);
 router.post("/create", createEnquiry);
-router.delete("/:id", protectRoute, deleteEnquiry);
+router.delete("/:id", protectRoute, isAdmin, deleteEnquiry);
 
 export default router;

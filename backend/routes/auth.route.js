@@ -2,7 +2,6 @@ import express from "express";
 const router = express.Router();
 
 import {
-  adminLogin,
   forgotPassword,
   getUser,
   logout,
@@ -23,8 +22,5 @@ router.put("/reset-password/:token", resetPassword);
 // Protected user routes
 router.get("/user", protectRoute, getUser);
 router.put("/profile/update", protectRoute, updateProfile);
-
-// Admin protected route
-router.post("/login/admin", adminLogin);
 
 export default router;

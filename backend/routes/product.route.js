@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-import { protectRoute } from "../middlewares/authMiddleware.js";
+import { isAdmin, protectRoute } from "../middlewares/authMiddleware.js";
 import {
   createProduct,
   deleteProduct,
@@ -13,8 +13,10 @@ import {
 
 router.get("/all", getAllproducts);
 router.get("/:id", getProduct);
-router.post("/create", protectRoute, createProduct);
-router.put("/update/:id", protectRoute, updateProduct);
-router.delete("/:id", protectRoute, deleteProduct);
+
+// Admin Routes
+router.post("/create", protectRoute, isAdmin, createProduct);
+router.put("/update/:id", protectRoute, isAdmin, updateProduct);
+router.delete("/:id", protectRoute, isAdmin, deleteProduct);
 
 export default router;
