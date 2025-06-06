@@ -41,7 +41,7 @@ const RecentProducts = () => {
                   />
                 </td>
 
-                <td className="px-2 sm:px-6 py-4 truncate max-w-xs">
+                <td className="px-2 sm:px-6 py-4 truncate max-w-xs font-medium text-gray-900">
                   {product.title}
                 </td>
 
@@ -54,7 +54,7 @@ const RecentProducts = () => {
                 </td>
 
                 <td className="px-2 sm:px-6 py-4 truncate max-w-xs">
-                  Rs. {product.price}
+                  Rs. {product.price.toLocaleString()}
                 </td>
 
                 <td className="px-2 sm:px-6 py-4 whitespace-nowrap">
