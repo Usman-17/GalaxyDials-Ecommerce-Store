@@ -19,6 +19,7 @@ const AddProductPage = () => {
     description: "",
     category: "",
     brand: "",
+    sold: "",
     colors: [],
     tags: [],
     price: "",
@@ -50,6 +51,7 @@ const AddProductPage = () => {
           colors: data.colors || [],
           tags: data.tags || [],
           price: data.price || "",
+          sold: data.sold || "",
           productImages: data.productImages || [],
         });
 
@@ -225,7 +227,18 @@ const AddProductPage = () => {
           </div>
 
           {/* Right Side */}
-          <div className="space-y-3 mt-1">
+          <div className="space-y-3 mt-5">
+            <div>
+              <label className="block mb-1 text-sm font-medium">Sold</label>
+              <Input
+                placeholder="Enter number of products sold"
+                name="sold"
+                type="text"
+                value={formData.sold}
+                onChange={handleInputChange}
+              />
+            </div>
+
             <div>
               <div className="flex items-center justify-between ">
                 <label htmlFor="category" className="text-sm font-medium">
@@ -235,7 +248,7 @@ const AddProductPage = () => {
                   to="/category/create"
                   className="text-xs text-blue-600 hover:underline"
                 >
-                  Create New Category
+                  Add New Category
                 </Link>
               </div>
 
@@ -263,7 +276,7 @@ const AddProductPage = () => {
                   to="/brand/create"
                   className="text-xs text-blue-600 hover:underline"
                 >
-                  Create New Brand
+                  Add New Brand
                 </Link>
               </div>
               <Select

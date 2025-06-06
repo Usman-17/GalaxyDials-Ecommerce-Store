@@ -18,15 +18,14 @@ const SpecialProduct = () => {
           </InViewAnimation>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {products?.slice(0, 2).map((product, index) => {
-              if (product.tags.includes("special")) {
-                return (
-                  <InViewAnimation key={product._id} delay={index * 0.1}>
-                    <SpecialProductCard product={product} key={product?._id} />
-                  </InViewAnimation>
-                );
-              }
-            })}
+            {products
+              ?.filter((product) => product.tags.includes("special"))
+              .slice(0, 2)
+              .map((product, index) => (
+                <InViewAnimation key={product._id} delay={index * 0.1}>
+                  <SpecialProductCard product={product} />
+                </InViewAnimation>
+              ))}
           </div>
         </div>
       )}

@@ -24,7 +24,7 @@ const SpecialProductCard = ({ product }) => {
         </div>
 
         {/* Content side */}
-        <div className="px-4 sm:px-6 py-5 sm:py-3 flex flex-col sm:w-2/3 rounded-b-3xl sm:rounded-r-3xl sm:rounded-bl-none bg-white">
+        <div className="px-3 sm:px-6 py-5 sm:py-3 flex flex-col sm:w-2/3 rounded-b-3xl sm:rounded-r-3xl sm:rounded-bl-none bg-white">
           <div>
             <p className="uppercase tracking-widest font-semibold text-xs sm:text-sm text-gray-500">
               {product?.brand?.name || ""}
@@ -38,18 +38,26 @@ const SpecialProductCard = ({ product }) => {
               {product?.title}
             </h3>
 
-            {/* Rating */}
-            <div className="flex items-center space-x-1 mb-5 sm:mb-0">
-              {[...Array(5)].map((_, i) => (
-                <svg
-                  key={i}
-                  className="w-5 h-5 text-yellow-400"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" />
-                </svg>
-              ))}
+            {/* Rating & Sold*/}
+            <div className="flex items-center gap-3 mb-5 sm:mb-0">
+              <div className="flex items-center ">
+                {[...Array(5)].map((_, i) => (
+                  <svg
+                    key={i}
+                    className="w-5 h-5 text-yellow-400"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" />
+                  </svg>
+                ))}
+              </div>
+
+              {product?.sold && (
+                <div className="mt-0.5 sm:mt-0 text-sm text-gray-600 font-medium">
+                  {product?.sold}+ Sold
+                </div>
+              )}
             </div>
           </div>
 

@@ -46,9 +46,17 @@ const ProductCard = ({ product }) => {
           </h3>
 
           {/* Price */}
-          <p className="text-lg font-semibold text-gray-900">
-            Rs. {product?.price.toLocaleString()}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-lg font-semibold text-gray-900">
+              Rs. {product?.price.toLocaleString()}
+            </p>
+
+            {product?.sold && (
+              <div className="mt-0.5 sm:mt-0 text-xs sm:text-[12.5px] text-gray-600 font-medium">
+                {product?.sold}+ Sold
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Link>

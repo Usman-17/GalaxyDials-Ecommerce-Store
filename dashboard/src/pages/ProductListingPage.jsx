@@ -62,6 +62,7 @@ const ProductListingPage = () => {
                 <th className="px-2 sm:px-6 py-4 text-left">Image</th>
                 <th className="px-2 sm:px-6 py-4 text-left">Title</th>
                 <th className="px-2 sm:px-6 py-4 text-left">Category</th>
+                <th className="px-2 sm:px-6 py-4 text-left">Sold</th>
                 <th className="px-2 sm:px-6 py-4 text-left">Price</th>
                 <th className="px-2 sm:px-6 py-4 text-left">Action</th>
                 <th className="px-2 sm:px-6 py-4 text-left">Updated Date</th>
@@ -81,18 +82,26 @@ const ProductListingPage = () => {
                     <img
                       src={product?.productImages[0]?.url}
                       alt="Product"
-                      className="w-12 h-12 object-fit  rounded"
+                      className="w-12 h-12 object-fit rounded"
                     />
                   </td>
-                  <td className="px-2 sm:px-6 py-4 truncate max-w-xs">
+
+                  <td className="px-2 sm:px-6 py-4 truncate max-w-[250px]">
                     {product.title}
                   </td>
-                  <td className="px-2 sm:px-6 py-4 truncate max-w-xs">
+
+                  <td className="px-2 sm:px-6 py-4 truncate max-w-xs text-center">
                     {product.category?.name}
                   </td>
-                  <td className="px-2 sm:px-6 py-4 truncate max-w-xs">
+
+                  <td className="px-2 sm:px-6 py-4 truncate max-w-xs text-center">
+                    {product.sold}
+                  </td>
+
+                  <td className="px-2 sm:px-6 py-4 truncate max-w-xs text-center">
                     {product.price}
                   </td>
+
                   <td className="px-2 sm:px-6 py-4">
                     <div className="flex items-center gap-4">
                       <Link
@@ -122,7 +131,7 @@ const ProductListingPage = () => {
                     </div>
                   </td>
 
-                  <td className="px-2 sm:px-6 py-4 whitespace-nowrap">
+                  <td className="px-2 sm:px-6 py-4 whitespace-nowrap text-center">
                     {moment(product.updatedAt).format("DD MMM YYYY")}
                   </td>
                 </tr>

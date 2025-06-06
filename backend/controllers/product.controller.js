@@ -11,7 +11,7 @@ import { v2 as cloudinary } from "cloudinary";
 // DESC     : Create Product
 export const createProduct = async (req, res) => {
   try {
-    const { title, description, price, category, brand, colors, tags } =
+    const { title, description, price, category, brand, colors, tags, sold } =
       req.body;
 
     const { productImages } = req.files;
@@ -87,6 +87,7 @@ export const createProduct = async (req, res) => {
       category,
       brand,
       colors,
+      sold,
       tags,
       productImages: uploadedImages,
     });
@@ -115,6 +116,7 @@ export const updateProduct = async (req, res) => {
       quantity,
       colors,
       tags,
+      sold,
     } = req.body;
 
     const product = await Product.findById(id);
@@ -161,6 +163,7 @@ export const updateProduct = async (req, res) => {
     if (tags) product.tags = tags;
     if (price) product.price = price;
     if (quantity) product.quantity = quantity;
+    if (sold) product.sold = sold;
     if (colors) product.colors = colors;
     if (foundCategory) product.category = foundCategory._id;
     if (foundBrand) product.brand = foundBrand._id;
