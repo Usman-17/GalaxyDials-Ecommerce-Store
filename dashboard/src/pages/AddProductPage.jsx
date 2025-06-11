@@ -323,6 +323,11 @@ const AddProductPage = () => {
                 tokenSeparators={[","]}
               >
                 {[
+                  "Gold",
+                  "Rose Gold",
+                  "Silver",
+                  "Silver Black",
+                  "Gold Black",
                   "Red",
                   "Blue",
                   "Green",
@@ -333,8 +338,6 @@ const AddProductPage = () => {
                   "Orange",
                   "Pink",
                   "Brown",
-                  "Golden",
-                  "Silver",
                 ].map((color) => (
                   <Select.Option key={color} value={color}>
                     {color}
