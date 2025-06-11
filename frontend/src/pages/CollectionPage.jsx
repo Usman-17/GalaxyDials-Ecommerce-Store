@@ -77,9 +77,9 @@ const CollectionPage = () => {
         <link rel="canonical" href="https://www.galaxydials.com/collections" />
       </Helmet>
 
-      <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-3 sm:pt-10 border-t">
+      <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-3 sm:pt-5 border-t sm:h-[calc(100vh)] overflow-hidden">
         {/* Left Side Filter  */}
-        <div className="min-w-60 md:min-w-40 lg:min-w-60">
+        <div className="min-w-60 md:min-w-40 lg:min-w-60 h-full overflow-y-auto sticky top-0">
           <p
             onClick={() => setShowFilter(!showFilter)}
             className="my-2 text-xl uppercase flex items-center gap-1 cursor-pointer"
@@ -158,7 +158,7 @@ const CollectionPage = () => {
         </div>
 
         {/* Right Side All Products */}
-        <div className="flex-1 mb-20">
+        <div className="flex-1 overflow-y-auto px-0 sm:px-4 mb-20">
           <div className="flex justify-between items-center text-xs sm:text-2xl mb-2 gap-6">
             <InViewAnimation delay={0.1}>
               <SectionHeading
@@ -180,7 +180,7 @@ const CollectionPage = () => {
           </div>
 
           {/* All Products */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 gap-y-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 gap-y-0">
             {productIsLoading ? (
               Array.from({ length: 10 }).map((_, index) => (
                 <ProductCardSkeleton key={index} />

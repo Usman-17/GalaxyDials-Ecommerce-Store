@@ -7,8 +7,7 @@ import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const SaleProduct = () => {
-  const { products, productIsLoading, productIsRefetching } =
-    useGetAllProducts();
+  const { products, productIsLoading } = useGetAllProducts();
 
   return (
     <div>
@@ -22,7 +21,7 @@ const SaleProduct = () => {
 
       <div>
         <ProductSlider>
-          {productIsLoading || productIsRefetching
+          {productIsLoading
             ? Array.from({ length: 6 }).map((_, index) => (
                 <ProductCardSkeleton key={index} />
               ))
