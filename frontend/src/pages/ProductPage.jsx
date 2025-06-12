@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dot, Redo } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+
 import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 
@@ -10,15 +11,17 @@ import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 
 import { useQuery } from "@tanstack/react-query";
 import { useAddToCart } from "../hooks/useAddToCart";
+import ProductReviews from "../components/ProductReviews";
 // Imports End
 
 const ProductPage = () => {
+  const { id } = useParams();
+
   const [activeImage, setActiveImage] = useState("");
   const [activeTab, setActiveTab] = useState("description");
   const [color, setColor] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  const { id } = useParams();
   const { addToCart, cartIsPending } = useAddToCart();
 
   // Get Product Query
@@ -26,6 +29,7 @@ const ProductPage = () => {
     queryKey: ["product", id],
     queryFn: async () => {
       const res = await fetch(`/api/product/${id}`);
+
       if (!res.ok) throw new Error("Failed to fetch product");
       return res.json();
     },
@@ -70,31 +74,6 @@ const ProductPage = () => {
 
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 pt-5 sm:pt-0">
         {/* Images */}
-        {/* <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
-          <div className="flex sm:flex-col sm:w-[17.5%] w-full gap-1 sm:gap-0 overflow-y-auto max-h-[510px]">
-            {product?.productImages?.map((image, index) => (
-              <img
-                key={index}
-                src={image.url}
-                alt={`Thumbnail ${index + 1}`}
-                onClick={() => handleImageClick(image.url)}
-                className="w-[20.5%] sm:w-full sm:mb-3 cursor-pointer rounded-md transition-transform duration-300 transform hover:scale-105 object-contain"
-              />
-            ))}
-          </div>
-
-          <div className="w-full sm:w-[80%] lg:w-[90%] flex items-center justify-center">
-            <InnerImageZoom
-              src={activeImage || mainImageUrl}
-              zoomType="hover"
-              zoomScale={1}
-              className="rounded-md object-contain"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        </div> */}
-
         <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
           {/* Thumbnails */}
           <div className="flex sm:flex-col sm:w-[17.5%] w-full gap-1 sm:gap-0 overflow-y-auto max-h-[510px]">
@@ -205,7 +184,7 @@ const ProductPage = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Tabs - Description & Reviews */}
       <div className="mt-10 sm:mt-20">
         <div className="flex border-b">
           <button
@@ -216,13 +195,14 @@ const ProductPage = () => {
           >
             Description
           </button>
+
           <button
             onClick={() => setActiveTab("reviews")}
             className={`px-5 py-3 text-sm ${
               activeTab === "reviews" ? "border-b-2 border-black" : ""
             }`}
           >
-            Reviews (122)
+            Reviews
           </button>
         </div>
 
@@ -232,39 +212,7 @@ const ProductPage = () => {
               dangerouslySetInnerHTML={{ __html: product?.description || "" }}
             />
           ) : (
-            <div className="flex flex-col gap-4">
-              <div className="flex justify-end">
-                <button className="hover:text-black mt-1 sm:mt-0 transition-opacity duration-200 text-sm">
-                  Write a Review
-                </button>
-              </div>
-              {/* Example Reviews */}
-              <div className="flex items-start gap-3">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="User Avatar"
-                  className="w-12 h-12 rounded-full"
-                />
-                <div>
-                  <p className="font-semibold">John Doe</p>
-                  <p className="text-gray-500 text-sm">
-                    Great product, loved the quality!
-                  </p>
-                  <div className="flex gap-2 mt-2">
-                    <img
-                      src="https://via.placeholder.com/100"
-                      alt="Review"
-                      className="w-16 h-16 rounded-md"
-                    />
-                    <img
-                      src="https://via.placeholder.com/100"
-                      alt="Review"
-                      className="w-16 h-16 rounded-md"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ProductReviews />
           )}
         </div>
       </div>
