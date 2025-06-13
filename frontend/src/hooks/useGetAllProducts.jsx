@@ -17,9 +17,9 @@ const useGetAllProducts = () => {
       return response.json();
     },
 
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 10,
-    retry: 1,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   return {

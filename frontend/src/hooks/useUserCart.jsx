@@ -19,7 +19,9 @@ const useUserCart = () => {
       const data = await response.json();
       return data.cartData;
     },
-    retry: false,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   return {
