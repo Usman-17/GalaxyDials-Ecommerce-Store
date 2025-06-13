@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Undo } from "lucide-react";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SectionHeading from "../components/SectionHeading";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Button from "../components/Button";

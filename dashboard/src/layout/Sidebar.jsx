@@ -13,6 +13,7 @@ import {
 
 import logo from "../assets/logo.png";
 import logo_icon from "../assets/s-logo.png";
+// Imports End
 
 const navItems = [
   {
@@ -25,9 +26,9 @@ const navItems = [
     icon: <Layers2 />,
     subItems: [
       { name: "Add Product", path: "/product/create" },
+      { name: "Manage Products", path: "/product/manage" },
       { name: "Add Brand", path: "/brand/create" },
       { name: "Add Category", path: "/category/create" },
-      { name: "Add Color", path: "/error-404" },
     ],
   },
   {
