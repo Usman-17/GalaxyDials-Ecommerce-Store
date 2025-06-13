@@ -16,7 +16,10 @@ const useGetAllProducts = () => {
       }
       return response.json();
     },
-    retry: false,
+
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   return {

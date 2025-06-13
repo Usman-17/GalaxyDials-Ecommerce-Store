@@ -22,6 +22,10 @@ const EnquiryDetailsPage = () => {
       }
       return res.json();
     },
+
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   if (isError) {

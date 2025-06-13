@@ -16,7 +16,10 @@ const EnquiriesPage = () => {
       if (!res.ok) throw new Error("Failed to fetch Enquires");
       return res.json();
     },
-    retry: false,
+
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   // Delete Enquiry Mutation
