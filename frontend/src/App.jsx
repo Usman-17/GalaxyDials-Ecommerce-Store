@@ -102,12 +102,14 @@ const App = () => {
         </Suspense>
 
         <Toaster
+          position="bottom-center"
           toastOptions={{
             style: {
               background: "#363636",
               color: "#fffbfb",
               fontFamily: "outfit",
               fontSize: "13px",
+              padding: "8px 16px",
             },
           }}
         />
