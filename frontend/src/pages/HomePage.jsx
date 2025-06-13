@@ -7,7 +7,7 @@ import ProductCard from "../components/ProductCard";
 import TextMarquee from "../components/TextMarquee";
 import SpecialProducts from "../components/SpecialProducts";
 import PopularProduct from "../components/PopularProduct";
-import SaleProducts from "../components/SalaProducts";
+import SaleProducts from "../components/SaleProducts";
 import InViewAnimation from "../components/InViewAnimation";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";

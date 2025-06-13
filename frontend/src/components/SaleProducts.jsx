@@ -5,7 +5,7 @@ import SectionHeading from "./SectionHeading";
 import SaleProductCard from "./SpecialProductCard";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
-const SalaProducts = () => {
+const SaleProducts = () => {
   const { products } = useGetAllProducts();
 
   const saleProducts = products?.filter((product) =>
@@ -65,4 +65,4 @@ const SalaProducts = () => {
   );
 };
 
-export default SalaProducts;
+export default SaleProducts;
