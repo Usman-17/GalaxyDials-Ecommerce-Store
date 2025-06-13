@@ -1,23 +1,21 @@
-import { useContext } from "react";
 import toast from "react-hot-toast";
-
-import { AppContext } from "../context/AppContext";
+import useGetAuth from "./useGetAuth";
+import { useGetAllProducts } from "./useGetAllProducts";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 // Imports End
 
 export const useAddToCart = () => {
   const queryClient = useQueryClient();
-  const { authUser, products } = useContext(AppContext);
+  const { products } = useGetAllProducts();
+  const { data: authUser } = useGetAuth();
 
   const { mutate, isPending: cartIsPending } = useMutation({
     mutationFn: async ({ itemId, color, quantity }) => {
-      if (!authUser) {
-        throw new Error("Please log in first.");
-      }
+      if (!authUser) throw new Error("Please log in first.");
 
       const product = products?.find((p) => p._id === itemId);
-      const hasColors = product?.colors?.length > 0;
 
+      const hasColors = product?.colors?.length > 0;
       if (hasColors && !color) {
         throw new Error("Please select a product color!");
       }
@@ -26,8 +24,9 @@ export const useAddToCart = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${authUser.token}`,
         },
+        credentials: "include",
+
         body: JSON.stringify({
           itemId,
           color: hasColors ? color : "default",

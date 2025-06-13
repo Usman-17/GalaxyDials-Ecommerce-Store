@@ -1,11 +1,5 @@
-import { lazy, Suspense, useContext, useEffect } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import Header from "./components/Header";
@@ -13,7 +7,7 @@ import Footer from "./components/Footer";
 import PreLoader from "./components/PreLoader";
 
 import HomePage from "./pages/HomePage";
-import { AppContext } from "./context/AppContext";
+import useGetAuth from "./hooks/useGetAuth";
 const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
@@ -31,31 +25,12 @@ const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 // imports End
 
 const App = () => {
-  const { products, productIsLoading, authUser } = useContext(AppContext);
+  const { data: authUser } = useGetAuth();
 
-  if (productIsLoading) {
-    return (
-      <div className="min-h-[100vh] flex items-center justify-center">
-        <PreLoader />
-      </div>
-    );
-  }
-
-  // Scroll to Top Component
-  const ScrollToTop = () => {
-    const { pathname } = useLocation();
-
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, [pathname]);
-
-    return null;
-  };
   return (
     <div className="px-4 sm:px-[5vw] md:px-[3vw] lg:px-[3vw]">
       <BrowserRouter>
-        <ScrollToTop />
-        <Header products={products} />
+        <Header />
 
         <Suspense
           fallback={
@@ -70,10 +45,17 @@ const App = () => {
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/place-order" element={<PlaceOrderPage />} />
-            <Route path="/order" element={<MyOrdersPage />} />
+            <Route
+              path="/order"
+              element={authUser ? <MyOrdersPage /> : <Navigate to="/login" />}
+            />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+
+            <Route
+              path="/profile"
+              element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+            />
 
             {/* Auth */}
             <Route
