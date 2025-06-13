@@ -1,3 +1,4 @@
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { ShoppingBag, Redo } from "lucide-react";
@@ -5,13 +6,13 @@ import { ShoppingBag, Redo } from "lucide-react";
 import SectionHeading from "../components/SectionHeading";
 import OrderSkeleton from "../components/Skeleton/OrderSkeleton";
 
+import useGetAuth from "../hooks/useGetAuth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 // Imports End
 
 const MyOrdersPage = () => {
   const queryClient = useQueryClient();
-  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+  const { data: authUser } = useGetAuth();
   const [cancellingOrderId, setCancellingOrderId] = useState(null);
 
   // Get User Order Query

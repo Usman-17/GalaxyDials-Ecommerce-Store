@@ -1,6 +1,4 @@
 import { createContext, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-
 import { useUserCart } from "../hooks/useUserCart";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 // imports End
@@ -10,21 +8,6 @@ export const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const { products, productIsLoading } = useGetAllProducts();
   const { cartData } = useUserCart();
-
-  // Fetching User
-  const { data: authUser } = useQuery({
-    queryKey: ["authUser"],
-    queryFn: async () => {
-      const res = await fetch("/api/auth/user");
-      const data = await res.json();
-      if (data.error || !res.ok) return null;
-      return data;
-    },
-    retry: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: true,
-    staleTime: 0,
-  });
 
   // Cart Total
   const cartTotalAmount = useMemo(() => {
@@ -71,7 +54,6 @@ export const AppContextProvider = ({ children }) => {
   const value = {
     products,
     productIsLoading,
-    authUser,
     cartTotalAmount,
   };
 

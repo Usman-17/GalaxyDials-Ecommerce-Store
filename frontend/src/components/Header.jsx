@@ -11,13 +11,13 @@ import collection from "../assets/products.png";
 
 import SearchModal from "./SearchModal";
 import ProfileDropdown from "./ProfileDropdown";
-import { useQuery } from "@tanstack/react-query";
 import { UserRound } from "lucide-react";
+import useGetAuth from "../hooks/useGetAuth";
 
 // Imports End
 
 const Header = () => {
-  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+  const { data: authUser } = useGetAuth();
 
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const searchRef = useRef(null);

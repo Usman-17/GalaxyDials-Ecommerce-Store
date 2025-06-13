@@ -6,7 +6,8 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useGetAuth from "../hooks/useGetAuth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // Imports End
 
 const ProfilePage = () => {
@@ -17,6 +18,7 @@ const ProfilePage = () => {
     profileImg: "",
     fullName: "",
     mobile: "",
+    email: "",
     currentPassword: "",
     newPassword: "",
   });
@@ -58,7 +60,7 @@ const ProfilePage = () => {
     },
   });
 
-  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+  const { data: authUser } = useGetAuth();
 
   useEffect(() => {
     if (authUser) {
@@ -166,9 +168,9 @@ const ProfilePage = () => {
           <CustomInput
             id="email"
             type="email"
-            disabled="true"
             value={formData.email}
             onChange={handleInputChange}
+            disabled
           />
         </div>
 

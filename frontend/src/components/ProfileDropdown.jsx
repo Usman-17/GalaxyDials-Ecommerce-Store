@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, LogOut, ShoppingCart, UserRound } from "lucide-react";
 import useLogout from "../hooks/useLogout";
+import useGetAuth from "../hooks/useGetAuth";
 // Imports End
 
 const ProfileDropdown = () => {
@@ -11,7 +11,7 @@ const ProfileDropdown = () => {
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
 
-  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+  const { data: authUser } = useGetAuth();
   const { logoutMutation } = useLogout();
 
   useEffect(() => {
