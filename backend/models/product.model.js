@@ -27,6 +27,11 @@ const productSchema = new mongoose.Schema(
       min: 0,
     },
 
+    secondaryPrice: {
+      type: Number,
+      min: 0,
+    },
+
     sold: {
       type: String,
       required: true,

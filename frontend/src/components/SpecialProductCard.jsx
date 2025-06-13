@@ -1,6 +1,7 @@
+import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const SpecialProductCard = ({ product }) => {
+const SaleProductCard = ({ product }) => {
   return (
     <Link
       to={`/product/${product._id}`}
@@ -18,8 +19,13 @@ const SpecialProductCard = ({ product }) => {
           />
 
           {/*  tag */}
-          <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm select-none sm:opacity-0 sm:group-hover:opacity-100">
-            Special
+          <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm select-none sm:opacity-0 sm:group-hover:opacity-100 flex items-center gap-2">
+            {Math.round(
+              ((product.secondaryPrice - product.price) /
+                product.secondaryPrice) *
+                100
+            ).toFixed(0)}
+            % OFF
           </div>
         </div>
 
@@ -31,7 +37,7 @@ const SpecialProductCard = ({ product }) => {
             </p>
 
             <p className="text-red-600 font-semibold text-sm">
-              Limited Time Deals
+              Limited Time Offer
             </p>
 
             <h3 className="text-md font-semibold mb-2 line-clamp-2 leading-tight">
@@ -40,16 +46,14 @@ const SpecialProductCard = ({ product }) => {
 
             {/* Rating & Sold*/}
             <div className="flex items-center gap-3 mb-5 sm:mb-0">
-              <div className="flex items-center ">
+              <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, i) => (
-                  <svg
+                  <Star
                     key={i}
-                    className="w-5 h-5 text-yellow-400"
+                    size={16}
+                    className="text-yellow-400"
                     fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.77 5.82 22 7 14.14l-5-4.87 6.91-1.01z" />
-                  </svg>
+                  />
                 ))}
               </div>
 
@@ -63,9 +67,15 @@ const SpecialProductCard = ({ product }) => {
 
           {/* Price & button */}
           <div className="flex items-center justify-between sm:mt-10">
-            <p className="text-2xl font-bold text-gray-800">
-              Rs. {product?.price.toLocaleString()}
-            </p>
+            <div className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+              <p>Rs. {product?.price.toLocaleString()}</p>
+
+              {product?.secondaryPrice && (
+                <p className="text-sm text-gray-500 line-through">
+                  Rs. {product.secondaryPrice.toLocaleString()}
+                </p>
+              )}
+            </div>
 
             <button
               className="opacity-0 group-hover:opacity-100 bg-red-500 text-white px-5 py-2 rounded-full text-sm font-semibold transition-opacity duration-300 shadow-md"
@@ -80,4 +90,4 @@ const SpecialProductCard = ({ product }) => {
   );
 };
 
-export default SpecialProductCard;
+export default SaleProductCard;

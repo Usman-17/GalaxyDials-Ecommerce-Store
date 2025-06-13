@@ -23,6 +23,7 @@ const AddProductPage = () => {
     colors: [],
     tags: [],
     price: "",
+    secondaryPrice: "",
     productImages: [],
     existingImages: [],
   });
@@ -51,6 +52,7 @@ const AddProductPage = () => {
           colors: data.colors || [],
           tags: data.tags || [],
           price: data.price || "",
+          secondaryPrice: data.secondaryPrice || "",
           sold: data.sold || "",
           productImages: data.productImages || [],
         });
@@ -151,7 +153,7 @@ const AddProductPage = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title  */}
         <div>
-          <label className="block mb-1 text-sm font-medium">Title</label>
+          <label className="block mb-1 text-sm font-medium">Title*</label>
           <Input
             placeholder="Enter Product Title"
             name="title"
@@ -161,16 +163,41 @@ const AddProductPage = () => {
           />
         </div>
 
-        <div>
-          <label className="block mb-1 text-sm font-medium">Price</label>
-          <Input
-            placeholder="Enter Product Price"
-            name="price"
-            type="number"
-            value={formData.price}
-            onChange={handleInputChange}
-            required
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label
+              htmlFor="price"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              Price*
+            </label>
+            <Input
+              id="price"
+              name="price"
+              type="number"
+              placeholder="Enter Product Price"
+              value={formData.price}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="secondaryPrice"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              Secondary Price
+            </label>
+            <Input
+              id="secondaryPrice"
+              name="secondaryPrice"
+              type="number"
+              placeholder="Enter Secondary Price"
+              value={formData.secondaryPrice}
+              onChange={handleInputChange}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-5">
@@ -178,7 +205,7 @@ const AddProductPage = () => {
           <div className="sm:col-span-2 space-y-4">
             <div>
               <label className="block mb-1 text-sm font-medium">
-                Description
+                Description*
               </label>
               <JoditEditor
                 ref={editor}
@@ -190,7 +217,7 @@ const AddProductPage = () => {
 
             <div>
               <label className="block mb-2 text-sm font-semibold text-white">
-                Product Images
+                Product Images*
               </label>
               <input
                 type="file"
@@ -229,7 +256,7 @@ const AddProductPage = () => {
           {/* Right Side */}
           <div className="space-y-3 mt-5">
             <div>
-              <label className="block mb-1 text-sm font-medium">Sold</label>
+              <label className="block mb-1 text-sm font-medium">Sold*</label>
               <Input
                 placeholder="Enter number of products sold"
                 name="sold"
@@ -240,9 +267,9 @@ const AddProductPage = () => {
             </div>
 
             <div>
-              <div className="flex items-center justify-between ">
+              <div className="flex items-center justify-between">
                 <label htmlFor="category" className="text-sm font-medium">
-                  Category
+                  Category*
                 </label>
                 <Link
                   to="/category/create"
@@ -304,7 +331,7 @@ const AddProductPage = () => {
                 onChange={(value) => handleSelectChange(value, "tags")}
                 tokenSeparators={[","]}
               >
-                {["featured", "special", "popular", "sale"].map((tag) => (
+                {["Special", "Popular", "Sale"].map((tag) => (
                   <Select.Option key={tag} value={tag}>
                     {tag}
                   </Select.Option>

@@ -5,16 +5,15 @@ import AdBanner from "../components/AdBanner";
 import OurPolicy from "../components/OurPolicy";
 import ProductCard from "../components/ProductCard";
 import TextMarquee from "../components/TextMarquee";
-import SaleProduct from "../components/SaleProduct";
+import SpecialProducts from "../components/SpecialProducts";
 import PopularProduct from "../components/PopularProduct";
-import SpecialProduct from "../components/SpecialProduct";
+import SaleProducts from "../components/SalaProducts";
 import InViewAnimation from "../components/InViewAnimation";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const HomePage = () => {
-  const { products, productIsLoading, productIsRefetching } =
-    useGetAllProducts();
+  const { products, productIsLoading } = useGetAllProducts();
 
   return (
     <>
@@ -33,14 +32,14 @@ const HomePage = () => {
 
       <Hero />
       <TextMarquee />
-      <SaleProduct />
-      <SpecialProduct />
       <PopularProduct />
+      <SaleProducts />
+      <SpecialProducts />
       <AdBanner />
 
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0 sm:gap-2 lg:gap-4">
-          {productIsLoading || productIsRefetching
+          {productIsLoading
             ? Array.from({ length: 5 }).map((_, index) => (
                 <ProductCardSkeleton key={index} />
               ))

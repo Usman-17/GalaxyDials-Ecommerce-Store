@@ -108,25 +108,51 @@ const ProductPage = () => {
           <h4 className="text-gray-600 text-sm sm:text-base uppercase">
             {product?.brand?.name || ""}
           </h4>
+          <div className="flex items-center gap-3">
+            <p className="text-xl sm:text-2xl font-bold text-red-600">
+              Rs. {product?.price.toLocaleString()}
+            </p>
 
+            {product?.secondaryPrice && (
+              <>
+                <p className="text-base sm:text-md font-medium text-gray-500 line-through">
+                  Rs. {product.secondaryPrice.toLocaleString()}
+                </p>
+
+                <p className="text-sm sm:text-base font-medium text-green-600">
+                  (
+                  {Math.round(
+                    ((product.secondaryPrice - product.price) /
+                      product.secondaryPrice) *
+                      100
+                  ).toFixed(0)}
+                  % OFF)
+                </p>
+              </>
+            )}
+          </div>
+
+          {/* Title & Sold Out */}
           <h1
             className="font-medium text-md sm:text-lg sm:mt-1 tracking-normal sm:tracking-wide"
             style={{ lineHeight: "1.1" }}
           >
             {product?.title}
+            {""}
+            {product?.sold && (
+              <span className="ml-2 text-xs sm:text-sm text-gray-600 font-medium">
+                ({product.sold} Sold)
+              </span>
+            )}
           </h1>
-
-          <p className="text-lg sm:text-2xl font-bold text-red-600 mt-2">
-            Rs. {product?.price.toLocaleString()}
-          </p>
-
+          {/* Category */}
           <p className="text-sm sm:text-base text-gray-500 mt-2">
             Category:{" "}
             <span className="font-medium text-gray-700">
               {product?.category.name || "N/A"}
             </span>
           </p>
-
+          {/* Quantity */}
           <div className="my-4 flex items-center gap-4">
             <label className="block mb-1">Quantity</label>
             <input
@@ -139,18 +165,17 @@ const ProductPage = () => {
               className="border w-20 px-2 py-1 rounded"
             />
           </div>
-
           {/* Colors */}
           {product?.colors?.length > 0 && (
-            <div className="">
-              <p>Select Color</p>
-              <div className="flex gap-2 flex-wrap mt-3 sm:mt-2">
+            <div className="mt-2">
+              <p className="text-sm text-gray-700">Select Color</p>
+              <div className="flex gap-2 flex-wrap mt-2">
                 {product.colors.map((item, i) => (
                   <button
                     key={i}
                     onClick={() => setColor(item)}
-                    className={`border py-1 px-3 bg-gray-100 cursor-pointer rounded-sm ${
-                      item === color ? "border-gray-800 " : ""
+                    className={`border py-1 px-3 text-xs sm:text-sm bg-gray-100 cursor-pointer rounded-sm ${
+                      item === color ? "border-gray-800" : ""
                     }`}
                   >
                     {item}
@@ -160,6 +185,7 @@ const ProductPage = () => {
             </div>
           )}
 
+          {/* Add To Cart Button */}
           <button
             onClick={() => handleAddToCart(product._id, color, quantity)}
             disabled={cartIsPending}
@@ -173,9 +199,7 @@ const ProductPage = () => {
               </>
             )}
           </button>
-
           <hr className="mt-8 sm:w-4/5" />
-
           <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
             <p>100% Original product.</p>
             <p>Cash on delivery is available on this product.</p>
