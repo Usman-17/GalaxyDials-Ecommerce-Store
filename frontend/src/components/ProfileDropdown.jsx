@@ -60,14 +60,15 @@ const ProfileDropdown = () => {
 
               {/* Admin */}
               {authUser.role === "admin" && (
-                <Link
-                  to="/admin"
+                <a
+                  href={import.meta.env.VITE_ADMIN_PANEL_URL}
                   className="flex items-center gap-3 py-1 px-3 rounded-full hover:bg-gray-100 hover:text-gray-950 cursor-pointer transition-colors duration-150 text-sm sm:text-base"
+                  target="_blank"
                   onClick={closeDropdown}
                 >
                   <ExternalLink size={16} />
                   <p>Admin Panel</p>
-                </Link>
+                </a>
               )}
 
               <hr />
