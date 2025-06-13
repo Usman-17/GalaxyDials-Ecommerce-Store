@@ -36,8 +36,12 @@ const LoginPage = () => {
       navigate("/");
     },
 
-    onError: () => {
-      toast.error("Invalid email or password");
+    onError: (error) => {
+      if (error.message.includes("locked")) {
+        toast.error(error.message);
+      } else {
+        toast.error(error.message || "Invalid email or password");
+      }
     },
   });
 
