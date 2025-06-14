@@ -8,6 +8,7 @@ import PreLoader from "./components/PreLoader";
 
 import HomePage from "./pages/HomePage";
 import useGetAuth from "./hooks/useGetAuth";
+import ScrollToTop from "./components/ScrollToTop";
 const CollectionPage = lazy(() => import("./pages/CollectionPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
@@ -39,6 +40,7 @@ const App = () => {
             </div>
           }
         >
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/collection" element={<CollectionPage />} />

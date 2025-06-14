@@ -22,13 +22,11 @@ var enquirySchema = new mongoose.Schema(
     subject: {
       type: String,
       required: [true, "Subject is required."],
-      minlength: [2, "Subject must be at least 2 characters long."],
     },
 
     comment: {
       type: String,
       required: [true, "Comment is required."],
-      minlength: [2, "Comment must be at least 2 characters long."],
     },
   },
   { timestamps: true }

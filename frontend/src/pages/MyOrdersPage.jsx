@@ -85,7 +85,7 @@ const MyOrdersPage = () => {
                       className="w-12 h-12 rounded-md object-cover"
                     />
                     <div>
-                      <p className="sm:text-base font-medium w-full sm:w-96">
+                      <p className="sm:text-base font-medium w-full sm:w-96 truncate">
                         {item.title}
                       </p>
                       <div className="flex gap-3 mt-1 text-base">

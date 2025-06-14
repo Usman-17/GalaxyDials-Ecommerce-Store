@@ -24,7 +24,7 @@ const ProductSkeleton = () => {
         {/* Image Section Skeleton */}
         <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-6">
           {/* Product Images */}
-          <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-1">
+          <div className="flex flex-1 flex-col-reverse sm:flex-row gap-3 sm:gap-4">
             {/*  small images */}
             <div className="flex sm:flex-col items-center justify-center sm:justify-normal sm:items-start sm:w-[25%] w-full gap-1 sm:gap-2">
               {Array(4)
@@ -32,14 +32,14 @@ const ProductSkeleton = () => {
                 .map((_, index) => (
                   <Skeleton
                     key={index}
-                    className="w-20 sm:w-36  h-20 sm:h-28 rounded-md"
+                    className="w-20 sm:w-24  h-20 sm:h-28 rounded-md"
                   />
                 ))}
             </div>
 
             {/*  Main Image */}
             <div className="w-full flex justify-center">
-              <Skeleton className="w-80 h-80 sm:h-[500px] sm:w-[500px]" />
+              <Skeleton className="w-80 h-80 sm:h-[485px] sm:w-[500px]" />
             </div>
           </div>
         </div>

@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { ChevronDown } from "lucide-react";
 
 import ProductCard from "../components/ProductCard";
-import SectionHeading from "../components/SectionHeading";
 import Animation from "../components/Animation";
 import InViewAnimation from "../components/InViewAnimation";
 import FilterSkeleton from "../components/Skeleton/FilterSkeleton";
@@ -161,11 +160,13 @@ const CollectionPage = () => {
         <div className="flex-1 overflow-y-auto px-0 sm:px-4 mb-20">
           <div className="flex justify-between items-center text-xs sm:text-2xl mb-2 gap-6">
             <InViewAnimation delay={0.1}>
-              <SectionHeading
-                text1={"ALL"}
-                text2={"COLLECTIONS"}
-                className="text-[11.5px] select-none"
-              />
+              <div className="inline-flex gap-2 items-center mb-3 overflow-hidden">
+                <p className="text-gray-500 text-[14px] sm:text-2xl">
+                  ALL{" "}
+                  <span className="text-gray-700 font-medium">COLLECTIONS</span>
+                </p>
+                <p className="w-8 sm:w-12 h-[1px] sm:h-[2px] bg-gray-700"></p>
+              </div>
             </InViewAnimation>
 
             <select

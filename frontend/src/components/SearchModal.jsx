@@ -5,6 +5,7 @@ import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 // Imports End
+
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -43,7 +44,7 @@ const SearchModal = ({ onClose }) => {
     } else {
       // No search input: show popular products
       const popularProducts = products.filter((product) =>
-        product.tags?.includes("popular")
+        product.tags?.includes("Popular")
       );
       setSearchData(popularProducts);
     }
@@ -84,7 +85,7 @@ const SearchModal = ({ onClose }) => {
         {/* Close Search Button */}
         <div className="flex justify-end p-2 sm:p-4">
           <X
-            className="cursor-pointer text-gray-700 hover:text-black"
+            className="cursor-pointer text-gray-700 hover:text-black transition-transform duration-150 hover:rotate-90"
             size={24}
             onClick={handleClose}
           />
@@ -132,7 +133,7 @@ const SearchModal = ({ onClose }) => {
             </div>
           ) : searchData.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {searchData.slice(0, 5).map((product) => (
+              {searchData.map((product) => (
                 <div key={product._id} onClick={handleProductClick}>
                   <ProductCard product={product} />
                 </div>

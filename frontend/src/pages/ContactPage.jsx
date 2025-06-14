@@ -168,7 +168,7 @@ const ContactPage = () => {
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 md:space-y-3 sm:px-6 py-8 sm:py-16 max-w-6xl mx-auto"
+        className="space-y-4 md:space-y-3 sm:px-6 py-8 sm:py-16 max-w-10xl mx-auto"
       >
         <h2 className="text-gray-800 text-xl font-semibold">
           Get in Touch with Us
