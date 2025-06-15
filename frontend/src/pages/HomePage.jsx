@@ -13,7 +13,7 @@ import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const HomePage = () => {
-  const { products, productIsLoading } = useGetAllProducts();
+  const { products = [], productIsLoading } = useGetAllProducts();
 
   return (
     <>
@@ -39,22 +39,11 @@ const HomePage = () => {
 
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0 sm:gap-2 lg:gap-4">
-          {/* {productIsLoading
-            ? Array.from({ length: 5 }).map((_, index) => (
-                <ProductCardSkeleton key={index} />
-              ))
-            : products?.slice(0, 5).map((product, index) => (
-                <InViewAnimation key={product._id} delay={index * 0.1}>
-                  <ProductCard product={product} key={product?._id} />
-                </InViewAnimation>
-              ))} */}
-
           {productIsLoading
             ? Array.from({ length: 5 }).map((_, index) => (
                 <ProductCardSkeleton key={index} />
               ))
-            : Array.isArray(products) &&
-              products.slice(0, 5).map((product, index) => (
+            : products?.slice(0, 5).map((product, index) => (
                 <InViewAnimation key={product._id} delay={index * 0.1}>
                   <ProductCard product={product} key={product?._id} />
                 </InViewAnimation>

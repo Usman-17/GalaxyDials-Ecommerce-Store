@@ -1,21 +1,22 @@
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { Trash, Redo, ShoppingCart } from "lucide-react";
-import { useContext, useEffect, useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import CartTotal from "../components/CartTotal";
 import SectionHeading from "../components/SectionHeading";
 
 import { useUserCart } from "../hooks/useUserCart";
-import { AppContext } from "../context/AppContext";
+import { useGetAllProducts } from "../hooks/useGetAllProducts";
+// Imports End
 
 const CartPage = () => {
   const [localQuantities, setLocalQuantities] = useState({});
   const queryClient = useQueryClient();
   const { cartData } = useUserCart();
-  const { products } = useContext(AppContext);
+  const { products = [] } = useGetAllProducts();
 
   const cartItems = useMemo(() => {
     const items = [];

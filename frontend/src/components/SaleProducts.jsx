@@ -6,7 +6,7 @@ import SaleProductCard from "./SpecialProductCard";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const SaleProducts = () => {
-  const { products } = useGetAllProducts();
+  const { products = [] } = useGetAllProducts();
 
   const saleProducts = products?.filter((product) =>
     product.tags.includes("Sale")

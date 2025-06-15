@@ -6,7 +6,7 @@ import { useGetAllProducts } from "../hooks/useGetAllProducts";
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
-  const { products, productIsLoading } = useGetAllProducts();
+  const { products = [] } = useGetAllProducts();
   const { cartData } = useUserCart();
 
   // Cart Total
@@ -52,8 +52,6 @@ export const AppContextProvider = ({ children }) => {
   }, [cartData, products]);
 
   const value = {
-    products,
-    productIsLoading,
     cartTotalAmount,
   };
 

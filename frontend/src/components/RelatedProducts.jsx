@@ -9,7 +9,7 @@ import { useGetAllProducts } from "../hooks/useGetAllProducts";
 const RelatedProducts = ({ category, brand }) => {
   const location = useLocation();
   const [related, setRelated] = useState([]);
-  const { products } = useGetAllProducts();
+  const { products = [] } = useGetAllProducts();
 
   useEffect(() => {
     if (products.length > 0 && category && brand) {

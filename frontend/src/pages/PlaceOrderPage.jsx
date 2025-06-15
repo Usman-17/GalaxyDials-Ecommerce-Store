@@ -70,8 +70,6 @@ const PlaceOrderPage = () => {
     }
   };
 
-  console.log(cartData);
-
   return (
     <form
       onSubmit={handlePlaceOrder}

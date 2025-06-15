@@ -7,7 +7,7 @@ import ProductCardSkeleton from "./Skeleton/ProductCardSkeleton";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const SpecialProducts = () => {
-  const { products, productIsLoading } = useGetAllProducts();
+  const { products = [], productIsLoading } = useGetAllProducts();
 
   const specialProducts = products?.filter((product) =>
     product.tags.includes("Special")
