@@ -44,7 +44,11 @@ app.use(
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_ORIGIN, process.env.DASHBOARD_ORIGIN],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5000",
+      "https://galaxy-dials-ecommerce-store.vercel.app/",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
