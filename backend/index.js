@@ -47,6 +47,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://localhost:5000",
+      "https://www.jemzy.pk/",
       "https://galaxy-dials-ecommerce-store.vercel.app/",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
