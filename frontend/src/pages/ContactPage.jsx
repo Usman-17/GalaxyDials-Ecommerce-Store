@@ -1,8 +1,8 @@
 import img from "../assets/contact.png";
 
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 import { useMutation } from "@tanstack/react-query";
 
 import CustomLabel from "../components/CustomLabel";
@@ -67,16 +67,26 @@ const ContactPage = () => {
   return (
     <>
       <Helmet>
-        <title>Contact Us - Galaxy Dials</title>
+        <title>Contact Us - Jemzy.pk | Jewelry & Customer Support</title>
         <meta
           name="description"
-          content="Get in touch with Galaxy Dials. Reach out via email, phone, or visit us at our physical store. We're here to help with all your inquiries."
+          content="Have questions or need help? Contact Jemzy.pk for assistance with orders, product inquiries, or customer support. We're here to help!"
         />
         <meta
           name="keywords"
-          content="Galaxy Dials, Contact, Customer Support, Email, Phone, Address"
+          content="Jemzy.pk contact, jewelry support, customer service, email, phone, help"
         />
-        <link rel="canonical" href="https://www.galaxydials.com/contact" />
+        <link rel="canonical" href="https://www.jemzy.pk/contact" />
+        <meta
+          property="og:title"
+          content="Contact Us - Jemzy.pk | Jewelry & Support"
+        />
+        <meta
+          property="og:description"
+          content="Reach out to Jemzy.pk for product questions, order support, or general inquiries. We’re just a message away!"
+        />
+        <meta property="og:url" content="https://www.jemzy.pk/contact" />
+        <meta property="og:type" content="website" />
       </Helmet>
 
       {/* Section Heading */}

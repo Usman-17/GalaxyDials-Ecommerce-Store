@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
-import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { useEffect, useMemo, useState } from "react";
 import { Trash, Redo, ShoppingCart } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -89,24 +89,24 @@ const CartPage = () => {
   return (
     <>
       <Helmet>
-        <title>Shopping Cart - GalaxyDials</title>
+        <title>Shopping Cart - Jemzy.pk</title>
         <meta
           name="description"
-          content="Review the items in your shopping cart and proceed to checkout for premium wristwatches at GalaxyDials."
+          content="Review your selected jewelry items and proceed to checkout. Enjoy timeless elegance with Jemzy.pk — Pakistan's premium jewelry store."
         />
         <meta
           name="keywords"
-          content="shopping cart, wristwatches, luxury watches, men's watches, women's watches, GalaxyDials"
+          content="Jemzy.pk cart, shopping cart jewelry, earrings, rings, necklaces, bracelets, checkout jewelry Pakistan"
         />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Shopping Cart - GalaxyDials" />
+        <meta property="og:title" content="Shopping Cart - Jemzy.pk" />
         <meta
           property="og:description"
-          content="Check your selected wristwatches and finalize your purchase at GalaxyDials."
+          content="Check your selected jewelry pieces and finalize your order at Jemzy.pk."
         />
-        <meta property="og:url" content="https://galaxydials.com/cart" />
+        <meta property="og:url" content="https://www.jemzy.pk/cart" />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://galaxydials.com/cart" />
+        <link rel="canonical" href="https://www.jemzy.pk/cart" />
       </Helmet>
 
       <div className="border-t pt-4 sm:pt-14 mb-16">
@@ -141,7 +141,16 @@ const CartPage = () => {
                         className="w-16 h-16 object-cover rounded-md"
                       />
                       <div>
-                        <p className="font-semibold sm:font-medium sm:w-96 text-sm sm:text-base leading-tigh truncate">
+                        <p
+                          className="font-semibold sm:font-medium w-full sm:w-96 text-sm sm:text-base leading-tigh truncate text-wrap"
+                          style={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            lineHeight: "1.3",
+                          }}
+                        >
                           {item?.title}
                         </p>
 

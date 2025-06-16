@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import { ChevronDown } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 import ProductCard from "../components/ProductCard";
 import Animation from "../components/Animation";
@@ -64,16 +64,26 @@ const CollectionPage = () => {
   return (
     <>
       <Helmet>
-        <title>Explore Our Premium Wrist Watches | Galaxy Dials</title>
+        <title>Explore Elegant Jewelry Collections | Jemzy.pk</title>
         <meta
           name="description"
-          content="Discover a stunning collection of wrist watches at Galaxy Dials. Shop luxury, affordable, and stylish watches designed for every occasion."
+          content="Browse Jemzy.pk’s premium collection of rings, necklaces, earrings, and more. Discover the perfect jewelry piece that complements your style."
         />
         <meta
           name="keywords"
-          content="wrist watches, luxury watches, affordable watches, stylish watches, Galaxy Dials"
+          content="Jemzy.pk jewelry, women’s jewelry, necklaces, earrings, rings, bracelets, Pakistani jewelry store, fashion accessories"
         />
-        <link rel="canonical" href="https://www.galaxydials.com/collections" />
+        <link rel="canonical" href="https://www.jemzy.pk/collections" />
+        <meta
+          property="og:title"
+          content="Explore Elegant Jewelry Collections | Jemzy.pk"
+        />
+        <meta
+          property="og:description"
+          content="Shop elegant and trendy jewelry pieces at Jemzy.pk. Find rings, necklaces, earrings, and more with premium quality."
+        />
+        <meta property="og:url" content="https://www.jemzy.pk/collections" />
+        <meta property="og:type" content="website" />
       </Helmet>
 
       <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-3 sm:pt-5 border-t sm:h-[calc(100vh)] overflow-hidden">
@@ -98,7 +108,7 @@ const CollectionPage = () => {
               showFilter ? "" : "hidden"
             } sm:block`}
           >
-            <p className="uppercase mb-3 text-sm font-medium">Categories</p>
+            <h2 className="uppercase mb-3 text-sm font-medium">Categories</h2>
 
             {categoryIsLoading ? (
               <FilterSkeleton />
@@ -130,7 +140,7 @@ const CollectionPage = () => {
               showFilter ? "" : "hidden"
             } sm:block`}
           >
-            <p className="uppercase mb-3 text-sm font-medium">Brands</p>
+            <h2 className="uppercase mb-3 text-sm font-medium">Brands</h2>
             {brandIsLoading ? (
               <FilterSkeleton />
             ) : (
@@ -161,10 +171,10 @@ const CollectionPage = () => {
           <div className="flex justify-between items-center text-xs sm:text-2xl mb-2 gap-6">
             <InViewAnimation delay={0.1}>
               <div className="inline-flex gap-2 items-center mb-3 overflow-hidden">
-                <p className="text-gray-500 text-[14px] sm:text-2xl">
+                <h1 className="text-gray-500 text-[14px] sm:text-2xl">
                   ALL{" "}
                   <span className="text-gray-700 font-medium">COLLECTIONS</span>
-                </p>
+                </h1>
                 <p className="w-8 sm:w-12 h-[1px] sm:h-[2px] bg-gray-700"></p>
               </div>
             </InViewAnimation>

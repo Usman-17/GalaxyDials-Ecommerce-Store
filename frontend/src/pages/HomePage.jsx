@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 import Hero from "../components/Hero";
 import AdBanner from "../components/AdBanner";
@@ -18,16 +18,18 @@ const HomePage = () => {
   return (
     <>
       <Helmet>
-        <title>Galaxy Dials | Luxury Watches for Every Occasion</title>
+        <title>Jemzy.pk | Elegant Jewelry for Every Occasion</title>
         <meta
           name="description"
-          content="Explore Galaxy Dials for a curated collection of luxury watches. Enjoy free shipping on orders over Rs.5,000, exclusive deals, and the latest trends in timepieces. Shop premium brands and find the perfect watch for every occasion."
+          content="Shop Jemzy.pk for premium jewelry including rings, necklaces, bracelets, and more. Discover timeless elegance with fast delivery across Pakistan."
         />
         <meta
           name="keywords"
-          content="luxury watches, Galaxy Dials, designer watches, automatic watches, watch trends, premium timepieces, free shipping, buy watches online"
+          content="jewelry Pakistan, Jemzy.pk, rings, necklaces, earrings, bracelets, bridal jewelry, fashion accessories, online jewelry store"
         />
-        <link rel="canonical" href="" />
+        <meta name="author" content="Jemzy.pk" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://www.jemzy.pk/" />
       </Helmet>
 
       <Hero />
