@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dot, Redo } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
@@ -13,6 +13,9 @@ import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 
 import { useQuery } from "@tanstack/react-query";
 import { useAddToCart } from "../hooks/useAddToCart";
+
+import ReactGA from "react-ga4";
+
 // Imports End
 
 const ProductPage = () => {
@@ -37,6 +40,25 @@ const ProductPage = () => {
     retry: false,
   });
 
+  // Goggle Analytics
+  useEffect(() => {
+    if (product) {
+      ReactGA.event("view_item", {
+        currency: "PKR",
+        value: product.price,
+        items: [
+          {
+            item_id: product._id,
+            item_name: product.title,
+            item_brand: product.brand?.name,
+            item_category: product.category?.name,
+            price: product.price,
+          },
+        ],
+      });
+    }
+  }, [product]);
+
   if (isLoading) return <ProductSkeleton />;
   if (!product) return <div className="p-4">Product not found.</div>;
 
@@ -46,6 +68,23 @@ const ProductPage = () => {
 
   const handleAddToCart = (itemId, color, quantity) => {
     addToCart({ itemId, color, quantity });
+
+    //  Goggle Analytics add_to_cart event
+    ReactGA.event("add_to_cart", {
+      currency: "PKR",
+      value: product.price * quantity,
+      items: [
+        {
+          item_id: product._id,
+          item_name: product.title,
+          item_brand: product.brand?.name,
+          item_category: product.category?.name,
+          quantity,
+          price: product.price,
+          item_variant: color,
+        },
+      ],
+    });
   };
 
   return (

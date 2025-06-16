@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PreLoader from "./components/PreLoader";
+import PageViewTracker from "./components/PageViewTracker";
 
 import HomePage from "./pages/HomePage";
 import useGetAuth from "./hooks/useGetAuth";
@@ -31,6 +32,7 @@ const App = () => {
   return (
     <div className="px-4 sm:px-[5vw] md:px-[3vw] lg:px-[3vw]">
       <BrowserRouter>
+        <PageViewTracker />
         <Header />
 
         <Suspense
