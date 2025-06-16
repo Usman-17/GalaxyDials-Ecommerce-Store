@@ -6,16 +6,16 @@ import InnerImageZoom from "react-inner-image-zoom";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 
 import LoadingSpinner from "../components/LoadingSpinner";
+import ProductReviews from "../components/ProductReviews";
 import RelatedProducts from "../components/RelatedProducts";
 import ProductSkeleton from "../components/Skeleton/ProductSkeleton";
 
 import { useQuery } from "@tanstack/react-query";
 import { useAddToCart } from "../hooks/useAddToCart";
-import ProductReviews from "../components/ProductReviews";
 // Imports End
 
 const ProductPage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
 
   const [activeImage, setActiveImage] = useState("");
   const [activeTab, setActiveTab] = useState("description");
@@ -26,9 +26,9 @@ const ProductPage = () => {
 
   // Get Product Query
   const { data: product, isLoading } = useQuery({
-    queryKey: ["product", id],
+    queryKey: ["product", slug],
     queryFn: async () => {
-      const res = await fetch(`/api/product/${id}`);
+      const res = await fetch(`/api/product/slug/${slug}`);
 
       if (!res.ok) throw new Error("Failed to fetch product");
       return res.json();

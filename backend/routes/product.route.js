@@ -8,11 +8,13 @@ import {
   deleteProduct,
   getAllproducts,
   getProduct,
+  getProductBySlug,
   updateProduct,
 } from "../controllers/product.controller.js";
 
 router.get("/all", getAllproducts);
 router.get("/:id", getProduct);
+router.get("/slug/:slug", getProductBySlug);
 
 // Admin Routes
 router.post("/create", protectRoute, isAdmin, createProduct);

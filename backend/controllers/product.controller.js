@@ -254,6 +254,28 @@ export const getProduct = async (req, res) => {
   }
 };
 
+// PATH     : /api/product/slug/:slug
+// METHOD   : GET
+// ACCESS   : Public
+// DESC     : Get Single Product By Slug
+export const getProductBySlug = async (req, res) => {
+  const { slug } = req.params;
+  try {
+    const product = await Product.findOne({ slug })
+      .populate("brand")
+      .populate("category");
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.log("Error in getProductBySlug Controller", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // PATH     : /api/product/:id"
 // METHOD   : DELETE
 // ACCESS   : PRIVATE

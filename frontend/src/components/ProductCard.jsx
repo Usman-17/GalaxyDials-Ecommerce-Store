@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   return (
-    <Link to={`/product/${product?._id}`}>
+    <Link to={`/product/${product.slug}`}>
       <div className="rounded-lg transition-shadow duration-300 ease-in-out max-w-sm mx-auto sm:max-w-none group py-2 hover:shadow-sm mb-2">
         <div className="relative overflow-hidden">
           <div className="relative w-full h-0 pb-[100%] rounded-t-md overflow-hidden">
