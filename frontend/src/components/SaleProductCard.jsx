@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const SaleProductCard = ({ product }) => {
   return (
     <Link
-      to={`/product/${product._id}`}
+      to={`/product/${product.slug}`}
       className="group block max-w-4xl mx-auto rounded-xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-sm transition-shadow duration-400 bg-white"
     >
       <div className="flex flex-col sm:flex-row">

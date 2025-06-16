@@ -2,7 +2,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SectionHeading from "./SectionHeading";
-import SaleProductCard from "./SpecialProductCard";
+import SaleProductCard from "./SaleProductCard";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 
 const SaleProducts = () => {
