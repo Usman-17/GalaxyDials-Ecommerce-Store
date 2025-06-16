@@ -1,9 +1,9 @@
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import { useEffect, useMemo, useState } from "react";
-import { Trash, Redo, ShoppingCart } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Trash, Redo, ShoppingCart, ChevronDown } from "lucide-react";
 
 import CartTotal from "../components/CartTotal";
 import SectionHeading from "../components/SectionHeading";
@@ -12,17 +12,24 @@ import { useUserCart } from "../hooks/useUserCart";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 // Imports End
 
+// Helper to generate a consistent unique key
+const getCartItemKey = (itemId, color = "") =>
+  `${itemId}-${color || "no-color"}`;
+
 const CartPage = () => {
-  const [localQuantities, setLocalQuantities] = useState({});
   const queryClient = useQueryClient();
   const { cartData } = useUserCart();
   const { products = [] } = useGetAllProducts();
 
+  const [updatingItemKey, setUpdatingItemKey] = useState(null);
+  const [removingItemKey, setRemovingItemKey] = useState(null);
+
   const cartItems = useMemo(() => {
     const items = [];
     for (const productId in cartData) {
-      const product = products?.find((p) => p._id === productId);
+      const product = products.find((p) => p._id === productId);
       const data = cartData[productId];
+
       if (typeof data === "number") {
         items.push({ productId, color: "", quantity: data, ...product });
       } else {
@@ -34,57 +41,52 @@ const CartPage = () => {
     return items.reverse();
   }, [cartData, products]);
 
-  const { mutate: deleteCartMutation } = useMutation({
-    mutationFn: async ({ itemId, color }) => {
-      const res = await fetch("/api/cart/delete", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+  // Update Cart Mutation
+  const { mutate: updateCartMutation } = useMutation({
+    mutationFn: async ({ itemId, color, quantity }) => {
+      const key = getCartItemKey(itemId, color);
+      setUpdatingItemKey(key);
+
+      const res = await fetch("/api/cart/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ itemId, color }),
+        body: JSON.stringify({ itemId, color, quantity }),
       });
+
       if (!res.ok) throw new Error("Failed to update cart");
       return res.json();
     },
+    onSuccess: () => queryClient.invalidateQueries(["userCart"]),
+    onError: () => toast.error("Something went wrong"),
+    onSettled: () => setTimeout(() => setUpdatingItemKey(null), 300),
+  });
+
+  // Delete Cart Mutation
+  const { mutate: deleteCartMutation } = useMutation({
+    mutationFn: async ({ itemId, color }) => {
+      const key = getCartItemKey(itemId, color);
+      setRemovingItemKey(key);
+
+      const res = await fetch("/api/cart/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ itemId, color }),
+      });
+
+      if (!res.ok) throw new Error("Failed to delete cart item");
+      return res.json();
+    },
+
     onSuccess: () => {
       queryClient.invalidateQueries(["userCart"]);
       toast.success("Product removed from cart");
     },
-    onError: () => {
-      toast.error("Something went wrong");
-    },
-  });
 
-  const { mutate: updateCartMutation } = useMutation({
-    mutationFn: async ({ itemId, color, quantity }) => {
-      const res = await fetch("/api/cart/update", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ itemId, color, quantity }),
-      });
-      if (!res.ok) throw new Error("Failed to update cart");
-      return res.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["userCart"]);
-    },
-    onError: () => {
-      toast.error("Something went wrong");
-    },
+    onError: () => toast.error("Something went wrong"),
+    onSettled: () => setTimeout(() => setRemovingItemKey(null), 300),
   });
-
-  useEffect(() => {
-    const initial = {};
-    cartItems.forEach((item) => {
-      const key = `${item.productId}_${item.color}`;
-      initial[key] = item.quantity;
-    });
-    setLocalQuantities(initial);
-  }, [cartItems]);
 
   return (
     <>
@@ -126,10 +128,11 @@ const CartPage = () => {
             </div>
           ) : (
             cartItems.map((item, i) => {
-              const key = `${item.productId}_${item.color}`;
+              const itemKey = getCartItemKey(item.productId, item.color);
+
               return (
                 <div
-                  key={i}
+                  key={itemKey}
                   className="py-4 border-t border-b border-gray-200 text-gray-700"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start gap-4">
@@ -142,13 +145,12 @@ const CartPage = () => {
                       />
                       <div>
                         <p
-                          className="font-semibold sm:font-medium w-full sm:w-96 text-sm sm:text-base leading-tigh truncate text-wrap"
+                          className="font-semibold sm:font-medium w-full sm:w-96 text-sm sm:text-base leading-tight truncate text-wrap"
                           style={{
                             display: "-webkit-box",
                             WebkitLineClamp: 2,
                             WebkitBoxOrient: "vertical",
                             overflow: "hidden",
-                            lineHeight: "1.3",
                           }}
                         >
                           {item?.title}
@@ -156,6 +158,7 @@ const CartPage = () => {
 
                         <div className="flex items-center gap-2 text-sm mt-1">
                           <p>Rs. {item?.price}</p>
+
                           {item.color && (
                             <span className="px-2 py-0.5 border rounded bg-gray-50 text-gray-700 text-xs">
                               {item.color}
@@ -166,40 +169,61 @@ const CartPage = () => {
                     </div>
 
                     <div className="flex sm:ml-auto items-center gap-4 sm:gap-6 justify-between">
-                      <input
-                        className="w-20 sm:w-24 text-center text-sm font-medium bg-white border border-gray-300 focus:border-gray-400 focus:ring-2 focus:ring-gray-100 rounded shadow-sm px-2 py-2 outline-none"
-                        type="number"
-                        min={1}
-                        value={localQuantities[key] || item.quantity}
-                        onChange={(e) => {
-                          const newQty = Number(e.target.value);
-                          setLocalQuantities((prev) => ({
-                            ...prev,
-                            [key]: newQty,
-                          }));
-                        }}
-                        onBlur={(e) => {
-                          const newQty = Number(e.target.value);
-                          if (newQty !== item.quantity) {
-                            updateCartMutation({
+                      {/* Quantity Selector */}
+                      <div className="my-2 w-full max-w-xs flex items-center gap-3">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Qty:
+                        </label>
+
+                        <div className="relative">
+                          <select
+                            id={`quantity-select-${item._id}`}
+                            value={item.quantity}
+                            onChange={(e) =>
+                              updateCartMutation({
+                                itemId: item.productId,
+                                color: item.color,
+                                quantity: Number(e.target.value),
+                              })
+                            }
+                            className="block appearance-none w-full bg-white border border-gray-300 text-gray-800 py-1 px-3 pr-8 rounded-md leading-tight focus:outline-none transition duration-150 ease-in-out cursor-pointer"
+                          >
+                            {Array.from({ length: 10 }, (_, i) => i + 1).map(
+                              (num) => (
+                                <option key={num} value={num}>
+                                  {num}
+                                </option>
+                              )
+                            )}
+                          </select>
+
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                            {updatingItemKey === itemKey ? (
+                              <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <ChevronDown className="h-4 w-4 text-gray-700" />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Remove Button */}
+                      {removingItemKey === itemKey ? (
+                        <div className="w-5 h-5 flex items-center justify-center">
+                          <span className="block w-4 h-4 border-[2px] border-red-500 border-t-transparent rounded-full animate-spin" />
+                        </div>
+                      ) : (
+                        <Trash
+                          onClick={() =>
+                            deleteCartMutation({
                               itemId: item.productId,
                               color: item.color,
-                              quantity: newQty,
-                            });
+                            })
                           }
-                        }}
-                      />
-
-                      <Trash
-                        onClick={() =>
-                          deleteCartMutation({
-                            itemId: item.productId,
-                            color: item.color,
-                          })
-                        }
-                        className="cursor-pointer hover:text-red-600 transition"
-                        size={22}
-                      />
+                          className="cursor-pointer hover:text-red-600 transition"
+                          size={22}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dot, Redo } from "lucide-react";
+import { ChevronDown, Dot, Redo } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 
@@ -201,6 +201,7 @@ const ProductPage = () => {
                 </span>
               )}
             </h1>
+
             {/* Category */}
             <p className="text-sm sm:text-base text-gray-500 mt-2">
               Category:{" "}
@@ -208,19 +209,36 @@ const ProductPage = () => {
                 {product?.category.name || "N/A"}
               </span>
             </p>
-            {/* Quantity */}
-            <div className="my-4 flex items-center gap-4">
-              <label className="block mb-1">Quantity</label>
-              <input
-                type="number"
-                value={quantity}
-                onChange={(e) =>
-                  setQuantity(Math.max(1, parseInt(e.target.value)))
-                }
-                min={1}
-                className="border w-20 px-2 py-1 rounded"
-              />
+
+            {/* Quantity Dropdown */}
+            <div className="my-6 w-full max-w-xs flex items-center gap-4">
+              <label
+                htmlFor="quantity-select"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Quantity:
+              </label>
+
+              <div className="relative">
+                <select
+                  id="quantity-select"
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                  className="block appearance-none w-full bg-white border border-gray-300 text-gray-800 py-1 px-3 pr-8 rounded-md leading-tight focus:outline-none transition duration-150 ease-in-out cursor-pointer"
+                >
+                  {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
+                    <option key={num} value={num}>
+                      {num}
+                    </option>
+                  ))}
+                </select>
+
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </div>
             </div>
+
             {/* Colors */}
             {product?.colors?.length > 0 && (
               <div className="mt-2">
@@ -245,7 +263,7 @@ const ProductPage = () => {
             <button
               onClick={() => handleAddToCart(product._id, color, quantity)}
               disabled={cartIsPending}
-              className="uppercase bg-gray-900 text-white px-4 sm:px-5 py-2.5 text-sm rounded mt-7 sm:mt-8 hover:bg-gray-950 transition duration-100 flex items-center gap-2"
+              className="uppercase bg-gray-900 text-white px-5 py-2 text-sm rounded mt-7 sm:mt-8 hover:bg-gray-950 transition duration-100 flex items-center gap-2"
             >
               {cartIsPending ? (
                 <LoadingSpinner content="Adding to cart" />
