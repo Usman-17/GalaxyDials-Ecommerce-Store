@@ -1,31 +1,60 @@
-import add from "../assets/add.jpg";
+import { Link } from "react-router-dom";
+import { PartyPopper } from "lucide-react";
+import banner from "../assets/banner_1.png";
 
 const AdBanner = () => {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center py-12  md:px-0 lg:px-28">
-      <div className="lg:w-1/2 md:w-96 max-w-lg text-center sm:text-left">
-        <h2 className="text-2xl md:text-[30px] lg:text-[38px] font-medium text-gray-900 leading-tight mb-1 sm:mb-3">
-          &ldquo;Don&rsquo;t Miss Out...
-          <br />
-          on Our{" "}
-          <span className="font-semibold uppercase">Special Offer&rdquo;</span>
-        </h2>
-
-        <p className="text-gray-600 text-xs sm:text-base sm:w-5/6">
-          The gift that keeps giving! Your Watch Gang membership comes with a
-          new watch always worth more than your membership price + entry into
-          our 3x weekly giveaways.
+    <section className="flex flex-col-reverse lg:flex-row items-center justify-between py-10 pb-20 sm:py-20 lg:px-32 gap-8 sm:gap-10 overflow-hidden">
+      {/* Text Content */}
+      <div className="text-center sm:text-left max-w-xl animate-fade-in-up">
+        <p className="uppercase tracking-wide text-sm text-gray-500 font-medium mb-1">
+          Most Demanded Necklace
         </p>
+
+        <h1 className="text-2xl md:text-4xl lg:text-3xl font-semibold text-gray-900 leading-tight mb-3">
+          The Wait Is Over!{" "}
+          <span className="text-[#CC0D39]">Most Wanted Necklace</span> Restocked
+          — <span className="text-[#CC0D39]">Limited Time Sale</span> On Now
+        </h1>
+
+        <p className="text-gray-600 text-base md:text-lg mb-4">
+          Back by demand — our best-selling necklace is restocked and on sale!
+          Limited stock, so grab yours now before it’s gone again.
+        </p>
+
+        <Link to="/collection">
+          <button className="mt-4 inline-flex items-center gap-2 bg-[#CC0D39] hover:bg-red-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition duration-300 hover:shadow-red-500/50 animate-pulse shake-on-hover">
+            Claim Now
+            <PartyPopper className="w-5 h-5" />
+          </button>
+        </Link>
       </div>
 
-      <div className="flex justify-center mt-6 sm:mt-0">
+      {/* Product Image with Star */}
+      <div className="relative flex justify-center animate-float">
         <img
-          src={add}
-          alt="banner"
-          className="w-full max-w-lg md:max-w-xs lg:max-w-lg"
+          src={banner}
+          alt="Jemzy Featured Product"
+          className="w-[260px] sm:w-[250px] md:w-[360px] lg:w-[360px] rounded-[350px] object-cover border-4 border-white shadow-2xl"
         />
+
+        {/* Star SVG */}
+        <div className="absolute -top-6 -right-6 animate-spin-slow">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="64"
+            height="64"
+            viewBox="0 0 68 68"
+            fill="none"
+          >
+            <path
+              d="M34 0L43.6167 24.3833L68 34L43.6167 43.6167L34 68L24.3833 43.6167L0 34L24.3833 24.3833L34 0Z"
+              fill="#CC0D39"
+            ></path>
+          </svg>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
