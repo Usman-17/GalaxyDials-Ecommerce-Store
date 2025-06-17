@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <div className="px-1 sm:px-[5vw] md:px-[1vw] xl:px-[0.5vw] 2xl:xl:px-[1vw]">
-      <div className="flex items-center justify-between py-2.5 sm:py-3 font-medium">
+      <div className="flex items-center justify-between py-2 font-medium">
         <Link to={"/"}>
           <img
             src={logo}
