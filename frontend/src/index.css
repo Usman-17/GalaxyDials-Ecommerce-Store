@@ -276,24 +276,46 @@ nav a.active img {
 
 /* Loader  End*/
 
-/* Marquee */
+/* ---Marquee Start---*/
 .marquee-track {
   display: inline-flex;
   white-space: nowrap;
-  animation: marquee 35s linear infinite;
+  animation: marquee 30s linear infinite;
+}
+
+.rotate-marquee {
+  transform: rotate(-1.5deg);
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+  cursor: pointer;
+}
+
+.rotate-star {
+  animation: rotateStar 3s ease-in-out infinite;
 }
 
 @keyframes marquee {
   0% {
     transform: translateX(0%);
   }
-
   100% {
     transform: translateX(-50%);
   }
 }
 
-/* Marquee End*/
+@keyframes rotateStar {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(18deg);
+  }
+}
+
+/* ---Marquee End--- */
 
 /* Shake Effect Start*/
 @keyframes shake {
