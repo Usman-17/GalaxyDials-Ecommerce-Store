@@ -8,11 +8,11 @@ import banner_s_3 from "../assets/banner_s_3.png";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col lg:flex-row items-center gap-0 lg:gap-32 justify-between max-w-[920px] m-auto py-10 overflow-hidden">
+    <div className="flex flex-col lg:flex-row items-center gap-0 lg:gap-32 justify-between max-w-[920px] m-auto pt-5 pb-10 overflow-hidden">
       {/* Content Side */}
 
-      <div className="px-10">
-        <h1 className="text-black text-[42px] md:text-[80px] lg:text-[60px] font-semibold leading-[1.1]">
+      <div className="px-10 md:max-w-full lg:max-w-[446px]">
+        <h1 className="text-black text-[38px] md:text-[80px] lg:text-[60px] font-semibold leading-[1.1]">
           Stunning
           <br />
           <span className="inline-flex items-center gap-2 text-red-600">
@@ -35,7 +35,7 @@ const Hero = () => {
           <span>Shine Bright</span>
         </h1>
 
-        <p className="text-[14px] sm:text-lg mt-4 md:mt-5 lg:mt-0  mb-4 lg:mb-6 text-gray-700 leading-relaxed text-nowrap">
+        <p className="text-[14px] sm:text-lg mt-1 md:mt-5 lg:mt-0  mb-2 lg:mb-6 text-gray-700 leading-relaxed text-nowrap">
           Your new favorite jewelry is just a click away.
           <br />
           <span className="text-[#cc0d39] font-medium">Free shipping</span> on
@@ -64,13 +64,19 @@ const Hero = () => {
             {/* Shapes */}
             <div className="absolute bottom-[-0.1%] lg:bottom-[0%] right-[-0%] w-[50%] h-[35%] border border-[#DFDFDF] rounded-br-[50px] -z-10"></div>
             {/* Main Image */}
-            <div className="w-full max-w-[600px]">
+            <div className="w-full max-w-[600px] h-[400px] md:h-auto lg:max-w-[600px]">
               <img
                 src={model}
                 alt="Jewelry Model"
-                className="w-full object-cover h-auto"
+                className="w-full h-full sm:h-auto object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = "";
+                  e.currentTarget.style.backgroundColor = "#f0f0f0";
+                  e.currentTarget.style.objectFit = "contain";
+                }}
               />
             </div>
+
             {/* Stars */}
             <ul className="absolute top-5 left-0 lg:-left-5 flex gap-2">
               {[1, 2, 3].map((star) => (
