@@ -5,11 +5,11 @@ const SaleProductCard = ({ product }) => {
   return (
     <Link
       to={`/product/${product.slug}`}
-      className="group block max-w-4xl mx-auto rounded-xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-sm transition-shadow duration-400 bg-white"
+      className="group block max-w-4xl mx-auto rounded-xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-sm transition-shadow duration-400 bg-[#fffaf5]"
     >
       <div className="flex flex-col sm:flex-row">
         {/* Image Side */}
-        <div className="relative w-full sm:w-1/3 bg-white clip-image-curve">
+        <div className="relative w-full sm:w-1/3 bg-[#fffaf5] clip-image-curve">
           <img
             src={product?.productImages?.[0]?.url}
             alt={product?.title}
@@ -30,7 +30,7 @@ const SaleProductCard = ({ product }) => {
         </div>
 
         {/* Content side */}
-        <div className="px-3 sm:px-6 py-5 sm:py-3 flex flex-col sm:w-2/3 rounded-b-3xl sm:rounded-r-3xl sm:rounded-bl-none bg-white">
+        <div className="px-3 sm:px-6 py-5 sm:py-3 flex flex-col sm:w-2/3 rounded-b-3xl sm:rounded-r-3xl sm:rounded-bl-none bg-[#fffaf5]">
           <div>
             <p className="uppercase tracking-widest font-semibold text-xs sm:text-sm text-gray-500">
               {product?.brand?.name || ""}
