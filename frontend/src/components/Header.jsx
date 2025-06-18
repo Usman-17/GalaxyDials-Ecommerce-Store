@@ -108,7 +108,7 @@ const Header = () => {
         </div>
 
         {/* Bottom Navigation (visible on small screens) */}
-        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white shadow-md sm:hidden px-2 border-t py-1">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#fffaf5] shadow-md sm:hidden px-2 border-t border-[#fffaf1] py-1">
           <ul className="flex justify-around items-center h-12 text-gray-600">
             <NavLink to="/" className="flex items-center gap-1 text-black">
               <div className="flex items-center gap-1">
