@@ -182,7 +182,7 @@ const CollectionPage = () => {
             <select
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
-              className="border border-gray-300 bg-white text-xs sm:text-sm px-0 py-2 sm:px-3 sm:py-2 rounded-md focus:outline-none transition duration-100 ease-in-out hover:bg-gray-50 mb-3"
+              className="border border-gray-300 bg-[#fffaf1] text-xs sm:text-sm px-0 py-2 sm:px-3 sm:py-2 rounded-md focus:outline-none transition duration-100 ease-in-out hover:bg-[#fffaf8] mb-3 cursor-pointer"
             >
               <option value="relevant">Sort By: Relevant</option>
               <option value="low-high">Sort By: Low to High</option>

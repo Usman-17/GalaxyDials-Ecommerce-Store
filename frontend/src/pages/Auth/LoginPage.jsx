@@ -56,7 +56,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex justify-center items-center py-24 sm:py-8">
-      <div className="w-full max-w-sm bg-white px-4 py-8 rounded">
+      <div className="w-full max-w-sm bg-[#fffaf1] px-4 py-8 rounded">
         <div className="grid gap-2 text-center mb-7">
           <h1 className="text-4xl font-bold">Login</h1>
           <p className="text-sm px-6 text-gray-500">

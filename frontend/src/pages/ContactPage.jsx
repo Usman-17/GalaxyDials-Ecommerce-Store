@@ -95,18 +95,18 @@ const ContactPage = () => {
       </div>
 
       {/* Contact Section */}
-      <div className="my-2 flex flex-col md:flex-row sm:gap-16">
+      <div className="my-2 flex flex-col lg:flex-row sm:gap-16 px-0 lg:px-6">
         {/* Contact Image */}
         <img
           src={img}
           alt="Contact Us"
-          className="w-full md:max-w-[450px] object-cover rounded-md"
+          className="w-full lg:max-w-[450px] object-cover rounded-md"
           loading="lazy"
           decoding="async"
         />
 
         {/* Contact Content */}
-        <div className="flex flex-col justify-center gap-4 sm:gap-6 md:w-2/4 text-gray-600">
+        <div className="flex flex-col justify-center gap-4 sm:gap-6 lg:w-2/4 text-gray-600">
           <p>
             Have a question, concern, or simply want to connect with us? Feel
             free to reach out using any of the methods below. Our team is here
@@ -122,27 +122,27 @@ const ContactPage = () => {
           </p>
 
           {/* Contact Details */}
-          <ul className="space-y-2 text-gray-700">
+          <ul className="space-y-1 text-gray-700">
             <li>
               <b>Email:</b>{" "}
               <a
-                href="mailto:support@galaxydials.com"
-                className="hover:text-blue-600 ease-in-out duration-200"
+                href="mailto:contact.jemzypk@gmail.com"
+                className="hover:text-red-600 ease-in-out duration-200"
               >
-                support@galaxydials.com
+                contact.jemzypk@gmail.com
               </a>
             </li>
             <li>
               <b>Phone:</b>{" "}
               <a
-                href="tel:+923001234567"
-                className="hover:text-blue-600 ease-in-out duration-200"
+                href="tel:+923274243417"
+                className="hover:text-red-600 ease-in-out duration-200"
               >
-                0300 1234567
+                0327 4243417
               </a>
             </li>
             <li>
-              <b>Address:</b> Galaxy Dials, 123 Time Avenue, Lahore, Pakistan
+              <b>Address:</b> Jemzy.pk, Lahore, Pakistan
             </li>
           </ul>
 
@@ -157,7 +157,7 @@ const ContactPage = () => {
               <a
                 href=""
                 target="_blank"
-                className="hover:text-blue-600 ease-in-out duration-200"
+                className="hover:text-red-600 ease-in-out duration-150"
               >
                 Facebook
               </a>
@@ -166,7 +166,7 @@ const ContactPage = () => {
               <a
                 href=""
                 target="_blank"
-                className="hover:text-blue-600 ease-in-out duration-200"
+                className="hover:text-red-600 ease-in-out duration-150"
               >
                 Instagram
               </a>
@@ -178,7 +178,7 @@ const ContactPage = () => {
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 md:space-y-3 sm:px-6 py-8 sm:py-16 max-w-10xl mx-auto"
+        className="space-y-4 md:space-y-3 lg:px-6 py-8 sm:py-16 max-w-10xl mx-auto"
       >
         <h2 className="text-gray-800 text-xl font-semibold">
           Get in Touch with Us
@@ -205,7 +205,7 @@ const ContactPage = () => {
               type="email"
               name="email"
               id="email"
-              placeholder="name@gmail.com"
+              placeholder="name@example.com"
               required
               value={formData.email}
               onChange={handleInputChange}
@@ -218,7 +218,7 @@ const ContactPage = () => {
               type="tel"
               name="mobile"
               id="mobile"
-              placeholder="0000 000000"
+              placeholder="0000 0000000"
               required
               aria-required="true"
               minLength={11}
@@ -237,7 +237,7 @@ const ContactPage = () => {
             name="subject"
             id="subject"
             required
-            placeholder="Enter the subject"
+            placeholder="What is your message about?"
             value={formData.subject}
             onChange={handleInputChange}
           />
@@ -251,10 +251,10 @@ const ContactPage = () => {
             rows="4"
             id="comment"
             required
-            placeholder="Leave a comment..."
+            placeholder="Type your message here..."
             value={formData.comment}
             onChange={handleInputChange}
-            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-800 disabled:bg-gray-100 disabled:cursor-not-allowed bg-[#fffaf5]"
           />
         </div>
 

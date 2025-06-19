@@ -186,7 +186,7 @@ const CartPage = () => {
                                 quantity: Number(e.target.value),
                               })
                             }
-                            className="block appearance-none w-full bg-white border border-gray-300 text-gray-800 py-1 px-3 pr-8 rounded-md leading-tight focus:outline-none transition duration-150 ease-in-out cursor-pointer"
+                            className="block appearance-none w-full bg-[#fffaf1] border border-gray-300 text-gray-800 py-1 px-3 pr-8 rounded-md leading-tight focus:outline-none transition duration-150 ease-in-out cursor-pointer"
                           >
                             {Array.from({ length: 10 }, (_, i) => i + 1).map(
                               (num) => (
@@ -199,7 +199,7 @@ const CartPage = () => {
 
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
                             {updatingItemKey === itemKey ? (
-                              <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                              <span className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
                             ) : (
                               <ChevronDown className="h-4 w-4 text-gray-700" />
                             )}

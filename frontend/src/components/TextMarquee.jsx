@@ -23,7 +23,7 @@ const TextMarquee = () => {
   const scrollingMessages = [...messages, ...messages];
 
   return (
-    <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[#fffaf5] border-y border-[#e4e4e7] py-3 z-40 rotate-marquee -mt-12">
+    <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[#fffaf5] border-y border-[#e4e4e7] py-3 z-20 rotate-marquee -mt-12">
       <div className="overflow-hidden px-4 sm:px-10">
         <div className="marquee-track">
           {scrollingMessages.map((msg, idx) => (

@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import SectionHeading from "../components/SectionHeading";
-import img from "../assets/add.jpg";
+import img from "../assets/model.png";
 
 const AboutPage = () => {
   return (
@@ -22,17 +22,17 @@ const AboutPage = () => {
         <SectionHeading text1={"ABOUT"} text2={"US"} />
       </div>
 
-      <div className="flex flex-col md:flex-row sm:gap-16">
+      <div className="flex flex-col lg:flex-row lg:gap-16">
         <img
           src={img}
           alt="Jemzy.pk - About us"
-          className="w-full md:max-w-[450px]"
+          className="w-full lg:max-w-[450px] mb-2 lg:mb-20"
           loading="lazy"
           decoding="async"
         />
 
         {/* About Content */}
-        <div className="flex flex-col justify-center gap-4 sm:gap-6 md:w-2/4 text-gray-600">
+        <div className="flex flex-col justify-center gap-4 sm:gap-6 lg:w-2/4 text-gray-600">
           <p>
             Welcome to{" "}
             <span className="font-semibold text-gray-900">Jemzy.pk</span>, your

@@ -47,14 +47,23 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/collection" element={<CollectionPage />} />
             <Route path="/product/:slug" element={<ProductPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/place-order" element={<PlaceOrderPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+
+            <Route
+              path="/cart"
+              element={authUser ? <CartPage /> : <Navigate to="/login" />}
+            />
+
+            <Route
+              path="/place-order"
+              element={authUser ? <PlaceOrderPage /> : <Navigate to="/login" />}
+            />
+
             <Route
               path="/order"
               element={authUser ? <MyOrdersPage /> : <Navigate to="/login" />}
             />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
 
             <Route
               path="/profile"

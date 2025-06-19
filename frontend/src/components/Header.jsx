@@ -69,7 +69,7 @@ const Header = () => {
           {/* Search  */}
           <div>
             <Search
-              className="cursor-pointer"
+              className="cursor-pointer hover:text-red-600 transition-colors duration-150"
               onClick={toggleSearchBar}
               aria-expanded={isSearchVisible}
               aria-label="Toggle Search Bar"
@@ -110,7 +110,11 @@ const Header = () => {
         {/* Bottom Navigation (visible on small screens) */}
         <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#fffaf5] shadow-md sm:hidden px-2 border-t border-[#fffaf1] py-1">
           <ul className="flex justify-around items-center h-12 text-gray-600">
-            <NavLink to="/" className="flex items-center gap-1 text-black">
+            <NavLink
+              to="/"
+              className="flex items-center gap-1 text-black"
+              onClick={() => window.scrollTo({ top: 0, behavior: "instant" })}
+            >
               <div className="flex items-center gap-1">
                 <img src={home} alt="home" className="w-7" />
                 <p className="hidden mt-1.5 text-md">Home</p>
@@ -120,6 +124,7 @@ const Header = () => {
             <NavLink
               to="/collection"
               className="flex items-center gap-1 text-gray-700 hover:text-black"
+              onClick={() => window.scrollTo({ top: 0, behavior: "instant" })}
             >
               <img src={collection} alt="collection" className="w-7" />
               <p className="hidden mt-1.5 text-md">ALL PRODUCTS</p>
@@ -129,6 +134,7 @@ const Header = () => {
               <NavLink
                 to="/order"
                 className="flex items-center gap-1 text-gray-700 hover:text-black"
+                onClick={() => window.scrollTo({ top: 0, behavior: "instant" })}
               >
                 <img src={tracking} alt="order" className="w-8" />
                 <p className="hidden mt-1.5 text-md">Orders</p>
@@ -137,6 +143,7 @@ const Header = () => {
               <NavLink
                 to="/login"
                 className="flex items-center gap-1 text-gray-700 hover:text-black"
+                onClick={() => window.scrollTo({ top: 0, behavior: "instant" })}
               >
                 <UserRound size={24} />
                 <p className="hidden mt-1.5 text-md">Login</p>
@@ -146,6 +153,7 @@ const Header = () => {
             <NavLink
               to="/contact"
               className="flex items-center gap-1 text-gray-700 hover:text-black"
+              onClick={() => window.scrollTo({ top: 0, behavior: "instant" })}
             >
               <img src={inbox} alt="contact" className="w-7" />
               <p className="hidden mt-1.5 text-md">Contact</p>
