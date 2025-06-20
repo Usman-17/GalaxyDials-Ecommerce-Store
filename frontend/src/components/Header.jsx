@@ -32,7 +32,7 @@ const Header = () => {
         <Link to={"/"}>
           <img
             src={logo}
-            alt="Logo"
+            alt="jemzy.pk"
             className="w-20 sm:w-24"
             loading="lazy"
             decoding="async"
