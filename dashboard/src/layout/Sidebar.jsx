@@ -182,7 +182,7 @@ const Sidebar = () => {
       <div className="py-8 sm:py-4 flex justify-center">
         <Link to="/" className="hidden sm:block">
           {isExpanded || isHovered || isMobileOpen ? (
-            <img src={logo} alt="Logo" width={150} height={40} />
+            <img src={logo} alt="Logo" width={100} height={40} />
           ) : (
             <img src={logo_icon} alt="Logo" width={32} height={32} />
           )}
